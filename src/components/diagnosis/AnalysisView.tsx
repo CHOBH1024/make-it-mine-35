@@ -137,6 +137,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
     const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([]);
     const [saveName, setSaveName] = useState('');
     const [showSaveUI, setShowSaveUI] = useState(false);
+    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
     // Primary result is the first element
     const result = results.length > 0 ? results[0] : null;
