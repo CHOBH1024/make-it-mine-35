@@ -7,7 +7,7 @@ import {
     ExternalLink, ArrowUpRight, ChevronRight, X, Dna, Activity, Zap, Crown, Check,
     Save, Trash2, History, Dumbbell, GraduationCap, ListChecks, Lightbulb, UserCheck,
     Network, Link, ZoomIn, CheckCircle, XCircle, UserPlus, Copy, MessageCircle, Gavel, Flag,
-    Eye, TrendingUp, Shield, Download,
+    Eye, TrendingUp, Shield, Download, Share2, Link2,
     type LucideProps
 } from 'lucide-react';
 
@@ -18,7 +18,7 @@ const iconMap: Record<string, React.FC<LucideProps>> = {
     ExternalLink, ArrowUpRight, ChevronRight, X, Dna, Activity, Zap, Crown, Check,
     Save, Trash2, History, Dumbbell, GraduationCap, ListChecks, Lightbulb, UserCheck,
     Network, Link, ZoomIn, CheckCircle, XCircle, UserPlus, Copy, MessageCircle, Gavel, Flag,
-    Eye, TrendingUp, Shield, Download
+    Eye, TrendingUp, Shield, Download, Share2, Link2
 };
 
 export interface IconProps {
