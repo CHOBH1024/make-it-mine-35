@@ -327,7 +327,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                     "text-purple-600",
                     isEnneagramDone,
                     <span className="bg-purple-50 text-purple-900 px-2 py-1 rounded-md text-sm font-bold border border-purple-100">
-                        {inputs.enneagram ? detailData.enneagram[inputs.enneagram]?.label.split(':')[0] : ''}
+                        {inputs.enneagram ? detailData.enneagram[inputs.enneagram]?.label?.split(':')[0] : ''}
                     </span>
                 )}
 
