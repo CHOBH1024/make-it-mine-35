@@ -70,6 +70,7 @@ function Index() {
     }
   }, []);
 
+  const handleRestore = (savedInputs: Inputs) => {
     setInputs(savedInputs);
     const scores = calculateResults(savedInputs);
     setResults(scores);
