@@ -18,7 +18,7 @@ const iconMap: Record<string, React.FC<LucideProps>> = {
     ExternalLink, ArrowUpRight, ChevronRight, X, Dna, Activity, Zap, Crown, Check,
     Save, Trash2, History, Dumbbell, GraduationCap, ListChecks, Lightbulb, UserCheck,
     Network, Link, ZoomIn, CheckCircle, XCircle, UserPlus, Copy, MessageCircle, Gavel, Flag,
-    Eye, TrendingUp, Shield
+    Eye, TrendingUp, Shield, Download
 };
 
 export interface IconProps {
