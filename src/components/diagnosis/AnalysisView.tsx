@@ -236,7 +236,34 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                         disabled={isGeneratingPdf}
                         className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-bold hover:bg-blue-100 transition-colors flex items-center gap-2 text-base border border-blue-200 disabled:opacity-50"
                     >
-                        <Icon name="Download" size={16}/> {isGeneratingPdf ? 'PDF 생성 중...' : 'PDF 다운로드'}
+                    <Icon name="Download" size={16}/> {isGeneratingPdf ? 'PDF 생성 중...' : 'PDF 다운로드'}
+                    </button>
+                    <button 
+                        onClick={async () => {
+                            const url = buildShareUrl(inputs);
+                            const ok = await copyToClipboard(url);
+                            if (ok) {
+                                setCopySuccess(true);
+                                setTimeout(() => setCopySuccess(false), 2000);
+                            }
+                        }}
+                        className="px-4 py-2 bg-green-50 text-green-700 rounded-lg font-bold hover:bg-green-100 transition-colors flex items-center gap-2 text-base border border-green-200"
+                    >
+                        <Icon name="Link2" size={16}/> {copySuccess ? '복사됨!' : '링크 복사'}
+                    </button>
+                    <button 
+                        onClick={() => {
+                            if (!result) return;
+                            const url = buildShareUrl(inputs);
+                            webShare(
+                                `목회공직자 유형: ${result.title}`,
+                                `${result.subtitle} - Cheon Il Guk 목회공직자 유형진단 결과를 확인해보세요!`,
+                                url
+                            );
+                        }}
+                        className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg font-bold hover:bg-indigo-100 transition-colors flex items-center gap-2 text-base border border-indigo-200"
+                    >
+                        <Icon name="Share2" size={16}/> 공유하기
                     </button>
                     <button 
                         onClick={() => setShowSaveUI(!showSaveUI)}
