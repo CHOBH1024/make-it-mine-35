@@ -4,6 +4,7 @@ import { Icon } from '@/components/diagnosis/Icon';
 import { detailData } from '@/lib/data';
 import { Archetype, Inputs, SavedAnalysis } from '@/lib/types';
 import { TeamBuilder } from '@/components/diagnosis/TeamBuilder';
+import { generateAnalysisPdf } from '@/lib/generatePdf';
 
 interface AnalysisViewProps {
     results: Archetype[];
