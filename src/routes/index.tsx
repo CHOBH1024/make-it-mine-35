@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@/components/diagnosis/Icon";
 import { HomeView } from "@/components/diagnosis/HomeView";
 import { DiagnosisView } from "@/components/diagnosis/DiagnosisView";
@@ -7,6 +7,7 @@ import { AnalysisView } from "@/components/diagnosis/AnalysisView";
 import { LibraryView } from "@/components/diagnosis/LibraryView";
 import { GuideView } from "@/components/diagnosis/GuideView";
 import { archetypes } from "@/lib/data";
+import { decodeInputs } from "@/lib/share";
 import type { Inputs, Archetype } from "@/lib/types";
 
 export const Route = createFileRoute("/")({
@@ -51,6 +52,23 @@ function Index() {
     setActiveTab("analysis");
     window.scrollTo(0, 0);
   };
+
+  // Handle shared URL params on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const decoded = decodeInputs(encoded);
+      if (decoded) {
+        setInputs(decoded);
+        const scores = calculateResults(decoded);
+        setResults(scores);
+        setActiveTab("analysis");
+        // Clean URL without reload
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    }
+  }, []);
 
   const handleRestore = (savedInputs: Inputs) => {
     setInputs(savedInputs);
