@@ -4,6 +4,7 @@ import { Icon } from '@/components/diagnosis/Icon';
 import { detailData } from '@/lib/data';
 import { Archetype, Inputs, SavedAnalysis } from '@/lib/types';
 import { TeamBuilder } from '@/components/diagnosis/TeamBuilder';
+import { generateAnalysisPdf } from '@/lib/generatePdf';
 
 interface AnalysisViewProps {
     results: Archetype[];
@@ -136,6 +137,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
     const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([]);
     const [saveName, setSaveName] = useState('');
     const [showSaveUI, setShowSaveUI] = useState(false);
+    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
     // Primary result is the first element
     const result = results.length > 0 ? results[0] : null;
@@ -216,6 +218,24 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                     <Icon name="User" className="text-blue-900"/> 분석 결과 대시보드
                 </h2>
                 <div className="flex gap-2">
+                    <button 
+                        onClick={async () => {
+                            if (!result) return;
+                            setIsGeneratingPdf(true);
+                            try {
+                                await generateAnalysisPdf(result, results, inputs);
+                            } catch (e) {
+                                console.error('PDF generation failed', e);
+                                alert('PDF 생성에 실패했습니다.');
+                            } finally {
+                                setIsGeneratingPdf(false);
+                            }
+                        }}
+                        disabled={isGeneratingPdf}
+                        className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-bold hover:bg-blue-100 transition-colors flex items-center gap-2 text-base border border-blue-200 disabled:opacity-50"
+                    >
+                        <Icon name="Download" size={16}/> {isGeneratingPdf ? 'PDF 생성 중...' : 'PDF 다운로드'}
+                    </button>
                     <button 
                         onClick={() => setShowSaveUI(!showSaveUI)}
                         className="px-4 py-2 bg-amber-50 text-amber-700 rounded-lg font-bold hover:bg-amber-100 transition-colors flex items-center gap-2 text-base border border-amber-200"
