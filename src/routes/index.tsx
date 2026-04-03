@@ -53,7 +53,23 @@ function Index() {
     window.scrollTo(0, 0);
   };
 
-  const handleRestore = (savedInputs: Inputs) => {
+  // Handle shared URL params on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const decoded = decodeInputs(encoded);
+      if (decoded) {
+        setInputs(decoded);
+        const scores = calculateResults(decoded);
+        setResults(scores);
+        setActiveTab("analysis");
+        // Clean URL without reload
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    }
+  }, []);
+
     setInputs(savedInputs);
     const scores = calculateResults(savedInputs);
     setResults(scores);
