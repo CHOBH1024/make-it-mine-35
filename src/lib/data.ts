@@ -564,7 +564,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "화합형 리더십, 수용과 포용, 위기 관리, 실무 능력 겸비",
             lesson: "진정한 평화는 덮어두는 것이 아니라, 용서하고 하나 되는 것입니다."
         },
-        roles: ["중재위원", "연합회장", "평화대사"],
+        roles: ["중재위원", "연합회장", "평화대사", "갈등조정 상담사", "교단연합 사무총장", "화해사역 디렉터", "다문화사역 코디네이터", "통일준비 위원", "세대간 소통 촉진자", "지역화합 추진위원장"],
         subTypes: [
             { title: "화합의 중재자 (Unity Mediator)", catchphrase: "우리는 결국 한 식구입니다.", description: "갈등하는 양쪽의 손을 잡아 하나로 묶어주는 평화의 사도입니다. 탁월한 균형 감각을 가졌습니다.", keyFocus: "화해(Reconciliation) & 조정(Mediation)", symbol: "Wheat", strength: "경청 능력, 균형 감각", risk: "우유부단함, 갈등 회피" },
             { title: "경청하는 치유자 (Listening Healer)", catchphrase: "당신의 마음을 온전히 이해합니다.", description: "판단하지 않고 들어줌으로써 상처받은 마음을 녹이는 상담가입니다. 존재 자체가 휴식이 됩니다.", keyFocus: "수용(Acceptance) & 경청(Listening)", symbol: "Ear", strength: "수용성, 인내심", risk: "수동적 태도, 감정 소진" },
