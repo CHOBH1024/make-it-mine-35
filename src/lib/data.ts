@@ -513,7 +513,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "카리스마, 보호자(Protector), 결단력, 비전 제시, 위기 돌파",
             lesson: "진정한 힘은 칼이 아니라 하나님께 엎드리는 무릎에서 나옵니다."
         },
-        roles: ["교구장", "선교사", "NGO 지도자"],
+        roles: ["교구장", "선교사", "NGO 지도자", "개척교회 담임", "위기관리 총괄", "특수선교 팀장", "지역사회 운동가", "구호활동 책임자", "청년선교 사령관", "현장지휘관"],
         subTypes: [
             { title: "불굴의 투사 (Indomitable Fighter)", catchphrase: "불의와 타협하느니 죽음을 택하겠습니다.", description: "섭리의 완성을 가로막는 불의에 맞서 물러서지 않고 싸우는 영적 전사입니다. 강한 정의감을 가졌습니다.", keyFocus: "정의(Justice) & 투쟁(Fight)", symbol: "Sword", strength: "용기, 정의감, 돌파력", risk: "폭력적 언행, 적을 만듦" },
             { title: "개척의 선봉장 (Pioneer Vanguard)", catchphrase: "길이 없으면 만들어서 갑니다.", description: "안전한 곳을 떠나 아무도 가지 않은 황무지에 섭리의 깃발을 꽂는 진취적인 개척자입니다.", keyFocus: "개척(Pioneering) & 도전(Challenge)", symbol: "Flag", strength: "도전 정신, 생존 능력", risk: "무모함, 독단적 결정" },
