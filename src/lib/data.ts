@@ -207,7 +207,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "포용적 리더십, 경청과 공감, 후방 지원(Servant), 심정적 유대감 형성",
             lesson: "가장 위대한 힘은 지시가 아니라 품어주는 사랑에서 나옵니다."
         },
-        roles: ["가정국장", "상담 센터장", "복지 사역자"],
+        roles: ["가정국장", "상담 센터장", "복지 사역자", "양육 프로그램 디렉터", "멘토링 코디네이터", "가정예배 지도사", "그리프케어 전문가", "신앙교육 매니저", "새가족부장", "돌봄사역 팀장"],
         subTypes: [
             { title: "영적 양육가 (Spiritual Nurturer)", catchphrase: "한 영혼이 천하보다 귀합니다.", description: "새신자와 2세들을 사랑으로 먹이고 입혀 성장시키는 '영적 엄마'입니다. 성과보다 존재 자체를 귀하게 여깁니다.", keyFocus: "양육(Nurture) & 돌봄(Care)", symbol: "HeartHandshake", strength: "탁월한 인내심, 개별 맞춤형 케어", risk: "과잉 보호, 훈육의 부재" },
             { title: "상처 치유자 (Wounded Healer)", catchphrase: "당신의 아픔이 별이 되게 하겠습니다.", description: "자신의 상처를 승화시켜 타인의 아픔을 깊이 공감하고 치유하는 상담가입니다. 듣는 것만으로도 위로가 됩니다.", keyFocus: "치유(Healing) & 공감(Empathy)", symbol: "Sparkles", strength: "높은 공감 능력, 정서적 안정감", risk: "감정 전이로 인한 번아웃" },
