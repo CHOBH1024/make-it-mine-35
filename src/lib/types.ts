@@ -146,6 +146,11 @@ export interface Archetype {
     prediction: string;
     activities: string[];
     simulation: SimulationData;
+    weeklyPlan: WeeklyPlan;
+    conflictScenarios: ConflictScenario[];
+    practicalTips: PracticalTip[];
+    prayerGuide: PrayerGuide;
+    mottoQuotes: string[];
 }
 
 export interface SavedTeam {
