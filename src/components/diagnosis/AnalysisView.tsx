@@ -336,30 +336,42 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex justify-center gap-2 md:gap-8 mb-12 border-b border-stone-200 sticky top-20 bg-[#fcfbf9] z-30 pt-4 overflow-x-auto">
+            <div className="flex justify-center gap-2 md:gap-4 mb-12 border-b border-stone-200 sticky top-20 bg-[#fcfbf9] z-30 pt-4 overflow-x-auto">
                 <button 
                     onClick={() => setTab('details')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='details' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='details' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="User" size={24} /> <span className="hidden md:inline">아키타입 </span>상세
+                    <Icon name="User" size={20} /> 상세
                 </button>
                 <button 
                     onClick={() => setTab('cross_analysis')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='cross_analysis' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='cross_analysis' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="Activity" size={24} /> 교차 분석
+                    <Icon name="Activity" size={20} /> 교차분석
                 </button>
                 <button 
                     onClick={() => setTab('growth')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='growth' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='growth' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="Sprout" size={24} /> 성장 가이드
+                    <Icon name="Sprout" size={20} /> 성장가이드
+                </button>
+                <button 
+                    onClick={() => setTab('practical')} 
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='practical' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                >
+                    <Icon name="Briefcase" size={20} /> 실전가이드
+                </button>
+                <button 
+                    onClick={() => setTab('prayer')} 
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='prayer' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                >
+                    <Icon name="Heart" size={20} /> 기도/묵상
                 </button>
                 <button 
                     onClick={() => setTab('team')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='team' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='team' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="Users" size={24} /> 팀 시뮬레이션
+                    <Icon name="Users" size={20} /> 팀 시뮬레이션
                 </button>
             </div>
 
