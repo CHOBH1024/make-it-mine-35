@@ -162,8 +162,14 @@ export const HomeView: React.FC<HomeViewProps> = ({ onStart }) => {
                                         </p>
 
                                         <div className="mt-auto bg-stone-50 p-5 rounded-2xl border border-stone-100">
-                                            <span className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Primary Role</span>
-                                            <span className="text-blue-900 font-bold text-lg">{t.roles[0]}</span>
+                                            <span className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Recommended Roles</span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {t.roles.map((role, i) => (
+                                                    <span key={i} className="px-2.5 py-1 bg-white text-blue-900 font-bold text-xs rounded-lg border border-blue-100">
+                                                        {role}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
