@@ -411,7 +411,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "솔선수범, 책임 완수, 철저한 수행, 신뢰와 안정",
             lesson: "가장 위대한 능력은 화려한 재능이 아니라 변함없는 충성입니다."
         },
-        roles: ["재정부장", "행정실장", "관리집사"],
+        roles: ["재정부장", "행정실장", "관리집사", "시설관리 팀장", "회계감사관", "자산운용 매니저", "물류/조달 책임자", "안전관리 담당관", "총무국장", "예산심의 위원"],
         subTypes: [
             { title: "조직 수호자 (Organization Guardian)", catchphrase: "기본이 무너지면 모든 것이 무너집니다.", description: "조직의 시스템, 자산, 전통을 철통같이 지키는 파수꾼입니다. 보수적이지만 가장 안전합니다.", keyFocus: "보존(Preservation) & 안전(Safety)", symbol: "Shield", strength: "충성심, 책임감", risk: "변화에 대한 저항" },
             { title: "헌신된 집사 (Devoted Steward)", catchphrase: "하나님이 아시면 족합니다.", description: "누가 보든 안 보든 궂은 일을 도맡아 처리하는 살림꾼입니다. 묵묵한 헌신으로 존경받습니다.", keyFocus: "봉사(Service) & 충성(Loyalty)", symbol: "UserCheck", strength: "성실함, 겸손, 섬김", risk: "번아웃, 수동적 태도" },
