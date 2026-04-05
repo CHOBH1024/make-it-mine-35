@@ -309,7 +309,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "감성 리더십, 솔직함(Transparency), 영적 교감, 문화 창달",
             lesson: "진실한 고백(찬양)만이 사람의 마음을 움직이고 하나님을 감동시킵니다."
         },
-        roles: ["문화사역자", "미디어 팀장", "크리에이티브 디렉터"],
+        roles: ["문화사역자", "미디어 팀장", "크리에이티브 디렉터", "찬양 예배 인도자", "영상 프로듀서", "출판 편집장", "SNS 콘텐츠 매니저", "공간 디자이너", "브랜딩 전략가", "예술축제 기획자"],
         subTypes: [
             { title: "문화 창조자 (Culture Creator)", catchphrase: "말씀은 문화로 옷 입어야 합니다.", description: "섭리의 메시지를 음악, 영상, 디자인 등 문화 예술 콘텐츠로 승화시키는 크리에이터입니다. 세련된 감각을 가졌습니다.", keyFocus: "창조(Creation) & 문화(Culture)", symbol: "Feather", strength: "독창성, 트렌드 감각", risk: "자기만의 세계에 갇힘" },
             { title: "영적 감성가 (Spiritual Sentimentalist)", catchphrase: "이성은 고개를 끄덕이게 하지만, 감성은 눈물을 흘리게 합니다.", description: "딱딱한 교리가 아닌 따뜻한 감성과 스토리텔링으로 식구들의 심금을 울리는 설교자입니다.", keyFocus: "감동(Inspiration) & 공감(Empathy)", symbol: "Sparkles", strength: "호소력 짙은 전달력, 치유", risk: "감정 과잉, 분위기에 휩쓸림" },
