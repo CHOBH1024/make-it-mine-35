@@ -360,7 +360,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "전문가적 리더십, 합리적 판단, 교육과 계몽, 비전 제시",
             lesson: "지식은 사랑과 결합될 때 비로소 지혜가 됩니다."
         },
-        roles: ["연구원", "교육부장", "교수"],
+        roles: ["연구원", "교육부장", "교수", "교리연구소장", "커리큘럼 설계자", "신학교 강사", "학술지 편집위원", "원리강사 양성 트레이너", "역사기록관", "정책연구 자문위원"],
         subTypes: [
             { title: "원리 수호자 (Principle Guardian)", catchphrase: "진리만이 우리를 자유케 합니다.", description: "말씀의 원형과 정통성을 지키고, 섭리적 오류를 바로잡는 대쪽 같은 신학자입니다. 타협하지 않는 학자적 양심을 가졌습니다.", keyFocus: "정통(Orthodoxy) & 논리(Logic)", symbol: "BookOpen", strength: "깊은 원리 이해, 논리적 설득력", risk: "독선적 태도, 차가운 논쟁" },
             { title: "교육 설계자 (Education Designer)", catchphrase: "아는 것과 가르치는 것은 다릅니다.", description: "난해한 섭리적 내용을 체계적인 교육 커리큘럼으로 번역하여 전달하는 탁월한 교육가입니다.", keyFocus: "교육(Education) & 체계(System)", symbol: "PenTool", strength: "전달력, 체계화 능력", risk: "현장성 부족, 이론 중심" },
