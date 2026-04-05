@@ -258,7 +258,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "목표 지향적(Goal-oriented), 솔선수범, 동기부여, 전략적 사고",
             lesson: "방향 없는 속도는 재앙입니다. 하나님의 뜻이라는 나침반을 놓지 마십시오."
         },
-        roles: ["전략기획관", "부흥단장", "프로젝트 매니저"],
+        roles: ["전략기획관", "부흥단장", "프로젝트 매니저", "선교본부 사무총장", "성과관리 팀장", "특별위원회 위원장", "캠페인 총괄", "지역 교구 총무", "사업개발 디렉터", "목표관리 코치"],
         subTypes: [
             { title: "성과 혁신가 (Performance Innovator)", catchphrase: "안 되는 이유보다 되는 방법 하나를 찾습니다.", description: "기존의 관습을 깨고 획기적인 방식으로 목표를 초과 달성하는 승부사입니다. 효율성을 극대화합니다.", keyFocus: "혁신(Innovation) & 성과(Result)", symbol: "Trophy", strength: "빠른 실행력, 결과 중심 사고", risk: "과정 무시, 조직 피로도 증가" },
             { title: "비전 전략가 (Vision Strategist)", catchphrase: "전략 없는 열정은 낭비입니다.", description: "목표 달성을 위한 가장 빠르고 정확한 지름길(Roadmap)을 설계하는 지략가입니다. 큰 그림을 봅니다.", keyFocus: "전략(Strategy) & 최적화(Optimization)", symbol: "Map", strength: "거시적 안목, 자원 배분 능력", risk: "지나친 계산, 차가운 이성" },
