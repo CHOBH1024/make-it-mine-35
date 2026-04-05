@@ -134,7 +134,7 @@ const getMBTI = (big5: Inputs['big5']): string => {
 };
 
 export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onRestore }) => {
-    const [tab, setTab] = useState<'details' | 'cross_analysis' | 'growth' | 'team'>('details');
+    const [tab, setTab] = useState<'details' | 'cross_analysis' | 'growth' | 'practical' | 'prayer' | 'team'>('details');
     const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([]);
     const [saveName, setSaveName] = useState('');
     const [showSaveUI, setShowSaveUI] = useState(false);
@@ -336,30 +336,42 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex justify-center gap-2 md:gap-8 mb-12 border-b border-stone-200 sticky top-20 bg-[#fcfbf9] z-30 pt-4 overflow-x-auto">
+            <div className="flex justify-center gap-2 md:gap-4 mb-12 border-b border-stone-200 sticky top-20 bg-[#fcfbf9] z-30 pt-4 overflow-x-auto">
                 <button 
                     onClick={() => setTab('details')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='details' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='details' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="User" size={24} /> <span className="hidden md:inline">아키타입 </span>상세
+                    <Icon name="User" size={20} /> 상세
                 </button>
                 <button 
                     onClick={() => setTab('cross_analysis')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='cross_analysis' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='cross_analysis' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="Activity" size={24} /> 교차 분석
+                    <Icon name="Activity" size={20} /> 교차분석
                 </button>
                 <button 
                     onClick={() => setTab('growth')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='growth' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='growth' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="Sprout" size={24} /> 성장 가이드
+                    <Icon name="Sprout" size={20} /> 성장가이드
+                </button>
+                <button 
+                    onClick={() => setTab('practical')} 
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='practical' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                >
+                    <Icon name="Briefcase" size={20} /> 실전가이드
+                </button>
+                <button 
+                    onClick={() => setTab('prayer')} 
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='prayer' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                >
+                    <Icon name="Heart" size={20} /> 기도/묵상
                 </button>
                 <button 
                     onClick={() => setTab('team')} 
-                    className={`pb-4 px-4 text-lg md:text-2xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='team' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='team' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
-                    <Icon name="Users" size={24} /> 팀 시뮬레이션
+                    <Icon name="Users" size={20} /> 팀 시뮬레이션
                 </button>
             </div>
 
@@ -925,6 +937,252 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                             </div>
                         </div>
                      </div>
+                )}
+                
+                {/* NEW: Practical Guide Tab */}
+                {tab === 'practical' && (
+                    <div className="space-y-12 animate-[fadeIn_0.5s_ease-out]">
+                        <section className="text-center mb-8">
+                            <h3 className="text-3xl font-bold text-blue-900 mb-4 font-serif">
+                                공직 실전 가이드
+                            </h3>
+                            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                                일선 현장에서 바로 적용할 수 있는 구체적인 행동 지침과 갈등 해결 시나리오입니다.
+                            </p>
+                        </section>
+
+                        {/* Weekly Plan */}
+                        <section>
+                            <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
+                                <Icon name="Calendar" className="text-emerald-600"/> 
+                                주간 업무 루틴 (Weekly Schedule)
+                            </h3>
+                            <div className="grid md:grid-cols-7 gap-3">
+                                {result.weeklyPlan && Object.entries(result.weeklyPlan).map(([day, task]) => {
+                                    const dayLabels: Record<string, string> = { mon: '월', tue: '화', wed: '수', thu: '목', fri: '금', sat: '토', sun: '일' };
+                                    const dayColors: Record<string, string> = { mon: 'border-blue-200 bg-blue-50', tue: 'border-green-200 bg-green-50', wed: 'border-purple-200 bg-purple-50', thu: 'border-amber-200 bg-amber-50', fri: 'border-red-200 bg-red-50', sat: 'border-indigo-200 bg-indigo-50', sun: 'border-rose-200 bg-rose-50' };
+                                    return (
+                                        <div key={day} className={`p-4 rounded-2xl border-2 ${dayColors[day] || 'bg-white border-stone-200'} flex flex-col`}>
+                                            <div className="text-2xl font-black text-slate-900 mb-2 text-center">{dayLabels[day]}</div>
+                                            <p className="text-sm text-slate-600 leading-relaxed">{task as string}</p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </section>
+
+                        {/* Conflict Scenarios */}
+                        <section>
+                            <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
+                                <Icon name="AlertTriangle" className="text-red-500"/> 
+                                갈등 시나리오 & 대응법 (Conflict Resolution)
+                            </h3>
+                            <div className="space-y-8">
+                                {result.conflictScenarios?.map((scenario, idx) => (
+                                    <div key={idx} className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
+                                        <div className="bg-slate-800 text-white p-6">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <span className="bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">S{idx + 1}</span>
+                                                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Situation</span>
+                                            </div>
+                                            <p className="text-lg font-medium leading-relaxed">{scenario.situation}</p>
+                                        </div>
+                                        <div className="grid md:grid-cols-2 gap-0">
+                                            <div className="p-6 border-r border-b md:border-b-0 border-stone-100 bg-red-50/30">
+                                                <h5 className="flex items-center gap-2 text-red-700 font-bold mb-3">
+                                                    <Icon name="X" size={18} className="bg-red-100 rounded-full p-0.5"/> ✗ 이렇게 하면 안 됩니다
+                                                </h5>
+                                                <p className="text-slate-700 leading-relaxed">{scenario.wrongResponse}</p>
+                                            </div>
+                                            <div className="p-6 bg-green-50/30">
+                                                <h5 className="flex items-center gap-2 text-green-700 font-bold mb-3">
+                                                    <Icon name="Check" size={18} className="bg-green-100 rounded-full p-0.5"/> ✓ 이렇게 하세요
+                                                </h5>
+                                                <p className="text-slate-700 leading-relaxed">{scenario.rightResponse}</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-5 bg-amber-50 border-t border-amber-100">
+                                            <p className="text-amber-900 font-bold text-sm flex items-start gap-2">
+                                                <Icon name="Lightbulb" size={16} className="shrink-0 mt-0.5"/>
+                                                <span><strong>원칙:</strong> {scenario.principle}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Practical Tips */}
+                        <section>
+                            <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
+                                <Icon name="Zap" className="text-amber-500"/> 
+                                실전 DO & DON'T (Practical Tips)
+                            </h3>
+                            <div className="space-y-8">
+                                {result.practicalTips?.map((tip, idx) => (
+                                    <div key={idx} className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
+                                        <div className="p-8 border-b border-stone-100">
+                                            <div className="flex items-center gap-3 mb-4">
+                                                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">{tip.category}</span>
+                                            </div>
+                                            <h4 className="text-2xl font-bold text-slate-900 font-serif mb-3">{tip.title}</h4>
+                                            <p className="text-slate-600 text-lg leading-relaxed">{tip.description}</p>
+                                        </div>
+                                        <div className="grid md:grid-cols-2 gap-0">
+                                            <div className="p-6 border-r border-stone-100 bg-green-50/30">
+                                                <h5 className="flex items-center gap-2 text-green-800 font-bold mb-4 text-lg">
+                                                    <Icon name="ThumbsUp" size={20}/> DO — 이렇게 하세요
+                                                </h5>
+                                                <ul className="space-y-3">
+                                                    {tip.doList.map((item, i) => (
+                                                        <li key={i} className="flex items-start gap-3 text-slate-700">
+                                                            <Icon name="Check" size={16} className="text-green-500 mt-1 shrink-0"/>
+                                                            <span>{item}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div className="p-6 bg-red-50/30">
+                                                <h5 className="flex items-center gap-2 text-red-800 font-bold mb-4 text-lg">
+                                                    <Icon name="AlertTriangle" size={20}/> DON'T — 이것만은 피하세요
+                                                </h5>
+                                                <ul className="space-y-3">
+                                                    {tip.dontList.map((item, i) => (
+                                                        <li key={i} className="flex items-start gap-3 text-slate-700">
+                                                            <Icon name="X" size={16} className="text-red-400 mt-1 shrink-0"/>
+                                                            <span>{item}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Motto Quotes */}
+                        <section className="bg-gradient-to-br from-slate-900 to-blue-900 p-12 rounded-[2.5rem] text-white relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                            <div className="relative z-10 max-w-4xl mx-auto">
+                                <h3 className="text-2xl font-bold text-amber-400 mb-8 font-serif text-center flex items-center justify-center gap-3">
+                                    <Icon name="Quote" size={24}/> {result.title}의 좌우명
+                                </h3>
+                                <div className="space-y-6">
+                                    {result.mottoQuotes?.map((quote, idx) => (
+                                        <p key={idx} className="text-xl text-slate-200 font-serif italic text-center leading-relaxed">
+                                            "{quote}"
+                                        </p>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                )}
+
+                {/* NEW: Prayer & Meditation Tab */}
+                {tab === 'prayer' && (
+                    <div className="space-y-12 animate-[fadeIn_0.5s_ease-out]">
+                        <section className="text-center mb-8">
+                            <h3 className="text-3xl font-bold text-blue-900 mb-4 font-serif">
+                                기도와 묵상 가이드
+                            </h3>
+                            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                                당신의 아키타입에 맞춘 영적 훈련과 기도문입니다.<br/>
+                                매일 아침과 저녁, 하나님과 깊이 만나는 시간을 가지십시오.
+                            </p>
+                        </section>
+
+                        {result.prayerGuide && (
+                            <>
+                                {/* Morning Prayer */}
+                                <section className="grid lg:grid-cols-2 gap-8">
+                                    <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-10 rounded-3xl border border-amber-200 relative overflow-hidden">
+                                        <div className="absolute -top-4 -right-4 opacity-10">
+                                            <Icon name="Sun" size={120}/>
+                                        </div>
+                                        <div className="relative z-10">
+                                            <div className="flex items-center gap-3 mb-6">
+                                                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600">
+                                                    <Icon name="Sun" size={24}/>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xl font-bold text-amber-900 font-serif">아침 기도문</h4>
+                                                    <p className="text-sm text-amber-700">Morning Prayer</p>
+                                                </div>
+                                            </div>
+                                            <p className="text-lg text-slate-800 leading-loose font-serif italic text-justify">
+                                                "{result.prayerGuide.morningPrayer}"
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Evening Reflection */}
+                                    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-10 rounded-3xl border border-indigo-200 relative overflow-hidden">
+                                        <div className="absolute -top-4 -right-4 opacity-10">
+                                            <Icon name="Moon" size={120}/>
+                                        </div>
+                                        <div className="relative z-10">
+                                            <div className="flex items-center gap-3 mb-6">
+                                                <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+                                                    <Icon name="Moon" size={24}/>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xl font-bold text-indigo-900 font-serif">저녁 성찰</h4>
+                                                    <p className="text-sm text-indigo-700">Evening Reflection</p>
+                                                </div>
+                                            </div>
+                                            <p className="text-lg text-slate-800 leading-loose font-serif italic text-justify">
+                                                "{result.prayerGuide.eveningReflection}"
+                                            </p>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {/* Weekly Focus */}
+                                <section>
+                                    <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
+                                        <Icon name="Calendar" className="text-purple-600"/> 
+                                        요일별 영성 포커스 (Weekly Spiritual Focus)
+                                    </h3>
+                                    <div className="grid md:grid-cols-7 gap-3">
+                                        {result.prayerGuide.weeklyFocus?.map((focus, idx) => {
+                                            const colors = ['bg-blue-50 border-blue-200', 'bg-green-50 border-green-200', 'bg-purple-50 border-purple-200', 'bg-amber-50 border-amber-200', 'bg-red-50 border-red-200', 'bg-indigo-50 border-indigo-200', 'bg-rose-50 border-rose-200'];
+                                            // Parse "월: 겸손 — ..." format
+                                            const parts = focus.split(' — ');
+                                            const dayAndTheme = parts[0] || '';
+                                            const description = parts[1] || '';
+                                            const [day, theme] = dayAndTheme.split(': ');
+                                            
+                                            return (
+                                                <div key={idx} className={`p-4 rounded-2xl border-2 ${colors[idx] || 'bg-white border-stone-200'} text-center flex flex-col`}>
+                                                    <div className="text-2xl font-black text-slate-900 mb-1">{day}</div>
+                                                    <div className="text-base font-bold text-blue-900 mb-2">{theme}</div>
+                                                    <p className="text-xs text-slate-600 leading-relaxed">{description}</p>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </section>
+
+                                {/* Motto Quotes in Prayer Context */}
+                                <section className="bg-white rounded-3xl border border-stone-200 p-10 shadow-lg">
+                                    <h3 className="text-2xl font-bold text-slate-900 mb-8 font-serif text-center flex items-center justify-center gap-3">
+                                        <Icon name="BookOpen" className="text-amber-600" size={24}/> 묵상 말씀 카드
+                                    </h3>
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {result.mottoQuotes?.map((quote, idx) => (
+                                            <div key={idx} className="bg-stone-50 p-6 rounded-2xl border border-stone-200 hover:border-blue-300 hover:bg-blue-50/30 transition-all cursor-default">
+                                                <p className="text-slate-700 font-serif italic leading-relaxed text-center">
+                                                    "{quote}"
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            </>
+                        )}
+                    </div>
                 )}
                 
                 {tab === 'team' && (
