@@ -77,6 +77,37 @@ export interface SimulationData {
     emailTone: string;
 }
 
+export interface WeeklyPlan {
+    mon: string;
+    tue: string;
+    wed: string;
+    thu: string;
+    fri: string;
+    sat: string;
+    sun: string;
+}
+
+export interface ConflictScenario {
+    situation: string;
+    wrongResponse: string;
+    rightResponse: string;
+    principle: string;
+}
+
+export interface PracticalTip {
+    category: string;
+    title: string;
+    description: string;
+    doList: string[];
+    dontList: string[];
+}
+
+export interface PrayerGuide {
+    morningPrayer: string;
+    eveningReflection: string;
+    weeklyFocus: string[];
+}
+
 export interface Archetype {
     id: number;
     title: string;
