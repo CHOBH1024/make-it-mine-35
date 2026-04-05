@@ -151,7 +151,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "철저한 준비(Preparation), 명확한 과업 분담, 솔선수범, 원칙 중심의 개혁",
             lesson: "시스템은 차가운 것이 아니라 공동체를 보호하는 따뜻한 울타리임을 증명하십시오."
         },
-        roles: ["본부 기획조정국장", "법무/규정 팀장", "전략기획실 PM", "교구 사무처장", "섭리기관 감사관", "인사위원장", "정관 제정 위원", "기록물 관리자"],
+        roles: ["본부 기획조정국장", "법무/규정 팀장", "전략기획실 PM", "교구 사무처장", "섭리기관 감사관", "인사위원장", "정관 제정 위원", "기록물 관리자", "조직개편 TF 위원장", "내부감사실장"],
         subTypes: [
             { title: "입법 설계자", catchphrase: "법과 원칙이 바로 서야 섭리가 섭니다.", description: "조직의 헌법, 정관, 규정을 만드는 데 특화되어 있습니다.", keyFocus: "규정 & 표준", symbol: "Scale", strength: "논리적 정합성, 공정함, 분쟁 예방", risk: "융통성 부족, 율법주의" },
             { title: "윤리 감찰관", catchphrase: "부패와 타협은 천일국에 없습니다.", description: "조직의 도덕성과 투명성을 감시하고 기강을 바로잡습니다.", keyFocus: "투명성 & 쇄신", symbol: "Shield", strength: "도덕성, 청렴함, 리스크 관리", risk: "정죄, 인간미 부족, 동료 위축" },
@@ -207,7 +207,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "포용적 리더십, 경청과 공감, 후방 지원(Servant), 심정적 유대감 형성",
             lesson: "가장 위대한 힘은 지시가 아니라 품어주는 사랑에서 나옵니다."
         },
-        roles: ["가정국장", "상담 센터장", "복지 사역자"],
+        roles: ["가정국장", "상담 센터장", "복지 사역자", "양육 프로그램 디렉터", "멘토링 코디네이터", "가정예배 지도사", "그리프케어 전문가", "신앙교육 매니저", "새가족부장", "돌봄사역 팀장"],
         subTypes: [
             { title: "영적 양육가 (Spiritual Nurturer)", catchphrase: "한 영혼이 천하보다 귀합니다.", description: "새신자와 2세들을 사랑으로 먹이고 입혀 성장시키는 '영적 엄마'입니다. 성과보다 존재 자체를 귀하게 여깁니다.", keyFocus: "양육(Nurture) & 돌봄(Care)", symbol: "HeartHandshake", strength: "탁월한 인내심, 개별 맞춤형 케어", risk: "과잉 보호, 훈육의 부재" },
             { title: "상처 치유자 (Wounded Healer)", catchphrase: "당신의 아픔이 별이 되게 하겠습니다.", description: "자신의 상처를 승화시켜 타인의 아픔을 깊이 공감하고 치유하는 상담가입니다. 듣는 것만으로도 위로가 됩니다.", keyFocus: "치유(Healing) & 공감(Empathy)", symbol: "Sparkles", strength: "높은 공감 능력, 정서적 안정감", risk: "감정 전이로 인한 번아웃" },
@@ -258,7 +258,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "목표 지향적(Goal-oriented), 솔선수범, 동기부여, 전략적 사고",
             lesson: "방향 없는 속도는 재앙입니다. 하나님의 뜻이라는 나침반을 놓지 마십시오."
         },
-        roles: ["전략기획관", "부흥단장", "프로젝트 매니저"],
+        roles: ["전략기획관", "부흥단장", "프로젝트 매니저", "선교본부 사무총장", "성과관리 팀장", "특별위원회 위원장", "캠페인 총괄", "지역 교구 총무", "사업개발 디렉터", "목표관리 코치"],
         subTypes: [
             { title: "성과 혁신가 (Performance Innovator)", catchphrase: "안 되는 이유보다 되는 방법 하나를 찾습니다.", description: "기존의 관습을 깨고 획기적인 방식으로 목표를 초과 달성하는 승부사입니다. 효율성을 극대화합니다.", keyFocus: "혁신(Innovation) & 성과(Result)", symbol: "Trophy", strength: "빠른 실행력, 결과 중심 사고", risk: "과정 무시, 조직 피로도 증가" },
             { title: "비전 전략가 (Vision Strategist)", catchphrase: "전략 없는 열정은 낭비입니다.", description: "목표 달성을 위한 가장 빠르고 정확한 지름길(Roadmap)을 설계하는 지략가입니다. 큰 그림을 봅니다.", keyFocus: "전략(Strategy) & 최적화(Optimization)", symbol: "Map", strength: "거시적 안목, 자원 배분 능력", risk: "지나친 계산, 차가운 이성" },
@@ -309,7 +309,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "감성 리더십, 솔직함(Transparency), 영적 교감, 문화 창달",
             lesson: "진실한 고백(찬양)만이 사람의 마음을 움직이고 하나님을 감동시킵니다."
         },
-        roles: ["문화사역자", "미디어 팀장", "크리에이티브 디렉터"],
+        roles: ["문화사역자", "미디어 팀장", "크리에이티브 디렉터", "찬양 예배 인도자", "영상 프로듀서", "출판 편집장", "SNS 콘텐츠 매니저", "공간 디자이너", "브랜딩 전략가", "예술축제 기획자"],
         subTypes: [
             { title: "문화 창조자 (Culture Creator)", catchphrase: "말씀은 문화로 옷 입어야 합니다.", description: "섭리의 메시지를 음악, 영상, 디자인 등 문화 예술 콘텐츠로 승화시키는 크리에이터입니다. 세련된 감각을 가졌습니다.", keyFocus: "창조(Creation) & 문화(Culture)", symbol: "Feather", strength: "독창성, 트렌드 감각", risk: "자기만의 세계에 갇힘" },
             { title: "영적 감성가 (Spiritual Sentimentalist)", catchphrase: "이성은 고개를 끄덕이게 하지만, 감성은 눈물을 흘리게 합니다.", description: "딱딱한 교리가 아닌 따뜻한 감성과 스토리텔링으로 식구들의 심금을 울리는 설교자입니다.", keyFocus: "감동(Inspiration) & 공감(Empathy)", symbol: "Sparkles", strength: "호소력 짙은 전달력, 치유", risk: "감정 과잉, 분위기에 휩쓸림" },
@@ -360,7 +360,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "전문가적 리더십, 합리적 판단, 교육과 계몽, 비전 제시",
             lesson: "지식은 사랑과 결합될 때 비로소 지혜가 됩니다."
         },
-        roles: ["연구원", "교육부장", "교수"],
+        roles: ["연구원", "교육부장", "교수", "교리연구소장", "커리큘럼 설계자", "신학교 강사", "학술지 편집위원", "원리강사 양성 트레이너", "역사기록관", "정책연구 자문위원"],
         subTypes: [
             { title: "원리 수호자 (Principle Guardian)", catchphrase: "진리만이 우리를 자유케 합니다.", description: "말씀의 원형과 정통성을 지키고, 섭리적 오류를 바로잡는 대쪽 같은 신학자입니다. 타협하지 않는 학자적 양심을 가졌습니다.", keyFocus: "정통(Orthodoxy) & 논리(Logic)", symbol: "BookOpen", strength: "깊은 원리 이해, 논리적 설득력", risk: "독선적 태도, 차가운 논쟁" },
             { title: "교육 설계자 (Education Designer)", catchphrase: "아는 것과 가르치는 것은 다릅니다.", description: "난해한 섭리적 내용을 체계적인 교육 커리큘럼으로 번역하여 전달하는 탁월한 교육가입니다.", keyFocus: "교육(Education) & 체계(System)", symbol: "PenTool", strength: "전달력, 체계화 능력", risk: "현장성 부족, 이론 중심" },
@@ -411,7 +411,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "솔선수범, 책임 완수, 철저한 수행, 신뢰와 안정",
             lesson: "가장 위대한 능력은 화려한 재능이 아니라 변함없는 충성입니다."
         },
-        roles: ["재정부장", "행정실장", "관리집사"],
+        roles: ["재정부장", "행정실장", "관리집사", "시설관리 팀장", "회계감사관", "자산운용 매니저", "물류/조달 책임자", "안전관리 담당관", "총무국장", "예산심의 위원"],
         subTypes: [
             { title: "조직 수호자 (Organization Guardian)", catchphrase: "기본이 무너지면 모든 것이 무너집니다.", description: "조직의 시스템, 자산, 전통을 철통같이 지키는 파수꾼입니다. 보수적이지만 가장 안전합니다.", keyFocus: "보존(Preservation) & 안전(Safety)", symbol: "Shield", strength: "충성심, 책임감", risk: "변화에 대한 저항" },
             { title: "헌신된 집사 (Devoted Steward)", catchphrase: "하나님이 아시면 족합니다.", description: "누가 보든 안 보든 궂은 일을 도맡아 처리하는 살림꾼입니다. 묵묵한 헌신으로 존경받습니다.", keyFocus: "봉사(Service) & 충성(Loyalty)", symbol: "UserCheck", strength: "성실함, 겸손, 섬김", risk: "번아웃, 수동적 태도" },
@@ -462,7 +462,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "카리스마, 열정적 행동, 분위기 주도, 실패를 두려워하지 않는 도전",
             lesson: "실수보다 무서운 것은 시도하지 않는 것입니다. 열정이 섭리를 움직입니다."
         },
-        roles: ["이벤트 기획자", "청년부장", "문화부장"],
+        roles: ["이벤트 기획자", "청년부장", "문화부장", "축제 총감독", "홍보대사", "캠프 디렉터", "MC/진행자", "커뮤니티 매니저", "대외협력 코디네이터", "봉사활동 기획자"],
         subTypes: [
             { title: "희망 전도사 (Hope Evangelist)", catchphrase: "웃음이 있는 곳에 부흥이 있습니다.", description: "어떤 절망적인 상황에서도 긍정의 빛을 발견하고 식구들에게 희망을 전염시키는 메신저입니다.", keyFocus: "희망(Hope) & 긍정(Positivity)", symbol: "Sun", strength: "분위기 전환, 친화력", risk: "현실 회피, 가벼운 언행" },
             { title: "창의적 기획자 (Creative Planner)", catchphrase: "왜 꼭 하던 대로만 해야 합니까?", description: "기상천외한 아이디어와 기획력으로 섭리에 신선한 충격과 활력을 불어넣는 아이디어 뱅크입니다.", keyFocus: "아이디어(Idea) & 재미(Fun)", symbol: "Lightbulb", strength: "창의성, 기획력", risk: "실행력 부족, 잦은 변덕" },
@@ -513,7 +513,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "카리스마, 보호자(Protector), 결단력, 비전 제시, 위기 돌파",
             lesson: "진정한 힘은 칼이 아니라 하나님께 엎드리는 무릎에서 나옵니다."
         },
-        roles: ["교구장", "선교사", "NGO 지도자"],
+        roles: ["교구장", "선교사", "NGO 지도자", "개척교회 담임", "위기관리 총괄", "특수선교 팀장", "지역사회 운동가", "구호활동 책임자", "청년선교 사령관", "현장지휘관"],
         subTypes: [
             { title: "불굴의 투사 (Indomitable Fighter)", catchphrase: "불의와 타협하느니 죽음을 택하겠습니다.", description: "섭리의 완성을 가로막는 불의에 맞서 물러서지 않고 싸우는 영적 전사입니다. 강한 정의감을 가졌습니다.", keyFocus: "정의(Justice) & 투쟁(Fight)", symbol: "Sword", strength: "용기, 정의감, 돌파력", risk: "폭력적 언행, 적을 만듦" },
             { title: "개척의 선봉장 (Pioneer Vanguard)", catchphrase: "길이 없으면 만들어서 갑니다.", description: "안전한 곳을 떠나 아무도 가지 않은 황무지에 섭리의 깃발을 꽂는 진취적인 개척자입니다.", keyFocus: "개척(Pioneering) & 도전(Challenge)", symbol: "Flag", strength: "도전 정신, 생존 능력", risk: "무모함, 독단적 결정" },
@@ -564,7 +564,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "화합형 리더십, 수용과 포용, 위기 관리, 실무 능력 겸비",
             lesson: "진정한 평화는 덮어두는 것이 아니라, 용서하고 하나 되는 것입니다."
         },
-        roles: ["중재위원", "연합회장", "평화대사"],
+        roles: ["중재위원", "연합회장", "평화대사", "갈등조정 상담사", "교단연합 사무총장", "화해사역 디렉터", "다문화사역 코디네이터", "통일준비 위원", "세대간 소통 촉진자", "지역화합 추진위원장"],
         subTypes: [
             { title: "화합의 중재자 (Unity Mediator)", catchphrase: "우리는 결국 한 식구입니다.", description: "갈등하는 양쪽의 손을 잡아 하나로 묶어주는 평화의 사도입니다. 탁월한 균형 감각을 가졌습니다.", keyFocus: "화해(Reconciliation) & 조정(Mediation)", symbol: "Wheat", strength: "경청 능력, 균형 감각", risk: "우유부단함, 갈등 회피" },
             { title: "경청하는 치유자 (Listening Healer)", catchphrase: "당신의 마음을 온전히 이해합니다.", description: "판단하지 않고 들어줌으로써 상처받은 마음을 녹이는 상담가입니다. 존재 자체가 휴식이 됩니다.", keyFocus: "수용(Acceptance) & 경청(Listening)", symbol: "Ear", strength: "수용성, 인내심", risk: "수동적 태도, 감정 소진" },
