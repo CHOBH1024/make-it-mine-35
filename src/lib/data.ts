@@ -462,7 +462,7 @@ export const archetypes: Archetype[] = [
             leadershipStyle: "카리스마, 열정적 행동, 분위기 주도, 실패를 두려워하지 않는 도전",
             lesson: "실수보다 무서운 것은 시도하지 않는 것입니다. 열정이 섭리를 움직입니다."
         },
-        roles: ["이벤트 기획자", "청년부장", "문화부장"],
+        roles: ["이벤트 기획자", "청년부장", "문화부장", "축제 총감독", "홍보대사", "캠프 디렉터", "MC/진행자", "커뮤니티 매니저", "대외협력 코디네이터", "봉사활동 기획자"],
         subTypes: [
             { title: "희망 전도사 (Hope Evangelist)", catchphrase: "웃음이 있는 곳에 부흥이 있습니다.", description: "어떤 절망적인 상황에서도 긍정의 빛을 발견하고 식구들에게 희망을 전염시키는 메신저입니다.", keyFocus: "희망(Hope) & 긍정(Positivity)", symbol: "Sun", strength: "분위기 전환, 친화력", risk: "현실 회피, 가벼운 언행" },
             { title: "창의적 기획자 (Creative Planner)", catchphrase: "왜 꼭 하던 대로만 해야 합니까?", description: "기상천외한 아이디어와 기획력으로 섭리에 신선한 충격과 활력을 불어넣는 아이디어 뱅크입니다.", keyFocus: "아이디어(Idea) & 재미(Fun)", symbol: "Lightbulb", strength: "창의성, 기획력", risk: "실행력 부족, 잦은 변덕" },
