@@ -104,7 +104,9 @@ export interface PracticalTip {
 
 export interface PrayerGuide {
     morningPrayer: string;
+    noonPrayer: string;
     eveningReflection: string;
+    specialPrayer: string;
     weeklyFocus: string[];
 }
 
