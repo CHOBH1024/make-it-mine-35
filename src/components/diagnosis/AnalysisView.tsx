@@ -1095,7 +1095,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
 
                         {result.prayerGuide && (
                             <>
-                                {/* Morning Prayer */}
+                                {/* Morning & Noon & Evening & Special Prayers */}
                                 <section className="grid lg:grid-cols-2 gap-8">
                                     <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-10 rounded-3xl border border-amber-200 relative overflow-hidden">
                                         <div className="absolute -top-4 -right-4 opacity-10">
@@ -1117,6 +1117,27 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                         </div>
                                     </div>
 
+                                    {/* Noon Prayer */}
+                                    <div className="bg-gradient-to-br from-sky-50 to-cyan-50 p-10 rounded-3xl border border-sky-200 relative overflow-hidden">
+                                        <div className="absolute -top-4 -right-4 opacity-10">
+                                            <Icon name="CloudSun" size={120}/>
+                                        </div>
+                                        <div className="relative z-10">
+                                            <div className="flex items-center gap-3 mb-6">
+                                                <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600">
+                                                    <Icon name="CloudSun" size={24}/>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xl font-bold text-sky-900 font-serif">낮 기도문</h4>
+                                                    <p className="text-sm text-sky-700">Noon Prayer</p>
+                                                </div>
+                                            </div>
+                                            <p className="text-lg text-slate-800 leading-loose font-serif italic text-justify">
+                                                "{result.prayerGuide.noonPrayer}"
+                                            </p>
+                                        </div>
+                                    </div>
+
                                     {/* Evening Reflection */}
                                     <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-10 rounded-3xl border border-indigo-200 relative overflow-hidden">
                                         <div className="absolute -top-4 -right-4 opacity-10">
@@ -1134,6 +1155,27 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                             </div>
                                             <p className="text-lg text-slate-800 leading-loose font-serif italic text-justify">
                                                 "{result.prayerGuide.eveningReflection}"
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Special Prayer */}
+                                    <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-10 rounded-3xl border border-rose-200 relative overflow-hidden">
+                                        <div className="absolute -top-4 -right-4 opacity-10">
+                                            <Icon name="Flame" size={120}/>
+                                        </div>
+                                        <div className="relative z-10">
+                                            <div className="flex items-center gap-3 mb-6">
+                                                <div className="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600">
+                                                    <Icon name="Flame" size={24}/>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xl font-bold text-rose-900 font-serif">특별 기도문</h4>
+                                                    <p className="text-sm text-rose-700">Special Prayer (위기·결단의 순간)</p>
+                                                </div>
+                                            </div>
+                                            <p className="text-lg text-slate-800 leading-loose font-serif italic text-justify">
+                                                "{result.prayerGuide.specialPrayer}"
                                             </p>
                                         </div>
                                     </div>
