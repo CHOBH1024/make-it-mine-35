@@ -31,16 +31,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
+      { title: "천일국 공직자 유형 파악" },
       { name: "description", content: "Lovable Generated Project" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
+      { property: "og:title", content: "천일국 공직자 유형 파악" },
       { property: "og:description", content: "Lovable Generated Project" },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://lovable.dev/opengraph-image-p98pqg.png" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/51703987-808e-454b-b2dd-454c8df8c763/id-preview-7c0344d3--14428db1-1db5-4b0d-aac8-52e5616432a1.lovable.app-1775470297023.png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:image", content: "https://lovable.dev/opengraph-image-p98pqg.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/51703987-808e-454b-b2dd-454c8df8c763/id-preview-7c0344d3--14428db1-1db5-4b0d-aac8-52e5616432a1.lovable.app-1775470297023.png" },
+      { name: "twitter:title", content: "천일국 공직자 유형 파악" },
+      { name: "twitter:description", content: "Lovable Generated Project" },
     ],
     links: [
       {
