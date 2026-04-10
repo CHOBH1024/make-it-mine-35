@@ -134,7 +134,7 @@ const getMBTI = (big5: Inputs['big5']): string => {
 };
 
 export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onRestore }) => {
-    const [tab, setTab] = useState<'details' | 'cross_analysis' | 'growth' | 'practical' | 'prayer' | 'team'>('details');
+    const [tab, setTab] = useState<'details' | 'cross_analysis' | 'growth' | 'practical' | 'prayer' | 'hr' | 'team'>('details');
     const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([]);
     const [saveName, setSaveName] = useState('');
     const [showSaveUI, setShowSaveUI] = useState(false);
