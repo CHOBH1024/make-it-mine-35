@@ -1233,6 +1233,259 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                     </div>
                 )}
                 
+                {/* HR Deployment Tab */}
+                {tab === 'hr' && (
+                    <div className="space-y-12 animate-[fadeIn_0.5s_ease-out]">
+                        <section className="text-center mb-8">
+                            <h3 className="text-3xl font-bold text-blue-900 mb-4 font-serif">
+                                인사 배치 & 성과 관리
+                            </h3>
+                            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                                인사TF 회의 결과를 반영한 배치 적합도, KPI 템플릿, 생애주기 로드맵입니다.
+                            </p>
+                        </section>
+
+                        {/* Deployment Fit */}
+                        {result.deploymentFit && (
+                            <section>
+                                <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
+                                    <Icon name="MapPin" className="text-emerald-600"/> 
+                                    배치 적합도 분석 (Deployment Fit)
+                                </h3>
+                                <div className="grid lg:grid-cols-12 gap-8">
+                                    {/* Score Bars */}
+                                    <div className="lg:col-span-5 bg-white rounded-3xl border border-stone-200 shadow-lg p-8">
+                                        <h4 className="text-xl font-bold text-slate-900 mb-6 font-serif">본부 vs 현장 적합도</h4>
+                                        <div className="space-y-6">
+                                            <div>
+                                                <div className="flex justify-between mb-2">
+                                                    <span className="font-bold text-slate-700 flex items-center gap-2"><Icon name="Building" size={16} className="text-blue-600"/> 본부 (HQ)</span>
+                                                    <span className="font-bold text-blue-900">{result.deploymentFit.hqScore}/10</span>
+                                                </div>
+                                                <div className="w-full bg-stone-100 rounded-full h-4 overflow-hidden">
+                                                    <div className="bg-gradient-to-r from-blue-500 to-blue-700 h-full rounded-full transition-all duration-1000" style={{width: `${result.deploymentFit.hqScore * 10}%`}}></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="flex justify-between mb-2">
+                                                    <span className="font-bold text-slate-700 flex items-center gap-2"><Icon name="MapPin" size={16} className="text-green-600"/> 현장 (Field)</span>
+                                                    <span className="font-bold text-green-900">{result.deploymentFit.fieldScore}/10</span>
+                                                </div>
+                                                <div className="w-full bg-stone-100 rounded-full h-4 overflow-hidden">
+                                                    <div className="bg-gradient-to-r from-green-500 to-green-700 h-full rounded-full transition-all duration-1000" style={{width: `${result.deploymentFit.fieldScore * 10}%`}}></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-6 p-4 bg-stone-50 rounded-xl border border-stone-200">
+                                            <p className="text-slate-700 leading-relaxed text-sm">{result.deploymentFit.reasoning}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Ideal & Warning */}
+                                    <div className="lg:col-span-7 space-y-6">
+                                        <div className="bg-emerald-50 rounded-3xl border border-emerald-200 p-8">
+                                            <h4 className="text-xl font-bold text-emerald-900 mb-4 font-serif flex items-center gap-2">
+                                                <Icon name="Check" className="text-emerald-600"/> 추천 배치 부서
+                                            </h4>
+                                            <div className="flex flex-wrap gap-3">
+                                                {result.deploymentFit.idealDepartments.map((dept, idx) => (
+                                                    <span key={idx} className="bg-white px-4 py-2 rounded-full border border-emerald-200 text-emerald-800 font-bold text-sm shadow-sm">
+                                                        {dept}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="bg-red-50 rounded-3xl border border-red-200 p-8">
+                                            <h4 className="text-xl font-bold text-red-900 mb-4 font-serif flex items-center gap-2">
+                                                <Icon name="AlertTriangle" className="text-red-500"/> 배치 주의 영역
+                                            </h4>
+                                            <ul className="space-y-3">
+                                                {result.deploymentFit.warningPlacements.map((warn, idx) => (
+                                                    <li key={idx} className="flex items-start gap-3 text-slate-700">
+                                                        <Icon name="X" size={16} className="text-red-400 mt-1 shrink-0"/>
+                                                        <span>{warn}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        )}
+
+                        {/* KPI Template */}
+                        {result.kpiTemplate && (
+                            <section>
+                                <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
+                                    <Icon name="Target" className="text-amber-500"/> 
+                                    유형별 KPI 템플릿 (Performance Indicators)
+                                </h3>
+                                <div className="space-y-6">
+                                    {/* Quantitative */}
+                                    <div className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
+                                        <div className="bg-blue-50 p-6 border-b border-blue-100 flex items-center gap-3">
+                                            <div className="p-2 bg-blue-100 text-blue-700 rounded-lg"><Icon name="BarChart3" size={24}/></div>
+                                            <div>
+                                                <h4 className="text-lg font-bold text-blue-900 font-serif">정량 지표 (Quantitative)</h4>
+                                                <p className="text-sm text-blue-700">측정 가능한 업무 성과</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 space-y-4">
+                                            {result.kpiTemplate.quantitative.map((kpi, idx) => (
+                                                <div key={idx} className="flex items-center gap-4 p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                                                    <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-blue-800 font-black text-lg shrink-0">
+                                                        {kpi.weight}%
+                                                    </div>
+                                                    <div className="flex-grow">
+                                                        <h5 className="font-bold text-slate-900">{kpi.name}</h5>
+                                                        <p className="text-sm text-slate-600">{kpi.description}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Providential */}
+                                    <div className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
+                                        <div className="bg-purple-50 p-6 border-b border-purple-100 flex items-center gap-3">
+                                            <div className="p-2 bg-purple-100 text-purple-700 rounded-lg"><Icon name="Sparkles" size={24}/></div>
+                                            <div>
+                                                <h4 className="text-lg font-bold text-purple-900 font-serif">섭리 지표 (Providential)</h4>
+                                                <p className="text-sm text-purple-700">섭리적 요청에 따른 사역 성과</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 space-y-4">
+                                            {result.kpiTemplate.providential.map((kpi, idx) => (
+                                                <div key={idx} className="flex items-center gap-4 p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                                                    <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center text-purple-800 font-black text-lg shrink-0">
+                                                        {kpi.weight}%
+                                                    </div>
+                                                    <div className="flex-grow">
+                                                        <h5 className="font-bold text-slate-900">{kpi.name}</h5>
+                                                        <p className="text-sm text-slate-600">{kpi.description}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Growth */}
+                                    <div className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
+                                        <div className="bg-green-50 p-6 border-b border-green-100 flex items-center gap-3">
+                                            <div className="p-2 bg-green-100 text-green-700 rounded-lg"><Icon name="TrendingUp" size={24}/></div>
+                                            <div>
+                                                <h4 className="text-lg font-bold text-green-900 font-serif">역량/성장 지표 (Growth)</h4>
+                                                <p className="text-sm text-green-700">자기 계발과 역량 성장</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 space-y-4">
+                                            {result.kpiTemplate.growth.map((kpi, idx) => (
+                                                <div key={idx} className="flex items-center gap-4 p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                                                    <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center text-green-800 font-black text-lg shrink-0">
+                                                        {kpi.weight}%
+                                                    </div>
+                                                    <div className="flex-grow">
+                                                        <h5 className="font-bold text-slate-900">{kpi.name}</h5>
+                                                        <p className="text-sm text-slate-600">{kpi.description}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Evaluation Tip */}
+                                    <div className="bg-amber-50 p-8 rounded-3xl border border-amber-200">
+                                        <h4 className="text-lg font-bold text-amber-900 mb-3 flex items-center gap-2">
+                                            <Icon name="Lightbulb" className="text-amber-600"/> 평가 시 유의사항
+                                        </h4>
+                                        <p className="text-slate-700 leading-relaxed">{result.kpiTemplate.evaluationTip}</p>
+                                    </div>
+                                </div>
+                            </section>
+                        )}
+
+                        {/* Career Roadmap */}
+                        {result.careerRoadmap && (
+                            <section>
+                                <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
+                                    <Icon name="Route" className="text-indigo-600"/> 
+                                    생애주기 성장 로드맵 (Career Roadmap)
+                                </h3>
+                                <div className="relative">
+                                    {/* Timeline line */}
+                                    <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-stone-200 hidden lg:block"></div>
+                                    <div className="space-y-8">
+                                        {result.careerRoadmap.stages.map((stage, idx) => {
+                                            const stageColors = [
+                                                'border-emerald-200 bg-emerald-50',
+                                                'border-blue-200 bg-blue-50',
+                                                'border-amber-200 bg-amber-50',
+                                                'border-purple-200 bg-purple-50'
+                                            ];
+                                            const dotColors = ['bg-emerald-500', 'bg-blue-500', 'bg-amber-500', 'bg-purple-500'];
+                                            const iconNames: Array<'Sprout' | 'TrendingUp' | 'Crown' | 'Star'> = ['Sprout', 'TrendingUp', 'Crown', 'Star'];
+                                            return (
+                                                <div key={idx} className="relative lg:pl-20">
+                                                    {/* Timeline dot */}
+                                                    <div className={`absolute left-6 w-5 h-5 rounded-full ${dotColors[idx]} border-4 border-white shadow-md hidden lg:block`} style={{top: '2rem'}}></div>
+                                                    <div className={`rounded-3xl border-2 ${stageColors[idx]} shadow-lg overflow-hidden`}>
+                                                        <div className="p-8">
+                                                            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+                                                                <div className={`w-12 h-12 ${dotColors[idx]} rounded-xl flex items-center justify-center text-white`}>
+                                                                    <Icon name={iconNames[idx]} size={24}/>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 className="text-2xl font-bold text-slate-900 font-serif">{stage.stage} ({stage.period})</h4>
+                                                                    <p className="text-slate-600 font-medium">{stage.focus}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="grid md:grid-cols-2 gap-6">
+                                                                <div>
+                                                                    <h5 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                                                        <Icon name="ListChecks" size={16}/> 핵심 과업
+                                                                    </h5>
+                                                                    <ul className="space-y-2">
+                                                                        {stage.tasks.map((task, i) => (
+                                                                            <li key={i} className="flex items-start gap-3 text-slate-700 text-sm">
+                                                                                <Icon name="Check" size={14} className="text-emerald-500 mt-0.5 shrink-0"/>
+                                                                                <span>{task}</span>
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </div>
+                                                                <div className="bg-white/50 p-4 rounded-xl border border-stone-200">
+                                                                    <h5 className="font-bold text-red-700 mb-2 flex items-center gap-2 text-sm">
+                                                                        <Icon name="AlertTriangle" size={14}/> 이 시기의 리스크
+                                                                    </h5>
+                                                                    <p className="text-slate-700 text-sm leading-relaxed">{stage.risk}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Retirement Vision */}
+                                <div className="mt-8 bg-gradient-to-br from-slate-900 to-indigo-900 p-10 rounded-3xl text-white relative overflow-hidden">
+                                    <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                                    <div className="relative z-10 max-w-3xl mx-auto text-center">
+                                        <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-amber-400/50">
+                                            <Icon name="Sunset" size={32} className="text-amber-400"/>
+                                        </div>
+                                        <h4 className="text-2xl font-bold text-amber-400 mb-4 font-serif">은퇴 후 비전 (Retirement Vision)</h4>
+                                        <p className="text-lg text-slate-200 leading-loose font-serif italic">
+                                            "{result.careerRoadmap.retirementVision}"
+                                        </p>
+                                    </div>
+                                </div>
+                            </section>
+                        )}
+                    </div>
+                )}
+
                 {tab === 'team' && (
                     <TeamBuilder myArchetype={result} />
                 )}
