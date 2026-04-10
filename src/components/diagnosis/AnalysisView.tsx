@@ -368,6 +368,12 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                     <Icon name="Heart" size={20} /> 기도/묵상
                 </button>
                 <button 
+                    onClick={() => setTab('hr')} 
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='hr' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                >
+                    <Icon name="Building" size={20} /> 인사 배치
+                </button>
+                <button 
                     onClick={() => setTab('team')} 
                     className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='team' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
