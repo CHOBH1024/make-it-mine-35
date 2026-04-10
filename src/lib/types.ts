@@ -110,6 +110,34 @@ export interface PrayerGuide {
     weeklyFocus: string[];
 }
 
+export interface DeploymentFit {
+    hqScore: number; // 1-10 본부 적합도
+    fieldScore: number; // 1-10 현장 적합도
+    idealDepartments: string[];
+    reasoning: string;
+    warningPlacements: string[];
+}
+
+export interface KPITemplate {
+    quantitative: { name: string; weight: number; description: string }[];
+    providential: { name: string; weight: number; description: string }[];
+    growth: { name: string; weight: number; description: string }[];
+    evaluationTip: string;
+}
+
+export interface CareerRoadmapStage {
+    stage: string;
+    period: string;
+    focus: string;
+    tasks: string[];
+    risk: string;
+}
+
+export interface CareerRoadmap {
+    stages: CareerRoadmapStage[];
+    retirementVision: string;
+}
+
 export interface Archetype {
     id: number;
     title: string;
