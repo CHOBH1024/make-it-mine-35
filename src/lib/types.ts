@@ -181,6 +181,9 @@ export interface Archetype {
     practicalTips: PracticalTip[];
     prayerGuide: PrayerGuide;
     mottoQuotes: string[];
+    deploymentFit: DeploymentFit;
+    kpiTemplate: KPITemplate;
+    careerRoadmap: CareerRoadmap;
 }
 
 export interface SavedTeam {
