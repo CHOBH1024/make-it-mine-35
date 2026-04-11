@@ -1247,14 +1247,26 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
 
                         {/* Deployment Fit */}
                         {result.deploymentFit && (
-                            <section>
+                            <section className="space-y-10">
                                 <h3 className="text-3xl font-bold text-blue-900 mb-8 font-serif flex items-center gap-3">
                                     <Icon name="MapPin" className="text-emerald-600"/> 
-                                    배치 적합도 분석 (Deployment Fit)
+                                    인사 배치 종합 분석
                                 </h3>
-                                <div className="grid lg:grid-cols-12 gap-8">
-                                    {/* Score Bars */}
-                                    <div className="lg:col-span-5 bg-white rounded-3xl border border-stone-200 shadow-lg p-8">
+
+                                {/* HR Recommendation Banner */}
+                                <div className="bg-gradient-to-br from-blue-900 to-indigo-900 p-8 rounded-3xl text-white relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                                    <div className="relative z-10">
+                                        <h4 className="text-xl font-bold mb-4 flex items-center gap-2 font-serif">
+                                            <Icon name="FileText" size={20} className="text-amber-400"/> 인사TF 종합 권고사항
+                                        </h4>
+                                        <p className="text-slate-200 leading-loose text-sm">{result.deploymentFit.hrRecommendation}</p>
+                                    </div>
+                                </div>
+
+                                {/* Score Bars + DISC Profile */}
+                                <div className="grid lg:grid-cols-2 gap-8">
+                                    <div className="bg-white rounded-3xl border border-stone-200 shadow-lg p-8">
                                         <h4 className="text-xl font-bold text-slate-900 mb-6 font-serif">본부 vs 현장 적합도</h4>
                                         <div className="space-y-6">
                                             <div>
@@ -1281,29 +1293,204 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                         </div>
                                     </div>
 
-                                    {/* Ideal & Warning */}
-                                    <div className="lg:col-span-7 space-y-6">
-                                        <div className="bg-emerald-50 rounded-3xl border border-emerald-200 p-8">
-                                            <h4 className="text-xl font-bold text-emerald-900 mb-4 font-serif flex items-center gap-2">
-                                                <Icon name="Check" className="text-emerald-600"/> 추천 배치 부서
-                                            </h4>
-                                            <div className="flex flex-wrap gap-3">
-                                                {result.deploymentFit.idealDepartments.map((dept, idx) => (
-                                                    <span key={idx} className="bg-white px-4 py-2 rounded-full border border-emerald-200 text-emerald-800 font-bold text-sm shadow-sm">
-                                                        {dept}
-                                                    </span>
-                                                ))}
+                                    {/* DISC Profile */}
+                                    <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-3xl border border-purple-200 shadow-lg p-8">
+                                        <h4 className="text-xl font-bold text-purple-900 mb-4 font-serif flex items-center gap-2">
+                                            <Icon name="User" className="text-purple-600"/> DISC 적성 프로파일
+                                        </h4>
+                                        <div className="bg-white/80 rounded-2xl p-4 mb-4 border border-purple-100">
+                                            <span className="text-lg font-black text-purple-800">{result.deploymentFit.discProfile.primaryType}</span>
+                                        </div>
+                                        <p className="text-slate-700 text-sm leading-relaxed mb-4">{result.deploymentFit.discProfile.description}</p>
+                                        <div className="bg-purple-100/50 rounded-xl p-4 border border-purple-200">
+                                            <h5 className="font-bold text-purple-800 text-sm mb-1">📌 배치 적합 근거</h5>
+                                            <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.discProfile.fitReason}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Ideal Departments & Warning */}
+                                <div className="grid lg:grid-cols-2 gap-8">
+                                    <div className="bg-emerald-50 rounded-3xl border border-emerald-200 p-8">
+                                        <h4 className="text-xl font-bold text-emerald-900 mb-4 font-serif flex items-center gap-2">
+                                            <Icon name="Check" className="text-emerald-600"/> 추천 배치 부서
+                                        </h4>
+                                        <div className="flex flex-wrap gap-3">
+                                            {result.deploymentFit.idealDepartments.map((dept, idx) => (
+                                                <span key={idx} className="bg-white px-4 py-2 rounded-full border border-emerald-200 text-emerald-800 font-bold text-sm shadow-sm">
+                                                    {dept}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="bg-red-50 rounded-3xl border border-red-200 p-8">
+                                        <h4 className="text-xl font-bold text-red-900 mb-4 font-serif flex items-center gap-2">
+                                            <Icon name="AlertTriangle" className="text-red-500"/> 배치 주의 영역
+                                        </h4>
+                                        <ul className="space-y-3">
+                                            {result.deploymentFit.warningPlacements.map((warn, idx) => (
+                                                <li key={idx} className="flex items-start gap-3 text-slate-700">
+                                                    <Icon name="X" size={16} className="text-red-400 mt-1 shrink-0"/>
+                                                    <span className="text-sm">{warn}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                {/* Placement Principles */}
+                                <div className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
+                                    <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 flex items-center gap-3">
+                                        <div className="p-2 bg-white/20 rounded-lg"><Icon name="Scale" size={24} className="text-white"/></div>
+                                        <div>
+                                            <h4 className="text-lg font-bold text-white font-serif">배치 원칙 및 근거</h4>
+                                            <p className="text-sm text-blue-100">인사TF 회의 결정 사항 기반</p>
+                                        </div>
+                                    </div>
+                                    <div className="p-6 space-y-4">
+                                        {result.deploymentFit.placementPrinciples.map((principle, idx) => (
+                                            <div key={idx} className="p-5 bg-stone-50 rounded-2xl border border-stone-100">
+                                                <div className="flex items-start gap-3 mb-2">
+                                                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-800 font-black text-sm shrink-0">{idx + 1}</div>
+                                                    <h5 className="font-bold text-slate-900 text-base">{principle.title}</h5>
+                                                </div>
+                                                <p className="text-slate-700 text-sm leading-relaxed ml-11 mb-3">{principle.description}</p>
+                                                <div className="ml-11 bg-blue-50 rounded-lg p-3 border border-blue-100">
+                                                    <p className="text-xs text-blue-800 font-medium">📋 근거: {principle.basis}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* CLA Requirement */}
+                                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl border border-amber-200 shadow-lg p-8">
+                                    <h4 className="text-xl font-bold text-amber-900 mb-6 font-serif flex items-center gap-2">
+                                        <Icon name="GraduationCap" className="text-amber-600"/> CLA 교육 요건
+                                    </h4>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        <div className="space-y-4">
+                                            <div className="bg-white rounded-xl p-4 border border-amber-200">
+                                                <h5 className="font-bold text-slate-800 text-sm mb-1">필수 이수 기간</h5>
+                                                <p className="text-amber-800 font-bold">{result.deploymentFit.claRequirement.minimumPeriod}</p>
+                                            </div>
+                                            {result.deploymentFit.claRequirement.exemptionCondition && (
+                                                <div className="bg-white rounded-xl p-4 border border-amber-200">
+                                                    <h5 className="font-bold text-slate-800 text-sm mb-1">전문직 예외 조항</h5>
+                                                    <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.claRequirement.exemptionCondition}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            {result.deploymentFit.claRequirement.alternativePrograms && (
+                                                <div className="bg-white rounded-xl p-4 border border-amber-200">
+                                                    <h5 className="font-bold text-slate-800 text-sm mb-3">대체 인정 프로그램</h5>
+                                                    <ul className="space-y-2">
+                                                        {result.deploymentFit.claRequirement.alternativePrograms.map((prog, idx) => (
+                                                            <li key={idx} className="flex items-start gap-2 text-sm text-slate-700">
+                                                                <Icon name="BookOpen" size={14} className="text-amber-600 mt-0.5 shrink-0"/>
+                                                                <span>{prog}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Onboarding Steps */}
+                                <div className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
+                                    <div className="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 flex items-center gap-3">
+                                        <div className="p-2 bg-white/20 rounded-lg"><Icon name="Route" size={24} className="text-white"/></div>
+                                        <div>
+                                            <h4 className="text-lg font-bold text-white font-serif">온보딩 로드맵 (신입→안착)</h4>
+                                            <p className="text-sm text-emerald-100">단계별 과업 및 멘토 배정</p>
+                                        </div>
+                                    </div>
+                                    <div className="p-6 space-y-6">
+                                        {result.deploymentFit.onboardingSteps.map((step, idx) => {
+                                            const stepColors = ['bg-emerald-100 text-emerald-800', 'bg-blue-100 text-blue-800', 'bg-amber-100 text-amber-800', 'bg-purple-100 text-purple-800'];
+                                            const borderColors = ['border-emerald-200', 'border-blue-200', 'border-amber-200', 'border-purple-200'];
+                                            return (
+                                                <div key={idx} className={`p-5 rounded-2xl border-2 ${borderColors[idx]} bg-stone-50/50`}>
+                                                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                                                        <span className={`${stepColors[idx]} px-3 py-1 rounded-full text-sm font-bold w-fit`}>{step.phase}</span>
+                                                        <span className="text-slate-500 text-sm font-medium">{step.period}</span>
+                                                        <span className="text-slate-500 text-xs">| 멘토: <span className="font-bold text-slate-700">{step.mentor}</span></span>
+                                                    </div>
+                                                    <ul className="grid sm:grid-cols-2 gap-2">
+                                                        {step.tasks.map((task, i) => (
+                                                            <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                                                <Icon name="Check" size={14} className="text-emerald-500 mt-0.5 shrink-0"/>
+                                                                <span>{task}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Salary Structure + Central Hiring */}
+                                <div className="grid lg:grid-cols-2 gap-8">
+                                    <div className="bg-gradient-to-br from-slate-50 to-stone-50 rounded-3xl border border-stone-200 shadow-lg p-8">
+                                        <h4 className="text-xl font-bold text-slate-900 mb-4 font-serif flex items-center gap-2">
+                                            <Icon name="Wallet" className="text-slate-600"/> 인건비 구조
+                                        </h4>
+                                        <div className="space-y-3">
+                                            <div className="bg-white rounded-xl p-4 border border-stone-200">
+                                                <span className="text-xs text-slate-500">직급 기준</span>
+                                                <p className="font-bold text-slate-900">{result.deploymentFit.salaryStructure.grade}</p>
+                                            </div>
+                                            <div className="bg-white rounded-xl p-4 border border-stone-200">
+                                                <span className="text-xs text-slate-500">중앙 인건비 지원</span>
+                                                <p className="font-bold text-emerald-700">{result.deploymentFit.salaryStructure.centralSupport ? '✅ 협회 직접 지원 대상' : '❌ 교구 자체 부담'}</p>
+                                            </div>
+                                            <div className="bg-white rounded-xl p-4 border border-stone-200">
+                                                <span className="text-xs text-slate-500">비고</span>
+                                                <p className="text-sm text-slate-700 leading-relaxed">{result.deploymentFit.salaryStructure.note}</p>
                                             </div>
                                         </div>
-                                        <div className="bg-red-50 rounded-3xl border border-red-200 p-8">
-                                            <h4 className="text-xl font-bold text-red-900 mb-4 font-serif flex items-center gap-2">
-                                                <Icon name="AlertTriangle" className="text-red-500"/> 배치 주의 영역
-                                            </h4>
-                                            <ul className="space-y-3">
-                                                {result.deploymentFit.warningPlacements.map((warn, idx) => (
-                                                    <li key={idx} className="flex items-start gap-3 text-slate-700">
-                                                        <Icon name="X" size={16} className="text-red-400 mt-1 shrink-0"/>
-                                                        <span>{warn}</span>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-3xl border border-rose-200 shadow-lg p-8">
+                                        <h4 className="text-xl font-bold text-rose-900 mb-4 font-serif flex items-center gap-2">
+                                            <Icon name="ShieldCheck" className="text-rose-600"/> 중앙 채용 관리 원칙
+                                        </h4>
+                                        <p className="text-slate-700 text-sm leading-loose">{result.deploymentFit.centralHiringNote}</p>
+                                    </div>
+                                </div>
+
+                                {/* Gender Support Policy */}
+                                <div className="bg-gradient-to-br from-pink-50 to-fuchsia-50 rounded-3xl border border-pink-200 shadow-lg overflow-hidden">
+                                    <div className="bg-gradient-to-r from-pink-500 to-fuchsia-600 p-6 flex items-center gap-3">
+                                        <div className="p-2 bg-white/20 rounded-lg"><Icon name="Heart" size={24} className="text-white"/></div>
+                                        <div>
+                                            <h4 className="text-lg font-bold text-white font-serif">여성 공직자 지원 정책</h4>
+                                            <p className="text-sm text-pink-100">부부 목회 선택제 · 육아휴직 · 복직 지원</p>
+                                        </div>
+                                    </div>
+                                    <div className="p-6 grid md:grid-cols-2 gap-4">
+                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
+                                            <h5 className="font-bold text-pink-800 text-sm mb-2">🤰 육아휴직</h5>
+                                            <p className="text-sm text-slate-700">{result.deploymentFit.genderSupport.maternityLeave}</p>
+                                        </div>
+                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
+                                            <h5 className="font-bold text-pink-800 text-sm mb-2">🔄 대체 인력</h5>
+                                            <p className="text-sm text-slate-700">{result.deploymentFit.genderSupport.substituteArrangement}</p>
+                                        </div>
+                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
+                                            <h5 className="font-bold text-pink-800 text-sm mb-2">💒 부부 목회</h5>
+                                            <p className="text-sm text-slate-700">{result.deploymentFit.genderSupport.coupleMinistryOption}</p>
+                                        </div>
+                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
+                                            <h5 className="font-bold text-pink-800 text-sm mb-2">✨ 추가 지원</h5>
+                                            <ul className="space-y-1">
+                                                {result.deploymentFit.genderSupport.additionalSupport.map((s, i) => (
+                                                    <li key={i} className="text-sm text-slate-700 flex items-start gap-1">
+                                                        <span className="text-pink-400 shrink-0">•</span> {s}
                                                     </li>
                                                 ))}
                                             </ul>
