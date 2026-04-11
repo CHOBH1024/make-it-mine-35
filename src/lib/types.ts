@@ -110,12 +110,59 @@ export interface PrayerGuide {
     weeklyFocus: string[];
 }
 
+export interface PlacementPrinciple {
+    title: string;
+    description: string;
+    basis: string; // 근거 (회의록, 규정 등)
+}
+
+export interface OnboardingStep {
+    phase: string;
+    period: string;
+    tasks: string[];
+    mentor: string;
+}
+
+export interface CLARequirement {
+    required: boolean;
+    exemptionCondition?: string;
+    alternativePrograms?: string[];
+    minimumPeriod: string;
+}
+
+export interface DISCProfile {
+    primaryType: string;
+    description: string;
+    fitReason: string;
+}
+
+export interface SalaryStructure {
+    grade: string;
+    centralSupport: boolean;
+    note: string;
+}
+
+export interface GenderSupportPolicy {
+    maternityLeave: string;
+    substituteArrangement: string;
+    coupleMinistryOption: string;
+    additionalSupport: string[];
+}
+
 export interface DeploymentFit {
-    hqScore: number; // 1-10 본부 적합도
-    fieldScore: number; // 1-10 현장 적합도
+    hqScore: number;
+    fieldScore: number;
     idealDepartments: string[];
     reasoning: string;
     warningPlacements: string[];
+    placementPrinciples: PlacementPrinciple[];
+    discProfile: DISCProfile;
+    claRequirement: CLARequirement;
+    onboardingSteps: OnboardingStep[];
+    salaryStructure: SalaryStructure;
+    genderSupport: GenderSupportPolicy;
+    centralHiringNote: string;
+    hrRecommendation: string;
 }
 
 export interface KPITemplate {
