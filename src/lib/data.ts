@@ -1,4 +1,4 @@
-import { Archetype, BenefitItem, DetailData, ExternalTest } from "./types";
+import type { Archetype, BenefitItem, DetailData, ExternalTest } from "./types";
 
 export const externalTests: ExternalTest[] = [
     {
