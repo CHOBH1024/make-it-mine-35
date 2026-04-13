@@ -1,0 +1,124 @@
+name: 서진 일일 업무 보고 이메일
+
+on:
+  schedule:
+    # 매일 한국시간 18:00 (UTC 09:00) 자동 발송
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch:
+    # 수동 트리거 (언제든지 직접 실행 가능)
+
+jobs:
+  send-daily-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 오늘 보고서 파일 확인
+        id: check_report
+        run: |
+          TODAY=$(TZ='Asia/Seoul' date '+%Y-%m-%d')
+          REPORT_FILE="reports/${TODAY}.md"
+          echo "today=${TODAY}" >> $GITHUB_OUTPUT
+          echo "report_file=${REPORT_FILE}" >> $GITHUB_OUTPUT
+          if [ -f "$REPORT_FILE" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "✅ 보고서 발견: $REPORT_FILE"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ 오늘 보고서 없음. 가장 최근 보고서 사용."
+            LATEST=$(ls reports/*.md 2>/dev/null | grep -v TEMPLATE | sort | tail -1)
+            echo "report_file=${LATEST}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 보고서 내용 읽기 및 HTML 변환
+        id: build_email
+        run: |
+          TODAY=${{ steps.check_report.outputs.today }}
+          REPORT_FILE=${{ steps.check_report.outputs.report_file }}
+
+          # Markdown → HTML 변환 (간단 처리)
+          python3 << 'PYEOF'
+          import sys, re, os
+
+          today = os.environ.get('TODAY', '')
+          report_file = os.environ.get('REPORT_FILE', '')
+
+          with open(report_file, 'r', encoding='utf-8') as f:
+              md = f.read()
+
+          # 기본 HTML 변환
+          html = md
+          html = re.sub(r'^# (.+)$', r'<h1 style="color:#0f172a;font-size:22px;margin-bottom:4px">\1</h1>', html, flags=re.MULTILINE)
+          html = re.sub(r'^## (.+)$', r'<h2 style="color:#1e3a5f;border-bottom:2px solid #e5e7eb;padding-bottom:6px;margin-top:28px">\1</h2>', html, flags=re.MULTILINE)
+          html = re.sub(r'^### (.+)$', r'<h3 style="color:#374151;margin-top:16px">\1</h3>', html, flags=re.MULTILINE)
+          html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html)
+          html = re.sub(r'`(.+?)`', r'<code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13px">\1</code>', html)
+          html = re.sub(r'^\- \[x\] (.+)$', r'<li style="color:#16a34a;margin:4px 0">✅ \1</li>', html, flags=re.MULTILINE)
+          html = re.sub(r'^\- \[ \] (.+)$', r'<li style="color:#6b7280;margin:4px 0">⬜ \1</li>', html, flags=re.MULTILINE)
+          html = re.sub(r'^- (.+)$', r'<li style="margin:4px 0">\1</li>', html, flags=re.MULTILINE)
+          html = re.sub(r'^---$', r'<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">', html, flags=re.MULTILINE)
+          html = re.sub(r'\n', '<br>\n', html)
+
+          full_html = f"""
+          <div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:0;color:#1a1a1a">
+            <div style="background:linear-gradient(135deg,#1e3a5f,#2d5986);color:white;padding:24px 28px;border-radius:12px 12px 0 0">
+              <p style="margin:0 0 4px;font-size:12px;opacity:0.7;letter-spacing:1px;text-transform:uppercase">가정연합 목회자유형 진단 시스템</p>
+              <h1 style="margin:0;font-size:20px">📋 {today} 일일 업무 보고</h1>
+              <p style="margin:8px 0 0;opacity:0.8;font-size:13px">발신: 서진 (총괄 비서) &rarr; 수신: 여보짱</p>
+            </div>
+            <div style="border:1px solid #e5e7eb;border-top:none;padding:28px;border-radius:0 0 12px 12px;background:white">
+              {html}
+            </div>
+            <p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:12px">
+              본 메일은 서진 자동 보고 시스템에 의해 발송되었습니다.
+            </p>
+          </div>
+          """
+
+          with open('/tmp/email_body.html', 'w', encoding='utf-8') as f:
+              f.write(full_html)
+
+          print("✅ HTML 변환 완료")
+          PYEOF
+        env:
+          TODAY: ${{ steps.check_report.outputs.today }}
+          REPORT_FILE: ${{ steps.check_report.outputs.report_file }}
+
+      - name: Resend API로 이메일 발송
+        run: |
+          TODAY=${{ steps.check_report.outputs.today }}
+          HTML_BODY=$(cat /tmp/email_body.html)
+
+          # JSON payload 생성
+          python3 -c "
+          import json, sys
+
+          with open('/tmp/email_body.html', 'r') as f:
+              html = f.read()
+
+          payload = {
+              'from': '서진 <onboarding@resend.dev>',
+              'to': ['nokira1024@gmail.com'],
+              'subject': f'[서진 보고] ${TODAY} 목회자유형앱 일일 업무 보고',
+              'html': html
+          }
+
+          with open('/tmp/payload.json', 'w') as f:
+              json.dump(payload, f, ensure_ascii=False)
+          print('✅ payload 생성 완료')
+          "
+
+          RESPONSE=$(curl -s -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/payload.json)
+
+          echo "API 응답: $RESPONSE"
+
+          if echo "$RESPONSE" | grep -q '"id"'; then
+            echo "✅ 이메일 발송 성공!"
+          else
+            echo "❌ 발송 실패: $RESPONSE"
+            exit 1
+          fi

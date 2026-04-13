@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@/components/diagnosis/Icon';
 import { SectionTitle } from '@/components/diagnosis/SectionTitle';
-import { externalTests } from '@/lib/data';
+import { externalTests, recommendedTests } from '@/lib/data';
 
 export const GuideView: React.FC = () => (
     <div className="max-w-6xl mx-auto px-6 py-20 fade-in">
@@ -21,9 +21,9 @@ export const GuideView: React.FC = () => (
                                 <p className="text-stone-600 font-medium text-lg">{t.desc}</p>
                             </div>
                         </div>
-                        <a 
-                            href={t.url} 
-                            target="_blank" 
+                        <a
+                            href={t.url}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-blue-900 text-white font-bold hover:bg-blue-800 transition-all shadow-lg hover:shadow-blue-900/30 gap-2 shrink-0"
                         >
@@ -68,6 +68,42 @@ export const GuideView: React.FC = () => (
                     </div>
                 </div>
             ))}
+        </div>
+
+        {/* 추가 추천 진단 섹션 */}
+        <div className="mt-24">
+            <div className="text-center mb-12">
+                <div className="inline-block bg-amber-50 border border-amber-200 text-amber-700 text-sm font-bold px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest">
+                    Additional Resources
+                </div>
+                <h2 className="text-3xl font-bold text-slate-900 font-serif mb-3">이런 진단도 있어요</h2>
+                <p className="text-stone-500 text-lg">공식 5대 진단 외에도, 자신의 소명과 역량을 더 깊이 탐구할 수 있는 참고 도구들입니다.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {recommendedTests.map((t) => (
+                    <a
+                        key={t.id}
+                        href={t.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group bg-white border border-stone-200 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:border-slate-300 transition-all flex flex-col gap-4"
+                    >
+                        <div className="flex items-start gap-4">
+                            <div className={`w-12 h-12 rounded-xl bg-stone-50 flex items-center justify-center shrink-0 border border-stone-100 ${t.color} group-hover:scale-105 transition-transform`}>
+                                <Icon name={t.icon} size={24}/>
+                            </div>
+                            <div className="flex-1">
+                                <span className="inline-block text-xs font-bold bg-stone-100 text-stone-500 rounded-full px-2.5 py-0.5 mb-2">{t.tag}</span>
+                                <h4 className="font-bold text-slate-900 text-base leading-snug">{t.name}</h4>
+                            </div>
+                        </div>
+                        <p className="text-stone-500 text-sm leading-relaxed">{t.desc}</p>
+                        <div className="flex items-center gap-1.5 text-blue-700 text-sm font-semibold mt-auto group-hover:gap-2.5 transition-all">
+                            <Icon name="ExternalLink" size={14}/> 바로 가기
+                        </div>
+                    </a>
+                ))}
+            </div>
         </div>
     </div>
 );
