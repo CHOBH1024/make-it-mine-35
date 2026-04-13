@@ -1,4 +1,4 @@
-import type { Archetype, BenefitItem, DetailData, ExternalTest, RecommendedTest } from "./types";
+import type { Archetype, BenefitItem, DetailData, ExternalTest, ManagementProfile, RecommendedTest } from "./types";
 
 export const externalTests: ExternalTest[] = [
     {
@@ -184,7 +184,7 @@ export const archetypes: Archetype[] = [
         title: "천일국 설계자",
         engTitle: "The Cheon Il Guk Architect",
         subtitle: "모호한 비전을 '천법(Constitution)'과 시스템으로 안착시키는 행정의 달인",
-        verse: "지혜로운 건축자가 터를 닦아 두매, 그 위에 세운 공력은 영원하리라. 천법을 세우라.",
+        verse: "하늘의 나라를 세우는 자는 먼저 그 법도를 세워야 한다. 이상은 현실이 되어야 하고, 원리는 제도가 되어야 한다. 틀이 잡혀야 사람이 살 수 있고, 기준이 서야 나라가 서는 것이다. — 참아버님 말씀선집 (The Way of God's Will, Leaders)",
         traits: { 
             big5: "conscientiousness", 
             enneagram: ["1", "8"], 
@@ -254,7 +254,7 @@ export const archetypes: Archetype[] = [
         title: "심정의 부모",
         engTitle: "The Parent of Heart",
         subtitle: "상처받은 식구를 어머니의 심정으로 품어 다시 낳아 기르는 참사랑의 목자",
-        verse: "어미가 자식을 품음 같이 하라. 생명을 낳고 기르는 수고만이 참부모님의 심정에 도달하는 길이다.",
+        verse: "지도자의 위치에 있는 자는 나머지 모든 구성원에 대해 종의 역할을 해야 한다. 그들보다 더 낮은 곳에서 자고, 더 형편없는 것을 먹고, 더 낡은 것을 입어야 한다. 그런 마음의 자세가 진정한 부모의 심정이다. — 참아버님 말씀선집 (The Way of God's Will, How to Be a Leader, 1973)",
         traits: { big5: "agreeableness", enneagram: ["2", "9"], anchor: ["service"], via: ["사랑", "친절", "사회지능", "용서", "겸손"] },
         summary: "당신은 천일국 섭리의 심장(Heart)입니다. 효율성보다 '한 영혼'의 가치를 귀하게 여기며, 상처받은 식구들을 가슴으로 품어 '중생'시키는 사명을 띠고 있습니다. 당신의 돌봄은 차가운 조직을 '식구'로 묶어주는 접착제입니다.",
         details: {
@@ -319,7 +319,7 @@ export const archetypes: Archetype[] = [
         title: "성취하는 전략가",
         engTitle: "The Achiever Strategist",
         subtitle: "명확한 목표와 효율적인 전략으로 섭리의 승리를 쟁취하는 현장 사령관",
-        verse: "푯대를 향하여 그리스도 예수 안에서 하나님이 위에서 부르신 부름의 상을 위하여 달려가노라.",
+        verse: "위대한 지도자란 한 푼도 없이도 대업을 이룰 수 있다는 정신을 가진 사람이요, 전 세계를 품을 수 있는 무한한 가슴을 가진 사람이다. — 참아버님 말씀선집 (The Way of God's Will, Leaders)",
         traits: { big5: "extraversion", enneagram: ["3", "8"], anchor: ["challenge", "managerial"], via: ["활력", "리더십", "끈기", "사회지능", "희망"] },
         summary: "당신은 섭리의 최전선에서 가시적인 성과를 만들어내는 행동가입니다. 목표가 정해지면 뒤돌아보지 않고 돌진하여 반드시 결과를 만들어냅니다. 효율성과 속도를 중시하며, 정체된 조직에 강력한 드라이브를 걸어 획기적인 발전을 이끌어냅니다. 당신에게 불가능은 없으며, 위기는 곧 기회입니다.",
         details: { guide: "목표가 분명한 프로젝트, 전도 활동, 대외 협력, 홍보, 모금 등 성과가 명확히 드러나는 분야", synergy: { good: "6유형", bad: "9유형" }, caution: "성과지상주의에 빠져 사람을 도구화하지 않도록 주의하십시오. 과정 없는 결과는 모래성입니다.", development: "실패를 용납하고, 2등도 인정하는 여유를 가지십시오. 속도보다 방향이 중요함을 깨달아야 합니다." },
@@ -379,7 +379,7 @@ export const archetypes: Archetype[] = [
         title: "천일국 살림꾼",
         engTitle: "The Creative Artist",
         subtitle: "고유한 감성과 창의성으로 섭리에 깊이를 더하는 영적 예술가",
-        verse: "하나님이 보시기에 심히 좋았더라. 창조의 아름다움을 회복하라.",
+        verse: "하나님은 아름다움을 좋아하신다. 그것이 우주 창조의 동기였다. 사람도 창조성을 발휘할 때 하나님과 가장 가까이 있게 된다. 아름다운 것을 만드는 것, 그것이 곧 하늘의 마음에 참여하는 길이다. — 참아버님 말씀선집 (천성경, 창조이상)",
         traits: { big5: "openness", enneagram: ["4", "9"], anchor: ["lifestyle", "autonomy"], via: ["창의성", "감상력", "진실성", "사랑", "영성"] },
         summary: "당신은 남들과 다른 독창적인 시각으로 세상을 바라보는 예술가입니다. 획일화된 조직 문화에 생기를 불어넣고, 삭막한 행정 속에 하늘의 아름다움을 심습니다. 당신의 손길이 닿으면 평범한 공간이 성전이 되고, 단순한 행사가 감동적인 축제가 됩니다. 깊은 영적 감수성으로 식구들의 내면 깊은 곳을 어루만집니다.",
         details: { guide: "문화 사역, 디자인, 영상, 찬양, 공간 연출 등 창의적 영역", synergy: { good: "9유형", bad: "1유형" }, caution: "감정 기복이 심해 업무에 지장을 주지 않도록 하십시오. 현실 감각을 잃지 않아야 합니다.", development: "규칙적인 생활 습관과 감정 조절 능력을 기르십시오. 영감을 현실로 만드는 끈기가 필요합니다." },
@@ -439,7 +439,7 @@ export const archetypes: Archetype[] = [
         title: "진리 탐구자",
         engTitle: "The Truth Seeker",
         subtitle: "깊이 있는 통찰과 연구로 말씀의 깊이를 더하는 섭리적 학자",
-        verse: "진리를 알지니 진리가 너희를 자유케 하리라.",
+        verse: "진리만이 우리를 자유케 한다. 원리를 깊이 알고 가르치는 것이 최고의 봉사이다. 지식 없이는 사명을 다할 수 없고, 가르침 없이는 나라를 세울 수 없다. — 참아버님 말씀선집 (The Way of God's Will, Practice)",
         traits: { big5: "openness", enneagram: ["5", "1"], anchor: ["expert", "autonomy"], via: ["학구열", "지혜", "호기심", "통찰", "판단력"] },
         summary: "당신은 섭리의 깊은 원리를 탐구하고 체계화하는 지성인입니다. 현상 이면의 본질을 꿰뚫어 보며, 감정보다는 이성과 논리로 하나님을 증거합니다. 얕은 신앙에 만족하지 않고 끊임없이 '왜?'라고 질문하며 답을 찾아내는 구도자입니다. 당신의 지적 탐구는 혼란스러운 섭리의 방향을 잡는 나침반이 됩니다.",
         details: { guide: "원리 연구, 교육 교재 집필, 역사 편찬, 신학 연구, 아카이브", synergy: { good: "1유형", bad: "2유형" }, caution: "지식의 상아탑에 갇혀 현실 감각을 잃지 않도록 주의하십시오. 아는 것과 사는 것은 다릅니다.", development: "아는 것을 실천하고, 타인과 나누는 소통 능력을 기르십시오. 따뜻한 가슴을 회복해야 합니다." },
@@ -499,7 +499,7 @@ export const archetypes: Archetype[] = [
         title: "충직한 수호자",
         engTitle: "The Loyal Guardian",
         subtitle: "투철한 사명감과 책임감으로 공동체를 든든히 지키는 섭리의 방패",
-        verse: "죽도록 충성하라 그리하면 내가 생명의 면류관을 네게 주리라.",
+        verse: "지도자는 식구들을 먹기 전에 먼저 생각하고 잠들기 전에 먼저 기도해야 한다. 나를 위해서가 아니라 그들을 위해 내가 존재한다는 것을 늘 기억하라. — 참아버님 말씀선집 (The Way of God's Will, Leaders)",
         traits: { big5: "conscientiousness", enneagram: ["6", "1"], anchor: ["security", "service"], via: ["신중함", "시민정신", "충성", "성실", "겸손"] },
         summary: "당신은 조직의 안정과 안전을 최우선으로 생각하는 충신입니다. 화려하게 드러나지는 않지만, 보이지 않는 곳에서 묵묵히 제 자리를 지키며 섭리의 허리를 담당합니다. 위기를 미리 대비하고 맡은 바 임무를 끝까지 완수하는 책임감은 타의 추종을 불허합니다. 당신이 있기에 조직은 흔들리지 않습니다.",
         details: { guide: "재정 관리, 시설 관리, 보안, 비서실, 행정 지원, 감사", synergy: { good: "3유형", bad: "7유형" }, caution: "지나친 불안과 의심으로 변화를 거부하지 않도록 하십시오. 두려움은 신앙의 적입니다.", development: "하나님을 온전히 신뢰하고 두려움을 극복하는 믿음을 키우십시오. 변화를 수용하는 유연성이 필요합니다." },
@@ -559,7 +559,7 @@ export const archetypes: Archetype[] = [
         title: "기쁨의 전파자",
         engTitle: "The Joyful Evangelist",
         subtitle: "긍정적인 에너지와 열정으로 섭리의 새로운 지평을 여는 분위기 메이커",
-        verse: "항상 기뻐하라 쉬지 말고 기도하라 범사에 감사하라.",
+        verse: "진정한 지도자는 민족의 다가올 환난을 미리 내다보고, 구성원들을 고난과 역경 속으로 미리 이끌어 훈련시키는 사람이다. 길이 없으면 만들어야 하고, 전진하다 막히면 돌파해야 한다. — 참아버님 말씀선집 (The Way of God's Will, Leaders)",
         traits: { big5: "extraversion", enneagram: ["7", "3"], anchor: ["entrepreneurial", "challenge"], via: ["유머", "희망", "활력", "창의성", "호기심"] },
         summary: "당신은 어두운 곳에 빛과 웃음을 가져오는 해피 바이러스입니다. 새로운 아이디어와 모험을 즐기며, 정체된 조직에 활력을 불어넣습니다. 당신 주변에는 항상 사람들이 모이고 웃음꽃이 핍니다. 심각한 상황도 유머로 승화시키며, 긍정의 힘으로 섭리의 난관을 돌파하는 에너지를 가졌습니다.",
         details: { guide: "이벤트 기획, 청년 사역, 새로운 프로젝트 런칭, 레크리에이션, 홍보", synergy: { good: "9유형", bad: "6유형" }, caution: "재미만을 추구하다 책임을 회피하거나 마무리가 부족하지 않도록 하십시오. 가벼움이 독이 될 수 있습니다.", development: "한 가지 일에 진득하게 집중하고, 고통을 직면하는 성숙함을 기르십시오. 마무리의 미학을 배워야 합니다." },
@@ -619,7 +619,7 @@ export const archetypes: Archetype[] = [
         title: "용맹한 개척자",
         engTitle: "The Brave Pioneer",
         subtitle: "두려움 없는 용기로 불의에 맞서고 섭리의 영토를 확장하는 대장부",
-        verse: "강하고 담대하라 두려워하지 말며 놀라지 말라.",
+        verse: "나의 사명은 우주적 사명이다. 나의 관심은 모든 인류에 있으며, 이 현재 세계만이 아니라 이후 세계까지 포함한다. 나의 사명은 과거, 현재, 미래를 관통하며 전 인류를 아우른다. — 참아버님 말씀선집 (God's Will and the World)",
         traits: { big5: "extraversion", enneagram: ["8", "3"], anchor: ["challenge", "managerial"], via: ["용감함", "리더십", "정의", "진실성", "활력"] },
         summary: "당신은 난관을 돌파하고 새로운 길을 여는 개척자입니다. 강한 카리스마와 추진력으로 조직을 이끌며, 약자를 보호하고 정의를 실현하는 데 앞장섭니다. 불가능해 보이는 일에도 과감하게 도전하며, 장애물이 나타나면 피하지 않고 정면으로 부딪쳐 깨뜨립니다. 당신은 섭리의 영토를 넓히는 장군입니다.",
         details: { guide: "개척 사역, 대외 투쟁, 조직 총괄, NGO 활동, 선교지 파견", synergy: { good: "9유형", bad: "4유형" }, caution: "자신의 힘을 과신하여 타인을 억압하거나 독단에 빠지지 않도록 하십시오. 강함만이 능사가 아닙니다.", development: "강함 속에 부드러움을 겸비하고, 타인의 약함을 포용하는 법을 배우십시오. 진정한 힘은 절제에서 나옵니다." },
@@ -679,7 +679,7 @@ export const archetypes: Archetype[] = [
         title: "평화의 중재자",
         engTitle: "The Peace Maker",
         subtitle: "모든 사람을 포용하고 화합하게 하여 하나 된 공동체를 만드는 섭리의 접착제",
-        verse: "화평케 하는 자는 복이 있나니 그들이 하나님의 아들이라 일컬음을 받을 것임이요.",
+        verse: "타인의 장점을 보고 사랑으로 그 허물을 덮어주라. 그러면 그들이 당신을 따를 것이다. 약점만 보면 당신의 영성이 망가진다. — 참아버님 말씀선집 (The Way of God's Will, Church and Church Life)",
         traits: { big5: "agreeableness", enneagram: ["9", "2"], anchor: ["service", "lifestyle"], via: ["공정성", "겸손", "용서", "사회지능", "친절"] },
         summary: "당신은 갈등을 치유하고 분열된 마음을 하나로 묶는 평화의 사도입니다. 누구의 편도 들지 않고 모두의 입장을 이해하며, 조화로운 해결책을 찾아냅니다. 당신이 있는 곳에는 싸움이 그치고 평화가 찾아옵니다. 자신을 내세우기보다 타인을 배려하며, 묵묵히 공동체의 결속을 다지는 섭리의 접착제와 같은 존재입니다.",
         details: { guide: "갈등 조정, 연합 예배 기획, 상담, 지원 부서, 비서, 중재 위원회", synergy: { good: "8유형", bad: "3유형" }, caution: "갈등을 피하기 위해 문제를 외면하거나 우유부단하게 행동하지 않도록 하십시오. 평화는 갈등의 부재가 아닙니다.", development: "자신의 의견을 명확히 표현하고, 필요한 순간에는 단호하게 결단하는 용기를 기르십시오. '아니오'라고 말할 수 있어야 합니다." },
@@ -733,5 +733,80 @@ export const archetypes: Archetype[] = [
         kpiTemplate: {"quantitative": [{"name": "갈등 중재 건수", "weight": 25, "description": "조직 내·외부 갈등 중재 및 해결 실적"}, {"name": "연합 행사 성과", "weight": 20, "description": "종교간·지역사회 연합 행사 기획 및 실행 건수"}, {"name": "네트워크 확장", "weight": 15, "description": "평화 사업 관련 외부 파트너십 확대 건수"}], "providential": [{"name": "평화 메시지 전달", "weight": 15, "description": "평화 관련 교육/강연/콘텐츠 발표 건수"}, {"name": "화해 사례 창출", "weight": 10, "description": "갈등 당사자 간 실질적 화해 달성 건수"}], "growth": [{"name": "결단력 평가", "weight": 10, "description": "필요한 순간에 명확한 입장 표명 및 결정 능력"}, {"name": "자기 주장 훈련", "weight": 5, "description": "자신의 의견을 명확히 표현하는 능력 향상도"}], "evaluationTip": "화평 중재자는 갈등 회피를 '평화'로 착각할 수 있습니다. 진정한 중재는 양측의 이해를 조율하는 것입니다. '회피 건수'가 아닌 '해결 건수'를 평가하세요."},
         careerRoadmap: {"stages": [{"stage": "입문기", "period": "1~3년차", "focus": "경청과 중재 기초", "tasks": ["갈등 조정 기초 교육", "다양한 현장 로테이션", "선배 중재자 동행 학습", "자기 표현 훈련 (스피치 등)"], "risk": "갈등 회피를 평화로 착각"}, {"stage": "성장기", "period": "4~7년차", "focus": "전문 중재 역량", "tasks": ["조정/중재 전문 자격 취득", "종교간 대화 프로그램 참여", "국제 평화 세미나 참석", "리더십 결단력 훈련"], "risk": "우유부단함으로 인한 리더십 신뢰 하락"}, {"stage": "성숙기", "period": "8~15년차", "focus": "평화 사역 설계", "tasks": ["평화 사업 총괄 책임", "지역사회 화해 프로그램 운영", "후배 중재자 양성", "국제 네트워크 구축"], "risk": "모든 갈등을 개인적으로 떠안는 번아웃"}, {"stage": "원로기", "period": "16년차 이상", "focus": "평화의 유산", "tasks": ["평화 사역 사례집 발간", "화해 전문가 양성 프로그램", "지역사회 봉사 연계", "종교간 대화 자문위원"], "risk": "은퇴 후 역할 상실감"}], "retirementVision": "평화를 만든 자는 하나님의 아들이라 불릴 것입니다. 은퇴 후에는 평생의 중재 경험을 교육 자료로 남기고, 지역사회의 화해 봉사자로서 다리를 놓는 일을 계속하십시오."}
 
+    }
+];
+
+export const managementProfiles: ManagementProfile[] = [
+    {
+        archetypeId: 1,
+        mintzberg: { roles: ["기업가(Entrepreneur)", "자원배분자(Resource Allocator)", "대변자(Spokesperson)"], description: "시스템과 조직 구조를 설계하고 변화와 혁신을 주도하며, 조직 외부에 비전을 공표하는 역할을 수행합니다." },
+        belbin: { roles: ["창안자(Plant)", "모니터평가자(Monitor Evaluator)"], description: "새로운 아이디어와 시스템을 구상하면서(창안자) 동시에 논리적 검증으로 현실성을 담보합니다(모니터평가자)." },
+        quinn: { roles: ["지시자(Director)", "혁신자(Innovator)"], quadrant: "합리적 목표 + 개방시스템", description: "목표 설정과 역할 명확화를 수행하면서(지시자) 동시에 새로운 변화를 구상하는(혁신자) 이중 역할을 수행합니다." },
+        mcclelland: { dominantNeed: "높은 성취욕구(nAch) + 사회화된 권력욕구(nPow)", description: "완벽한 시스템 구축에서 성취감을 찾으며, 조직을 올바른 방향으로 이끌고자 하는 사회화된 권력 욕구를 가집니다." },
+        historicalModel: { name: "존 칼뱅(John Calvin)", period: "1509–1564", description: "제네바 신정 체계 설계, 교회규범(Ecclesiastical Ordinances) 입법, 제네바 아카데미 창설", connection: "비전을 법과 제도로 안착시킨 대표적 설계자형 리더. Mintzberg의 자원배분자·기업가 역할의 역사적 전형" }
+    },
+    {
+        archetypeId: 2,
+        mintzberg: { roles: ["리더(Leader)", "연락자(Liaison)"], description: "구성원을 동기부여하고 개발하며(리더), 조직 내외의 사람들과 관계의 다리를 놓습니다(연락자)." },
+        belbin: { roles: ["팀워커(Teamworker)", "조정자(Co-ordinator)"], description: "내부 공동체의 화합을 지키며(팀워커), 각 개인의 재능을 발굴하여 적재적소에 연결합니다(조정자)." },
+        quinn: { roles: ["멘토(Mentor)", "촉진자(Facilitator)"], quadrant: "인간관계 사분면", description: "구성원을 공감하고 개발하며(멘토), 집단적 화합과 참여를 이끌어냅니다(촉진자). Quinn의 인간관계 사분면을 가장 충실히 대표합니다." },
+        mcclelland: { dominantNeed: "높은 친화욕구(nAff)", description: "관계와 돌봄에서 깊은 만족감을 얻으며, 사람들이 자신을 좋아하고 신뢰하는 것에서 에너지를 충전합니다." },
+        historicalModel: { name: "마더 테레사(Mother Teresa)", period: "1910–1997", description: "가장 낮은 자에게 가장 높은 사랑의 실천. 일대일 돌봄과 공동체 형성의 대가", connection: "Belbin의 팀워커, Quinn의 멘토 역할의 완벽한 체현. '가난한 자 안에서 예수를 봅니다'는 부모형의 핵심 철학" }
+    },
+    {
+        archetypeId: 3,
+        mintzberg: { roles: ["기업가(Entrepreneur)", "문제해결자(Disturbance Handler)"], description: "성과와 혁신을 추구하며(기업가), 예상치 못한 위기 상황을 빠르게 수습합니다(문제해결자)." },
+        belbin: { roles: ["추진자(Shaper)", "자원탐색자(Resource Investigator)"], description: "팀에 목표 지향적 압박을 가하며(추진자), 외부 자원과 기회를 발굴합니다(자원탐색자)." },
+        quinn: { roles: ["생산자(Producer)", "지시자(Director)"], quadrant: "합리적 목표 사분면", description: "높은 동기와 추진력으로 결과를 창출(생산자)하며 목표와 기대치를 명확히 설정합니다(지시자)." },
+        mcclelland: { dominantNeed: "압도적 성취욕구(nAch)", description: "목표 달성 자체에서 강렬한 만족을 얻으며, 도전적이지만 현실적인 목표를 선호합니다. McClelland 연구에서 탁월한 관리자의 핵심 동기입니다." },
+        historicalModel: { name: "D.L. 무디(Dwight L. Moody)", period: "1837–1899", description: "목수 출신으로 무학이었으나 19세기 가장 영향력 있는 부흥사. 시카고 무디성경학원 설립, 수백만 명 전도", connection: "McClelland의 높은 nAch를 가진 전략형 목회자의 전형" }
+    },
+    {
+        archetypeId: 4,
+        mintzberg: { roles: ["배포자(Disseminator)", "대변자(Spokesperson)"], description: "영감과 창의적 비전을 조직 내외부에 전파합니다. 메시지를 아름다운 형식으로 포장하는 독특한 역할을 수행합니다." },
+        belbin: { roles: ["창안자(Plant)"], description: "독창적이고 비관습적인 아이디어로 새로운 접근법을 제시합니다. 예술적 창의성이 조직의 혁신 엔진 역할을 합니다." },
+        quinn: { roles: ["혁신자(Innovator)"], quadrant: "개방시스템 사분면", description: "변화를 상상하고 창의적으로 포장합니다. 창의적 몽상가로서 미래를 보고, 혁신을 구상하며, 매력적인 방식으로 포장합니다." },
+        mcclelland: { dominantNeed: "성취욕구(nAch) + 친화욕구(nAff) 복합", description: "자신의 창의적 작품이 타인에게 감동을 줄 때 성취감과 연결감을 동시에 충족합니다." },
+        historicalModel: { name: "요한 제바스티안 바흐(J.S. Bach)", period: "1685–1750", description: "모든 음악은 하나님의 영광을 위해(Soli Deo Gloria). 성악·기악·칸타타로 신앙을 예술로 승화. 라이프치히 토마스교회 음악감독", connection: "예배와 예술을 통합한 대표적 예술가형 사역자. 창조이상을 음악으로 구현한 전형" }
+    },
+    {
+        archetypeId: 5,
+        mintzberg: { roles: ["배포자(Disseminator)", "모니터(Monitor)"], description: "지식을 체계적으로 수집·분석(모니터)하여 조직 전체에 전파합니다(배포자). 정보 영역에서 가장 강한 역할을 수행합니다." },
+        belbin: { roles: ["전문가(Specialist)", "모니터평가자(Monitor Evaluator)"], description: "깊은 전문 지식(전문가)과 논리적·객관적 판단력(모니터평가자)을 결합합니다." },
+        quinn: { roles: ["모니터(Monitor)", "멘토(Mentor)"], quadrant: "내부과정 + 인간관계", description: "데이터와 사실 기반의 점검(모니터)을 통해 구성원의 지적 성장을 돕습니다(멘토)." },
+        mcclelland: { dominantNeed: "성취욕구(nAch) — 지식 축적형", description: "어려운 개념을 완전히 이해하고 체계화할 때 깊은 만족감을 느끼는 지식형 성취자입니다." },
+        historicalModel: { name: "찰스 스펄전(C.H. Spurgeon)", period: "1834–1892", description: "목사대학(Pastors' College) 창설로 900여 명의 목회자 양성. 설교집 63권 저술", connection: "Mintzberg의 배포자·Belbin의 전문가 역할의 전형. 지식을 체계적으로 전달하는 교육가형 대표 인물" }
+    },
+    {
+        archetypeId: 6,
+        mintzberg: { roles: ["모니터(Monitor)", "자원배분자(Resource Allocator)"], description: "조직의 위험 신호를 지속적으로 감시(모니터)하고, 자산과 자원을 안전하게 관리합니다(자원배분자)." },
+        belbin: { roles: ["마무리자(Completer Finisher)", "실행자(Implementer)"], description: "세부 사항의 오류를 방지하고 완결성을 확보(마무리자)하며, 체계적이고 신뢰할 수 있게 실행합니다(실행자)." },
+        quinn: { roles: ["조정자(Coordinator)", "모니터(Monitor)"], quadrant: "내부과정 사분면", description: "구조와 일정 유지(조정자), 성과 점검과 안정성 확보(모니터). Quinn의 내부과정 사분면의 핵심입니다." },
+        mcclelland: { dominantNeed: "친화욕구(nAff) + 낮은 권력욕구", description: "질서와 안정 속에서 자신의 역할이 인정받을 때 만족합니다. 충성스러운 중간 관리자의 동기 패턴을 가집니다." },
+        historicalModel: { name: "느헤미야(Nehemiah)", period: "구약시대 BC 5세기", description: "예루살렘 성벽 재건 시 철저한 자원관리, 인력배치, 재정 관리의 전형. 사도행전 6장의 일곱 집사", connection: "행정과 자원관리를 위해 별도 선발된 최초의 행정 사역자. 수호자형 목회자의 성경적 원형" }
+    },
+    {
+        archetypeId: 7,
+        mintzberg: { roles: ["기업가(Entrepreneur)", "문제해결자(Disturbance Handler)"], description: "새로운 영역을 개척하고 기회를 포착(기업가)하며, 불확실한 환경에서 위기를 돌파합니다(문제해결자)." },
+        belbin: { roles: ["추진자(Shaper)", "자원탐색자(Resource Investigator)"], description: "목표를 향해 팀을 강력하게 추진(추진자)하며, 새로운 연결과 기회를 외부에서 발굴합니다(자원탐색자)." },
+        quinn: { roles: ["혁신자(Innovator)", "생산자(Producer)"], quadrant: "개방시스템 + 합리적 목표", description: "새로운 방향을 창의적으로 구상(혁신자)하고 행동으로 실현합니다(생산자). 가장 외부 지향적이며 유연한 조합입니다." },
+        mcclelland: { dominantNeed: "성취욕구(nAch) + 권력욕구(nPow) 공동 주도", description: "새로운 일을 개척할 때의 성취감과, 불모지에서 영향력을 만들어가는 데서 오는 권력 욕구가 공동으로 작용합니다." },
+        historicalModel: { name: "마르틴 루터(Martin Luther) / 윌리엄 캐리(William Carey)", period: "루터 1483–1546 / 캐리 1761–1834", description: "루터는 종교개혁의 불모지를 개척한 영적 기동대장. 캐리는 현대 선교의 개척자로 인도 선교에 첫 발을 내딛은 용기의 아이콘", connection: "Belbin의 추진자, Mintzberg의 기업가 역할의 전형. 두 인물 모두 아무도 가지 않은 길을 먼저 간 기동대장형" }
+    },
+    {
+        archetypeId: 8,
+        mintzberg: { roles: ["대표자(Figurehead)", "기업가(Entrepreneur)", "대변자(Spokesperson)"], description: "조직의 얼굴로서 카리스마 있게 비전을 선포하고(대표자), 새로운 방향을 주도하며(기업가), 조직의 미래상을 공표합니다(대변자)." },
+        belbin: { roles: ["추진자(Shaper)", "자원탐색자(Resource Investigator)"], description: "팀에 강렬한 방향성을 제시하고(추진자), 비전 실현을 위한 외부 자원과 동맹을 구축합니다(자원탐색자)." },
+        quinn: { roles: ["혁신자(Innovator)", "브로커(Broker)"], quadrant: "개방시스템 사분면", description: "큰 변화를 구상(혁신자)하고 외부 권위와 자원을 획득하여 조직의 정당성을 확보합니다(브로커)." },
+        mcclelland: { dominantNeed: "사회화된 권력욕구(nPow) 주도", description: "타인을 통제하려는 욕구가 아닌, 공동체 전체를 이끌고 역사에 영향을 주고자 하는 사회적 권력 욕구입니다. McClelland의 효과적인 관리자 연구에서 사회화된 nPow가 높은 리더 유형입니다." },
+        historicalModel: { name: "빌리 그래함(Billy Graham)", period: "1918–2018", description: "냉전 시대 수억 명에게 복음을 전한 20세기 최대 부흥사. 전 세계 대통령·지도자들과 소통한 복음의 대사", connection: "Mintzberg의 대표자+대변자, Quinn의 혁신자+브로커 역할의 역사적 전형. 우주적 비전을 가진 비전가형의 완벽한 사례" }
+    },
+    {
+        archetypeId: 9,
+        mintzberg: { roles: ["협상가(Negotiator)", "연락자(Liaison)"], description: "갈등 당사자들 사이에서 합의를 이끌어내고(협상가), 조직 내외의 다양한 이해관계자들을 연결합니다(연락자)." },
+        belbin: { roles: ["팀워커(Teamworker)", "조정자(Co-ordinator)"], description: "내부 마찰을 줄이고 화합을 유지(팀워커)하며, 다양한 재능을 연결해 시너지를 창출합니다(조정자)." },
+        quinn: { roles: ["촉진자(Facilitator)", "멘토(Mentor)"], quadrant: "인간관계 사분면", description: "갈등 감소와 집단적 화합 구축(촉진자), 개인의 감정과 욕구에 공감하며 성장을 지원합니다(멘토)." },
+        mcclelland: { dominantNeed: "압도적 친화욕구(nAff)", description: "모든 사람들이 화목하고 연결될 때 깊은 만족감을 느끼며, 갈등 상황을 개인적 스트레스로 느끼는 강한 친화 욕구를 가집니다." },
+        historicalModel: { name: "존 웨슬리(John Wesley)", period: "1703–1791", description: "계층과 종파를 넘나들며 화합을 이끈 연결자. 필립 멜란히톤은 루터와 가톨릭 사이에서 중재를 시도한 종교개혁기의 평화 외교관", connection: "Belbin의 조정자+팀워커, Mintzberg의 협상가+연락자의 전형. 중재자형 목회자의 역사적 표본" }
     }
 ];
