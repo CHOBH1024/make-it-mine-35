@@ -262,6 +262,16 @@ export interface ExternalTest {
     utilization: string;
 }
 
+export interface RecommendedTest {
+    id: string;
+    name: string;
+    desc: string;
+    url: string;
+    icon: string;
+    color: string;
+    tag: string;
+}
+
 export interface BenefitItem {
     icon: string;
     title: string;

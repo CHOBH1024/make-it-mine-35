@@ -1,4 +1,4 @@
-import type { Archetype, BenefitItem, DetailData, ExternalTest } from "./types";
+import type { Archetype, BenefitItem, DetailData, ExternalTest, RecommendedTest } from "./types";
 
 export const externalTests: ExternalTest[] = [
     {
@@ -48,6 +48,75 @@ export const externalTests: ExternalTest[] = [
         measurement: "공직자가 억지로 노력하지 않아도 자연스럽게 발휘되는 '성품적 강점' 24가지를 측정합니다. 누군가는 '유머'로 설교를 부드럽게 하고, 누군가는 '용감함'으로 불의에 맞서며, 누군가는 '학구열'로 원리를 깊이 팝니다. 이는 하나님이 주신 선물(Charisma)입니다.",
         understanding: "약점을 보완하느라 시간을 낭비하지 말고, 강점을 특화하여 '브랜드'를 만드십시오. 모든 것을 다 잘하는 '슈퍼맨 목회자'는 없습니다. 나의 대표 강점이 '친절'이라면 '치유하는 목회'를, '공정성'이라면 '행정이 투명한 교회'를, '창의성'이라면 '문화가 있는 교회'를 만드는 것이 하늘이 원하시는 길입니다.",
         utilization: "1. 상호보완적 팀 사역 (Team Ministry): '용기'가 넘치는 전도대장과 '신중함'이 깊은 행정가를 한 팀으로 묶으십시오. 서로의 강점이 약점을 덮어주어 완벽한 섭리 팀이 됩니다.\n\n2. 대표 강점의 특화 (Signature Strength): 약점을 보완하느라 시간을 낭비하지 마십시오. 하나님이 주신 '친절'의 강점을 극대화하여 '치유 목회'를 하거나, '학구열'을 살려 '말씀 목회'를 하는 것이 승리의 길입니다.\n\n3. 일상 사역의 재발견 (Joy of Service): 단순 반복되는 공직 생활에 지쳤다면, 자신의 강점(예: 유머, 예술성)을 업무에 한 스푼 더해보십시오. 사역의 기쁨이 회복됩니다."
+    },
+    {
+        id: 'eq',
+        name: "EQ 감성지능 검사 (Emotional Intelligence)",
+        desc: "관계 목회의 핵심 — 나와 타인의 감정을 읽는 능력",
+        detail: "나는 감정을 다스리는가, 감정에 다스려지는가? (How I Relate)",
+        url: "https://www.ihhp.com/free-eq-quiz/",
+        icon: "Heart",
+        color: "text-rose-500",
+        measurement: "Daniel Goleman의 EQ 모델을 기반으로 5가지 역량을 측정합니다. ① 자기인식(Self-Awareness): 현재 나의 감정 상태와 그 원인을 정확히 아는가. ② 자기조절(Self-Regulation): 분노, 좌절, 실망의 순간에 충동을 다스리는가. ③ 내적 동기(Motivation): 외부 보상 없이도 사명감으로 움직이는가. ④ 공감(Empathy): 식구와 성도의 감정을 언어 너머에서 읽는가. ⑤ 사회적 기술(Social Skills): 갈등을 중재하고 신뢰 관계를 구축하는가.",
+        understanding: "IQ가 목회자의 '지식 수준'을 결정한다면, EQ는 '사람을 살리는 능력'을 결정합니다. 참부모님께서는 '사랑은 감정이기 이전에 실천'이라 하셨습니다. 아무리 원리를 잘 알아도, 상대의 마음을 읽지 못하면 전도도 심방도 상담도 무너집니다. EQ가 낮은 목회자는 무의식 중에 성도의 상처를 건드리고, EQ가 높은 목회자는 침묵만으로도 위로를 전합니다. 특히 가정연합의 목회 환경은 신앙과 일상이 뒤섞인 '전인적 관계'를 요구하므로, EQ는 단순한 감정 관리가 아닌 핵심 목회 역량입니다.",
+        utilization: "1. 심방과 상담의 질 제고 (Pastoral Care): EQ가 높은 목회자는 '무슨 말을 할까'보다 '지금 이 사람이 무엇을 필요로 하는가'를 먼저 묻습니다. 공감 능력을 키워 식구들이 '이 목사님은 내 편이다'라는 신뢰를 형성하십시오.\n\n2. 갈등 예방과 조직 건강 (Conflict Prevention): 자기조절 역량은 회의실에서 빛납니다. 보고를 받다가 화가 날 때 즉각 반응하지 않고, 감정을 정지시킨 뒤 사실을 묻는 훈련이 조직 문화를 바꿉니다.\n\n3. 리더십 신뢰도 구축 (Trust Building): 내적 동기가 높은 리더는 보상 없이도 헌신하며, 이는 주변 공직자들에게 자발적 헌신의 모델이 됩니다. EQ 진단으로 자신의 취약 역량을 파악하고, 연 1회 정기 점검으로 성장을 추적하십시오."
+    }
+];
+
+export const recommendedTests: RecommendedTest[] = [
+    {
+        id: 'mbti',
+        name: "MBTI (16가지 성격유형)",
+        desc: "세계에서 가장 널리 쓰이는 성격유형 검사. 내향/외향·감각/직관·사고/감정·판단/인식의 4축으로 16가지 유형 분류.",
+        url: "https://www.16personalities.com/ko",
+        icon: "LayoutGrid",
+        color: "text-violet-600",
+        tag: "성격·관계"
+    },
+    {
+        id: 'disc',
+        name: "DISC 행동유형 검사",
+        desc: "주도형(D)·사교형(I)·안정형(S)·신중형(C) 4가지로 직장·사역 현장에서의 행동 패턴을 진단. 팀 배치·리더십 코칭에 직결.",
+        url: "https://www.123test.com/disc-personality-test/",
+        icon: "PieChart",
+        color: "text-blue-500",
+        tag: "리더십·행동"
+    },
+    {
+        id: 'tci',
+        name: "TCI 기질 및 성격검사",
+        desc: "Cloninger의 모델로 선천적 기질(자극추구·위험회피·사회적 민감성·인내력)과 후천적 성격을 분리 측정. 목회 소명 유형과 깊이 연결.",
+        url: "https://cloningerpsychobiologylab.org/",
+        icon: "Dna",
+        color: "text-emerald-600",
+        tag: "기질·성격"
+    },
+    {
+        id: 'resilience',
+        name: "회복탄력성 검사 (Resilience Scale)",
+        desc: "사역 소진(Burnout) 예방을 위한 핵심 지표. 역경·실패·상실 앞에서 다시 일어서는 심리적 근력을 측정.",
+        url: "https://positivepsychology.com/resilience-scales/",
+        icon: "RefreshCw",
+        color: "text-amber-500",
+        tag: "회복·지속가능성"
+    },
+    {
+        id: 'strengths_finder',
+        name: "CliftonStrengths (구 StrengthsFinder)",
+        desc: "Gallup의 강점 진단. 34가지 재능 테마 중 상위 5가지를 발견. VIA와 함께 사용하면 '은사 지도'를 완성할 수 있음.",
+        url: "https://www.gallup.com/cliftonstrengths/en/home.aspx",
+        icon: "Star",
+        color: "text-orange-500",
+        tag: "강점·은사"
+    },
+    {
+        id: 'leadership_style',
+        name: "리더십 스타일 진단",
+        desc: "섬김형·코칭형·위임형·지시형 등 목회 현장에서 자신이 선호하는 리더십 방식을 파악. 상황별 유연한 리더십 개발에 활용.",
+        url: "https://www.mindtools.com/pages/article/leadership-style-quiz.htm",
+        icon: "Crown",
+        color: "text-slate-600",
+        tag: "리더십"
     }
 ];
 
