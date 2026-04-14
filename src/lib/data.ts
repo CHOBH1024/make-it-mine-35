@@ -175,6 +175,13 @@ export const detailData: DetailData = {
     via: {
         desc: "하나님이 주신 24가지 성품 강점 중, 사역 현장에서 가장 자연스럽게 발휘되는 대표 강점 5가지를 선택하십시오. 이것이 당신의 '천적(天的) 은사'입니다.",
         list: ["지혜 (Wisdom)", "용기 (Bravery)", "인애 (Kindness)", "정의 (Justice)", "절제 (Temperance)", "초월 (Transcendence)", "창의성 (Creativity)", "호기심 (Curiosity)", "개방성 (Open-mindedness)", "학구열 (Love of Learning)", "안목 (Perspective)", "용감함 (Bravery)", "끈기 (Perseverance)", "진실성 (Honesty)", "활력 (Zest)", "사랑 (Love)", "친절 (Kindness)", "사회지능 (Social Intelligence)", "시민정신 (Teamwork)", "공정성 (Fairness)", "리더십 (Leadership)", "용서 (Forgiveness)", "겸손 (Humility)", "신중함 (Prudence)", "자기조절 (Self-regulation)", "감상력 (Appreciation of Beauty)", "감사 (Gratitude)", "희망 (Hope)", "유머 (Humor)", "영성 (Spirituality)"]
+    },
+    eq: {
+        awareness: { name: "자기인식 (Self-Awareness)", desc: "내 감정과 그 원인을 정확히 파악하는 능력", high: "자신의 감정 상태를 실시간으로 인식하고 사역에 활용", low: "감정에 이끌려 행동하거나 자신의 상태를 잘 모름", fit: "상담·심방·리더십 역할" },
+        regulation: { name: "자기조절 (Self-Regulation)", desc: "분노·좌절·실망 순간에 충동을 다스리는 능력", high: "위기 상황에서도 침착하게 대응하며 조직의 안정감 형성", low: "감정적 반응이 즉각적으로 나타나 관계에 어려움 발생", fit: "행정·갈등 조정·리더십 역할" },
+        motivation: { name: "내적 동기 (Intrinsic Motivation)", desc: "외부 보상 없이도 사명감으로 움직이는 능력", high: "어려운 환경에서도 헌신을 유지하며 주변에 영감을 줌", low: "인정과 보상이 없을 때 동기 저하가 빠르게 나타남", fit: "개척·선교·창업 역할" },
+        empathy: { name: "공감 (Empathy)", desc: "식구·성도의 감정을 언어 너머에서 읽는 능력", high: "한 마디 없이도 상대의 마음을 읽어 신뢰를 구축", low: "논리·원칙 중심으로 접근해 상대가 이해받지 못한다고 느낌", fit: "심방·교육·청년 사역 역할" },
+        social: { name: "사회적 기술 (Social Skills)", desc: "갈등을 중재하고 신뢰 관계를 구축하는 능력", high: "다양한 이해관계자를 연결하고 협력 네트워크를 형성", low: "관계 관리보다 업무 처리에 집중하여 팀워크가 약화될 수 있음", fit: "대외협력·팀 사역·기관 연계 역할" }
     }
 };
 

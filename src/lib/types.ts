@@ -1,9 +1,18 @@
 
 export type Big5Trait = 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness' | 'neuroticism';
 export type Big5Level = 'High' | 'Mid' | 'Low';
+export type EQTrait = 'awareness' | 'regulation' | 'motivation' | 'empathy' | 'social';
 
 export interface Big5State {
     [key: string]: Big5Level | '';
+}
+
+export interface EQState {
+    awareness: Big5Level | '';
+    regulation: Big5Level | '';
+    motivation: Big5Level | '';
+    empathy: Big5Level | '';
+    social: Big5Level | '';
 }
 
 export interface Inputs {
@@ -11,6 +20,7 @@ export interface Inputs {
     big5: Big5State;
     anchor: string;
     via: string[];
+    eq: EQState;
 }
 
 export interface ArchetypeDNA {
@@ -297,9 +307,18 @@ export interface DetailInfo {
     fit?: string;
 }
 
+export interface EQTraitInfo {
+    name: string;
+    desc: string;
+    high: string;
+    low: string;
+    fit: string;
+}
+
 export interface DetailData {
     enneagram: Record<string, DetailInfo>;
     big5: Record<string, DetailInfo>;
     anchor: Record<string, DetailInfo>;
     via: { desc: string; list?: string[] };
+    eq: Record<string, EQTraitInfo>;
 }
