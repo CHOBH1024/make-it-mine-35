@@ -145,15 +145,15 @@ export const benefitData: BenefitItem[] = [
 
 export const detailData: DetailData = {
     enneagram: {
-        "1": { label: "1유형: 개혁가", desc: "원칙과 완벽을 추구하며 세상을 개선하려는 유형" },
-        "2": { label: "2유형: 조력가", desc: "타인을 도우며 사랑과 관심을 주고받길 원하는 유형" },
-        "3": { label: "3유형: 성취가", desc: "목표를 달성하고 성공을 통해 인정받으려는 유형" },
-        "4": { label: "4유형: 예술가", desc: "자신만의 독특한 정체성과 감성을 중요시하는 유형" },
-        "5": { label: "5유형: 탐구자", desc: "지식을 쌓고 세상을 객관적으로 관찰하려는 유형" },
-        "6": { label: "6유형: 충성가", desc: "안전을 추구하며 공동체에 헌신하는 신중한 유형" },
-        "7": { label: "7유형: 열정가", desc: "새로운 경험과 즐거움을 추구하며 긍정적인 유형" },
-        "8": { label: "8유형: 도전가", desc: "강한 힘으로 주도권을 잡고 정의를 실현하려는 유형" },
-        "9": { label: "9유형: 평화주의자", desc: "갈등을 피하고 내면의 평화와 조화를 추구하는 유형" }
+        "1": { label: "1유형: 개혁가 (The Reformer)", desc: "원칙과 완벽을 추구하며 세상을 개선하려는 유형. 사역 현장에서 규정과 기강을 세우는 '천법 수호자'로 빛을 발합니다." },
+        "2": { label: "2유형: 조력가 (The Helper)", desc: "타인을 도우며 사랑과 관심을 주고받길 원하는 유형. 심방과 교육을 통해 식구들을 섬기는 '참부모 심정'의 소유자입니다." },
+        "3": { label: "3유형: 성취가 (The Achiever)", desc: "목표를 달성하고 성공을 통해 인정받으려는 유형. 전도 실적과 섭리 목표를 향해 전력 질주하는 '현장 사령관'입니다." },
+        "4": { label: "4유형: 예술가 (The Individualist)", desc: "자신만의 독특한 정체성과 감성을 중요시하는 유형. 문화 사역과 창의적 콘텐츠로 하늘의 아름다움을 표현하는 '섭리 예술가'입니다." },
+        "5": { label: "5유형: 탐구자 (The Investigator)", desc: "지식을 쌓고 세상을 객관적으로 관찰하려는 유형. 원리 강의와 교재 연구에 깊이를 더하는 '말씀 연구가'입니다." },
+        "6": { label: "6유형: 충성가 (The Loyalist)", desc: "안전을 추구하며 공동체에 헌신하는 신중한 유형. 불확실한 상황에서도 조직과 식구들을 지키는 '섭리의 파수꾼'입니다." },
+        "7": { label: "7유형: 열정가 (The Enthusiast)", desc: "새로운 경험과 즐거움을 추구하며 긍정적인 유형. 전도 현장과 청년 사역에서 천국 기쁨을 전파하는 '복음의 개척자'입니다." },
+        "8": { label: "8유형: 도전가 (The Challenger)", desc: "강한 힘으로 주도권을 잡고 정의를 실현하려는 유형. 어려운 개척지에서도 굽히지 않는 '기동대장'의 기질을 가집니다." },
+        "9": { label: "9유형: 평화주의자 (The Peacemaker)", desc: "갈등을 피하고 내면의 평화와 조화를 추구하는 유형. 분쟁을 중재하고 연합을 이끄는 '천일국 화평의 사신'입니다." }
     },
     big5: {
         openness: { name: "개방성 (Openness)", desc: "새로운 경험과 지적 호기심", high: "창의적이고 혁신적임", low: "전통과 안정을 중시함" },
@@ -163,18 +163,25 @@ export const detailData: DetailData = {
         neuroticism: { name: "신경성 (Neuroticism)", desc: "정서적 민감성 및 스트레스 반응", high: "예민하고 신중함", low: "침착하고 낙천적임" }
     },
     anchor: {
-        "managerial": { label: "관리자 지향 (General Manager)", desc: "조직을 이끌고 책임지는 리더십을 중시합니다." },
-        "expert": { label: "전문가 지향 (Technical/Functional)", desc: "특정 분야의 깊이 있는 전문성을 추구합니다." },
-        "autonomy": { label: "자율성 지향 (Autonomy/Independence)", desc: "자신의 방식대로 일할 수 있는 자유를 원합니다." },
-        "security": { label: "안정성 지향 (Security/Stability)", desc: "고용 안정과 예측 가능한 미래를 선호합니다." },
-        "entrepreneurial": { label: "창조성 지향 (Entrepreneurial Creativity)", desc: "새로운 것을 만들고 모험하는 것을 즐깁니다." },
-        "service": { label: "봉사 지향 (Service/Dedication)", desc: "타인을 돕고 사회에 기여하는 가치를 둡니다." },
-        "challenge": { label: "도전 지향 (Pure Challenge)", desc: "어려운 문제를 해결하고 승리하는 것을 즐깁니다." },
-        "lifestyle": { label: "라이프스타일 (Lifestyle)", desc: "일과 개인 생활의 균형을 중요시합니다." }
+        "managerial": { label: "관리자 지향 (General Manager)", desc: "조직 전체를 이끌며 책임지는 것에서 보람을 찾습니다. 교구장·본부장 등 리더십 역할에서 진정한 소명을 발견하는 유형입니다.", advice: "팀원들의 성장을 위해 권한을 위임하고, 결과뿐 아니라 과정도 소중히 여기십시오." },
+        "expert": { label: "전문가 지향 (Technical/Functional)", desc: "원리 교육·상담·재정 등 특정 사역 분야에서 최고의 전문성을 쌓는 것이 공직 생활의 원동력입니다.", advice: "전문 지식이 공동체 전체에 흘러가도록 후배 양성과 교육에 투자하십시오." },
+        "autonomy": { label: "자율성 지향 (Autonomy/Independence)", desc: "세밀한 통제보다 자신만의 목회 방식으로 사역할 수 있는 환경에서 최고의 역량을 발휘합니다.", advice: "자율성을 누리되 책임도 함께 지는 성숙한 자율로 발전시키십시오." },
+        "security": { label: "안정성 지향 (Security/Stability)", desc: "예측 가능하고 안정적인 사역 환경 속에서 묵묵히 헌신하는 것이 보람입니다. 잦은 발령보다 한 지역에서 깊이 뿌리내리는 목회를 선호합니다.", advice: "안정 속에서도 도전과 성장의 기회를 스스로 만들어가십시오." },
+        "entrepreneurial": { label: "창조성 지향 (Entrepreneurial Creativity)", desc: "기존 방식에 얽매이지 않고 새로운 사역 모델과 프로그램을 개발하는 데서 에너지가 솟습니다. 개척 교회·신사업·문화 사역에 최적화된 유형입니다.", advice: "창의적 아이디어를 팀 전체가 수용할 수 있도록 소통과 설득의 역량도 함께 키우십시오." },
+        "service": { label: "봉사 지향 (Service/Dedication)", desc: "식구들의 필요를 채우고 약자를 돌보는 사역에서 진정한 보람을 느낍니다. 참부모님의 '종의 종' 정신을 가장 충실히 구현하는 유형입니다.", advice: "헌신적 봉사가 자기희생을 넘어 지속 가능한 사랑으로 성장하도록 자기 돌봄도 소홀히 하지 마십시오." },
+        "challenge": { label: "도전 지향 (Pure Challenge)", desc: "불가능해 보이는 목표, 어려운 개척지, 해결하기 힘든 문제 앞에서 오히려 투지가 불타오릅니다. 포화 지역보다 미개척 선교지에서 빛을 발합니다.", advice: "승리 후 정착과 지속을 위한 인내의 근육도 함께 키워나가십시오." },
+        "lifestyle": { label: "균형 지향 (Lifestyle Integration)", desc: "신앙·사역·가정·건강이 균형 있게 조화를 이룰 때 최고의 목회자가 됩니다. 가정이 무너지면 사역도 무너진다는 진리를 몸소 살아내는 유형입니다.", advice: "가정이 곧 천일국의 기초임을 기억하고, 배우자·자녀와의 시간을 사역과 동등하게 소중히 여기십시오." }
     },
     via: {
-        desc: "24가지 성격 강점 중 대표 강점 5가지를 선택합니다.",
-        list: ["지혜", "용기", "인애", "정의", "절제", "초월", "창의성", "호기심", "개방성", "학구열", "안목", "용감함", "끈기", "진실성", "활력", "사랑", "친절", "사회지능", "시민정신", "공정성", "리더십", "용서", "겸손", "신중함", "자기조절", "감상력", "감사", "희망", "유머", "영성"]
+        desc: "하나님이 주신 24가지 성품 강점 중, 사역 현장에서 가장 자연스럽게 발휘되는 대표 강점 5가지를 선택하십시오. 이것이 당신의 '천적(天的) 은사'입니다.",
+        list: ["지혜 (Wisdom)", "용기 (Bravery)", "인애 (Kindness)", "정의 (Justice)", "절제 (Temperance)", "초월 (Transcendence)", "창의성 (Creativity)", "호기심 (Curiosity)", "개방성 (Open-mindedness)", "학구열 (Love of Learning)", "안목 (Perspective)", "용감함 (Bravery)", "끈기 (Perseverance)", "진실성 (Honesty)", "활력 (Zest)", "사랑 (Love)", "친절 (Kindness)", "사회지능 (Social Intelligence)", "시민정신 (Teamwork)", "공정성 (Fairness)", "리더십 (Leadership)", "용서 (Forgiveness)", "겸손 (Humility)", "신중함 (Prudence)", "자기조절 (Self-regulation)", "감상력 (Appreciation of Beauty)", "감사 (Gratitude)", "희망 (Hope)", "유머 (Humor)", "영성 (Spirituality)"]
+    },
+    eq: {
+        awareness: { name: "자기인식 (Self-Awareness)", desc: "내 감정과 그 원인을 정확히 파악하는 능력", high: "자신의 감정 상태를 실시간으로 인식하고 사역에 활용", low: "감정에 이끌려 행동하거나 자신의 상태를 잘 모름", fit: "상담·심방·리더십 역할" },
+        regulation: { name: "자기조절 (Self-Regulation)", desc: "분노·좌절·실망 순간에 충동을 다스리는 능력", high: "위기 상황에서도 침착하게 대응하며 조직의 안정감 형성", low: "감정적 반응이 즉각적으로 나타나 관계에 어려움 발생", fit: "행정·갈등 조정·리더십 역할" },
+        motivation: { name: "내적 동기 (Intrinsic Motivation)", desc: "외부 보상 없이도 사명감으로 움직이는 능력", high: "어려운 환경에서도 헌신을 유지하며 주변에 영감을 줌", low: "인정과 보상이 없을 때 동기 저하가 빠르게 나타남", fit: "개척·선교·창업 역할" },
+        empathy: { name: "공감 (Empathy)", desc: "식구·성도의 감정을 언어 너머에서 읽는 능력", high: "한 마디 없이도 상대의 마음을 읽어 신뢰를 구축", low: "논리·원칙 중심으로 접근해 상대가 이해받지 못한다고 느낌", fit: "심방·교육·청년 사역 역할" },
+        social: { name: "사회적 기술 (Social Skills)", desc: "갈등을 중재하고 신뢰 관계를 구축하는 능력", high: "다양한 이해관계자를 연결하고 협력 네트워크를 형성", low: "관계 관리보다 업무 처리에 집중하여 팀워크가 약화될 수 있음", fit: "대외협력·팀 사역·기관 연계 역할" }
     }
 };
 

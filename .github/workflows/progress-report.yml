@@ -1,0 +1,191 @@
+name: 서진 2시간 중간 보고 (업무시간)
+
+on:
+  schedule:
+    # 한국시간 평일 08:00, 10:00, 12:00, 14:00, 16:00, 18:00
+    # UTC: 23:00(전날), 01:00, 03:00, 05:00, 07:00, 09:00
+    - cron: '0 23 * * 0-4'   # KST 08:00 (출근 브리핑)
+    - cron: '0 1 * * 1-5'    # KST 10:00
+    - cron: '0 3 * * 1-5'    # KST 12:00 (점심)
+    - cron: '0 5 * * 1-5'    # KST 14:00
+    - cron: '0 7 * * 1-5'    # KST 16:00
+    - cron: '0 9 * * 1-5'    # KST 18:00 (퇴근 보고)
+  workflow_dispatch:
+    inputs:
+      report_type:
+        description: '보고 유형'
+        required: false
+        default: '중간보고'
+        type: choice
+        options:
+          - 중간보고
+          - 출근브리핑
+          - 퇴근보고
+
+jobs:
+  send-progress-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 5
+
+      - name: 보고 데이터 수집
+        id: collect
+        run: |
+          KST_TIME=$(TZ='Asia/Seoul' date '+%H:%M')
+          KST_DATE=$(TZ='Asia/Seoul' date '+%Y-%m-%d')
+          KST_HOUR=$(TZ='Asia/Seoul' date '+%H')
+
+          echo "kst_time=${KST_TIME}" >> $GITHUB_OUTPUT
+          echo "kst_date=${KST_DATE}" >> $GITHUB_OUTPUT
+
+          # 보고 유형 결정
+          if [ "$KST_HOUR" = "08" ]; then
+            REPORT_TYPE="출근 브리핑"
+          elif [ "$KST_HOUR" = "18" ]; then
+            REPORT_TYPE="퇴근 최종 보고"
+          else
+            REPORT_TYPE="중간 보고 (${KST_TIME})"
+          fi
+          echo "report_type=${REPORT_TYPE}" >> $GITHUB_OUTPUT
+
+          # 최근 커밋 내역 수집
+          RECENT_COMMITS=$(git log --oneline -5 --format="• %s (%ar)")
+          echo "recent_commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$RECENT_COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # 오늘 보고서 존재 여부
+          REPORT_FILE="reports/${KST_DATE}.md"
+          if [ -f "$REPORT_FILE" ]; then
+            echo "has_report=true" >> $GITHUB_OUTPUT
+            # ⚠️ 섹션 추출
+            CHECKS=$(grep -A 20 "여보짱 확인 필요" "$REPORT_FILE" | grep "^\*\*\[" | head -5)
+            echo "checks<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHECKS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "has_report=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 중간 보고 이메일 발송
+        run: |
+          python3 << 'PYEOF'
+          import json, os, subprocess
+
+          kst_time = os.environ['KST_TIME']
+          kst_date = os.environ['KST_DATE']
+          report_type = os.environ['REPORT_TYPE']
+          recent_commits = os.environ.get('RECENT_COMMITS', '작업 내역 없음')
+
+          # 팀 상태 HTML
+          team_status = """
+          <table style="width:100%;border-collapse:collapse;font-size:14px;margin:16px 0">
+            <tr style="background:#1e3a5f;color:white">
+              <th style="padding:10px;text-align:left">팀원</th>
+              <th style="padding:10px;text-align:left">현재 역할</th>
+              <th style="padding:10px;text-align:left">담당 작업</th>
+            </tr>
+            <tr style="background:#f8f9fa">
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>김치워리어</strong> (PM)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">Phase 2 진행 지휘</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">진단 문항 개선 작업 분배·감독</td>
+            </tr>
+            <tr>
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>도라에몽</strong> (리서처)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">문항 분석 완료</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">에니어그램·앵커·VIA 현황 파악 → 짱구에 전달</td>
+            </tr>
+            <tr style="background:#f8f9fa">
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>짱구</strong> (기획자)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">가정연합 맞춤 문항 기획</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">에니어그램 9유형·앵커 8항목 사역 언어 초안 작성</td>
+            </tr>
+            <tr>
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>라라</strong> (실무자)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">코드 구현 완료</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">data.ts 문항 텍스트 전면 업데이트 · 커밋 대기</td>
+            </tr>
+            <tr style="background:#f8f9fa">
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>서진</strong> (총괄)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">보고 시스템 운영</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">2시간 중간 보고 workflow 구축 · 여보짱 보고</td>
+            </tr>
+          </table>
+          """
+
+          commits_html = "".join([f"<li style='margin:4px 0'>{c}</li>" for c in recent_commits.split('\n') if c.strip()])
+
+          html = f"""
+          <div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:0;color:#1a1a1a">
+            <div style="background:linear-gradient(135deg,#1e3a5f,#2d5986);color:white;padding:20px 28px;border-radius:12px 12px 0 0">
+              <p style="margin:0 0 4px;font-size:11px;opacity:0.7;text-transform:uppercase;letter-spacing:1px">가정연합 목회자유형 진단 시스템</p>
+              <h1 style="margin:0;font-size:18px">🔔 {kst_date} {kst_time} — {report_type}</h1>
+              <p style="margin:6px 0 0;opacity:0.8;font-size:12px">서진 → 여보짱 | 5인 팀 업무 현황</p>
+            </div>
+            <div style="border:1px solid #e5e7eb;border-top:none;padding:24px;background:white;border-radius:0 0 12px 12px">
+
+              <h2 style="color:#1e3a5f;border-bottom:2px solid #e5e7eb;padding-bottom:8px">👥 5인 팀 현재 상태</h2>
+              {team_status}
+
+              <h2 style="color:#1e3a5f;border-bottom:2px solid #e5e7eb;padding-bottom:8px;margin-top:24px">📝 최근 작업 이력 (GitHub 커밋)</h2>
+              <ul style="line-height:1.8;padding-left:20px">
+                {commits_html if commits_html else '<li>최근 커밋 없음</li>'}
+              </ul>
+
+              <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:16px;margin-top:20px">
+                <p style="margin:0;font-weight:bold;color:#92400e">⚠️ 여보짱 확인 필요 사항</p>
+                <p style="margin:8px 0 0;color:#78350f;font-size:14px">
+                  현재 Phase 2 진행 중입니다.<br>
+                  특별한 지시 사항이 있으시면 채팅으로 알려주십시오.
+                </p>
+              </div>
+
+              <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:16px">
+                <p style="margin:0;font-weight:bold;color:#0369a1">📅 다음 2시간 예정 작업</p>
+                <ul style="margin:8px 0 0;padding-left:20px;color:#0c4a6e;font-size:14px;line-height:1.8">
+                  <li>EQ 감성지능 진단 항목을 실제 진단 화면에 연결</li>
+                  <li>Big5 설명 가정연합 사역 언어로 보강</li>
+                  <li>진단 결과 채점 로직 EQ 반영 여부 검토</li>
+                </ul>
+              </div>
+
+            </div>
+            <p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:8px">
+              2시간 자동 보고 | 서진 자동 보고 시스템 | {kst_date} {kst_time} KST
+            </p>
+          </div>
+          """
+
+          payload = {
+              "from": "서진 <onboarding@resend.dev>",
+              "to": ["nokira1024@gmail.com"],
+              "subject": f"[서진 중간보고] {kst_date} {kst_time} — {report_type}",
+              "html": html
+          }
+
+          with open('/tmp/progress_payload.json', 'w') as f:
+              json.dump(payload, f, ensure_ascii=False)
+
+          result = subprocess.run([
+              'curl', '-s', '-X', 'POST', 'https://api.resend.com/emails',
+              '-H', f'Authorization: Bearer {os.environ["RESEND_API_KEY"]}',
+              '-H', 'Content-Type: application/json',
+              '-d', '@/tmp/progress_payload.json'
+          ], capture_output=True, text=True)
+
+          resp = json.loads(result.stdout)
+          if 'id' in resp:
+              print(f"✅ 중간 보고 발송 완료 ({kst_time}): {resp['id']}")
+          else:
+              print(f"❌ 발송 실패: {result.stdout}")
+              exit(1)
+          PYEOF
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          KST_TIME: ${{ steps.collect.outputs.kst_time }}
+          KST_DATE: ${{ steps.collect.outputs.kst_date }}
+          REPORT_TYPE: ${{ steps.collect.outputs.report_type }}
+          RECENT_COMMITS: ${{ steps.collect.outputs.recent_commits }}

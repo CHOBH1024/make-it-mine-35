@@ -7,12 +7,69 @@ import { Archetype } from '@/lib/types';
 
 export const LibraryView: React.FC = () => {
     const [selectedArchetype, setSelectedArchetype] = useState<Archetype | null>(null);
+    const [viewMode, setViewMode] = useState<'cards' | 'hr'>('cards');
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-20 fade-in">
             <SectionTitle title="아키타입 도서관" subtitle="9가지 소명의 색깔들을 깊이 있게 탐구합니다." />
-            
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+
+            {/* View Toggle */}
+            <div className="flex gap-2 mb-10 bg-stone-100 p-1 rounded-xl w-fit">
+                <button onClick={() => setViewMode('cards')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'cards' ? 'bg-white text-blue-900 shadow' : 'text-stone-500 hover:text-stone-700'}`}>
+                    <span className="flex items-center gap-2"><Icon name="LayoutGrid" size={14}/> 아키타입 목록</span>
+                </button>
+                <button onClick={() => setViewMode('hr')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'hr' ? 'bg-white text-blue-900 shadow' : 'text-stone-500 hover:text-stone-700'}`}>
+                    <span className="flex items-center gap-2"><Icon name="BarChart2" size={14}/> HR 배치 비교</span>
+                </button>
+            </div>
+
+            {viewMode === 'hr' && (
+                <div className="space-y-4 mb-16">
+                    <p className="text-sm text-stone-500 mb-6">9개 아키타입의 본부/현장 적합도와 추천 부서를 한눈에 비교합니다.</p>
+                    {archetypes.map(t => (
+                        <div key={t.id} className="bg-white rounded-2xl border border-stone-200 p-6 hover:border-blue-200 transition-all">
+                            <div className="flex flex-col md:flex-row md:items-center gap-4">
+                                <div className="flex items-center gap-3 min-w-[200px]">
+                                    <div className="w-10 h-10 bg-blue-900 text-white rounded-xl flex items-center justify-center shrink-0">
+                                        <Icon name={t.symbol} size={18}/>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-slate-900 text-sm">{t.title}</p>
+                                        <p className="text-xs text-stone-400">{t.deploymentFit?.discProfile?.primaryType?.split('(')[0]?.trim() ?? ''}</p>
+                                    </div>
+                                </div>
+                                <div className="flex-grow grid grid-cols-2 gap-3">
+                                    <div>
+                                        <div className="flex justify-between text-xs font-bold mb-1">
+                                            <span className="text-blue-700">본부 적합도</span>
+                                            <span className="text-blue-900">{t.deploymentFit?.hqScore ?? 0}/10</span>
+                                        </div>
+                                        <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
+                                            <div className="h-full bg-blue-600 rounded-full" style={{width: `${(t.deploymentFit?.hqScore ?? 0) * 10}%`}}/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex justify-between text-xs font-bold mb-1">
+                                            <span className="text-green-700">현장 적합도</span>
+                                            <span className="text-green-900">{t.deploymentFit?.fieldScore ?? 0}/10</span>
+                                        </div>
+                                        <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
+                                            <div className="h-full bg-green-600 rounded-full" style={{width: `${(t.deploymentFit?.fieldScore ?? 0) * 10}%`}}/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap gap-1 min-w-[200px]">
+                                    {(t.deploymentFit?.idealDepartments ?? []).slice(0, 3).map((dept, i) => (
+                                        <span key={i} className="text-xs bg-blue-50 text-blue-800 px-2 py-0.5 rounded border border-blue-100 font-bold">{dept}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {viewMode === 'cards' && <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
                 {archetypes.map(t => (
                     <div 
                         key={t.id} 
@@ -59,7 +116,7 @@ export const LibraryView: React.FC = () => {
                         </div>
                     </div>
                 ))}
-            </div>
+            </div>}
 
             {/* Detailed Modal */}
             {selectedArchetype && (

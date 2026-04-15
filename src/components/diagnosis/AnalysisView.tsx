@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Icon } from '@/components/diagnosis/Icon';
 import { detailData, managementProfiles } from '@/lib/data';
+import { educationContent } from '@/lib/educationData';
 import { Archetype, Inputs, SavedAnalysis } from '@/lib/types';
 import { TeamBuilder } from '@/components/diagnosis/TeamBuilder';
 import { generateAnalysisPdf } from '@/lib/generatePdf';
@@ -134,7 +135,7 @@ const getMBTI = (big5: Inputs['big5']): string => {
 };
 
 export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onRestore }) => {
-    const [tab, setTab] = useState<'details' | 'cross_analysis' | 'growth' | 'practical' | 'prayer' | 'hr' | 'team' | 'management'>('details');
+    const [tab, setTab] = useState<'details' | 'cross_analysis' | 'growth' | 'practical' | 'prayer' | 'hr' | 'team' | 'management' | 'education'>('details');
     const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([]);
     const [saveName, setSaveName] = useState('');
     const [showSaveUI, setShowSaveUI] = useState(false);
@@ -384,6 +385,12 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                     className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='management' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
                 >
                     <Icon name="BarChart2" size={20} /> 경영학 프로파일
+                </button>
+                <button
+                    onClick={() => setTab('education')}
+                    className={`pb-4 px-3 text-base md:text-xl font-serif transition-all flex items-center gap-2 whitespace-nowrap ${tab==='education' ? 'text-blue-900 font-bold border-b-4 border-blue-900' : 'text-stone-400 hover:text-stone-600'}`}
+                >
+                    <Icon name="GraduationCap" size={20} /> 교육 커리큘럼
                 </button>
             </div>
 
@@ -1792,6 +1799,99 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    );
+                })()}
+
+                {tab === 'education' && result && (() => {
+                    const edu = educationContent.find(e => e.archetypeId === result.id);
+                    if (!edu) return <div className="p-8 text-stone-400">교육 데이터를 불러올 수 없습니다.</div>;
+                    return (
+                        <div className="space-y-10 px-2">
+                            {/* Core Competencies */}
+                            <section className="bg-white rounded-3xl border border-stone-200 shadow-lg p-8">
+                                <h3 className="text-2xl font-bold text-blue-900 mb-6 font-serif flex items-center gap-3">
+                                    <Icon name="Target" className="text-blue-600"/> 핵심 역량 개발 목표
+                                </h3>
+                                <div className="grid md:grid-cols-2 gap-3">
+                                    {edu.coreCompetencies.map((c, i) => (
+                                        <div key={i} className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                                            <div className="w-7 h-7 bg-blue-900 text-white rounded-full flex items-center justify-center text-sm font-black shrink-0">{i+1}</div>
+                                            <span className="font-bold text-slate-800">{c}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* CLA Requirement */}
+                            {result.deploymentFit?.claRequirement && (
+                                <section className="bg-amber-50 rounded-3xl border border-amber-200 p-8">
+                                    <h3 className="text-2xl font-bold text-amber-900 mb-6 font-serif flex items-center gap-3">
+                                        <Icon name="BookOpen" className="text-amber-600"/> CLA 이수 요건
+                                    </h3>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        <div>
+                                            <p className="text-sm font-bold text-amber-700 mb-1">최소 이수 기간</p>
+                                            <p className="text-lg font-bold text-slate-900">{result.deploymentFit.claRequirement.minimumPeriod}</p>
+                                        </div>
+                                        {result.deploymentFit.claRequirement.exemptionCondition && (
+                                            <div>
+                                                <p className="text-sm font-bold text-amber-700 mb-1">면제 조건</p>
+                                                <p className="text-slate-700 text-sm">{result.deploymentFit.claRequirement.exemptionCondition}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {result.deploymentFit.claRequirement.alternativePrograms && (
+                                        <div className="mt-4">
+                                            <p className="text-sm font-bold text-amber-700 mb-2">대체 프로그램</p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {result.deploymentFit.claRequirement.alternativePrograms.map((p, i) => (
+                                                    <span key={i} className="bg-white border border-amber-200 text-amber-800 text-sm px-3 py-1 rounded-full font-bold">{p}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </section>
+                            )}
+
+                            {/* Recommended Books */}
+                            <section className="bg-white rounded-3xl border border-stone-200 shadow-lg p-8">
+                                <h3 className="text-2xl font-bold text-blue-900 mb-6 font-serif flex items-center gap-3">
+                                    <Icon name="Library" className="text-indigo-600"/> 추천 도서
+                                </h3>
+                                <div className="space-y-4">
+                                    {edu.books.map((b, i) => (
+                                        <div key={i} className="flex gap-4 p-5 bg-stone-50 rounded-2xl border border-stone-100">
+                                            <div className="w-10 h-14 bg-blue-900 rounded text-white flex items-center justify-center text-lg font-black shrink-0">{i+1}</div>
+                                            <div>
+                                                <p className="font-bold text-slate-900">{b.title}</p>
+                                                <p className="text-sm text-stone-500 mb-1">{b.author}</p>
+                                                <p className="text-sm text-slate-600 leading-relaxed">{b.reason}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* Spiritual Discipline + Warning */}
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <section className="bg-rose-50 rounded-3xl border border-rose-200 p-8">
+                                    <h3 className="text-xl font-bold text-rose-900 mb-4 font-serif flex items-center gap-2">
+                                        <Icon name="Sunrise" className="text-rose-600"/> 영성 훈련
+                                    </h3>
+                                    <p className="text-slate-700 leading-relaxed">{edu.spiritualDiscipline}</p>
+                                </section>
+                                <section className="bg-stone-50 rounded-3xl border border-stone-200 p-8">
+                                    <h3 className="text-xl font-bold text-slate-900 mb-4 font-serif flex items-center gap-2">
+                                        <Icon name="AlertTriangle" className="text-amber-600"/> 번아웃 경고 신호
+                                    </h3>
+                                    <p className="text-slate-700 leading-relaxed mb-3">{edu.warningSign}</p>
+                                    <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                                        <p className="text-xs font-bold text-green-700 mb-1">회복 방법</p>
+                                        <p className="text-slate-700 text-sm">{edu.recoveryTip}</p>
+                                    </div>
+                                </section>
                             </div>
                         </div>
                     );

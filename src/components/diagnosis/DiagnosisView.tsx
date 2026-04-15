@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Icon } from '@/components/diagnosis/Icon';
 import { SectionTitle } from '@/components/diagnosis/SectionTitle';
 import { externalTests, detailData, archetypes } from '@/lib/data';
-import { Inputs, Big5Level, Archetype } from '@/lib/types';
+import { Inputs, Big5Level, EQTrait, Archetype } from '@/lib/types';
 
 interface DiagnosisViewProps {
     inputs: Inputs;
@@ -11,7 +11,7 @@ interface DiagnosisViewProps {
 }
 
 interface DiagnosisModalProps {
-    type: 'enneagram' | 'big5' | 'anchor' | 'via';
+    type: 'enneagram' | 'big5' | 'anchor' | 'via' | 'eq';
     inputs: Inputs;
     setInputs: React.Dispatch<React.SetStateAction<Inputs>>;
     onClose: () => void;
@@ -34,7 +34,8 @@ const ProgressBar = ({ progress }: { progress: number }) => (
 const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs, onClose }) => {
     const isBig5 = type === 'big5';
     const isVia = type === 'via';
-    
+    const isEQ = type === 'eq';
+
     // Prevent background scrolling when modal is open
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -44,11 +45,19 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
     }, []);
 
     const viaList = detailData.via.list || [];
+    const eqData = detailData.eq || {};
 
     const handleBig5Change = (trait: string, value: Big5Level) => {
         setInputs(prev => ({
             ...prev,
             big5: { ...prev.big5, [trait]: value }
+        }));
+    };
+
+    const handleEQChange = (trait: EQTrait, value: Big5Level) => {
+        setInputs(prev => ({
+            ...prev,
+            eq: { ...prev.eq, [trait]: value }
         }));
     };
 
@@ -67,8 +76,8 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                 {/* Modal Header */}
                 <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-stone-100 flex justify-between items-center">
                     <h3 className="text-2xl font-serif font-bold text-blue-900 capitalize flex items-center gap-3">
-                        <Icon name={isBig5 ? "Brain" : isVia ? "Sparkles" : type === 'enneagram' ? "Fingerprint" : "Anchor"} className="text-amber-600" />
-                        {isBig5 ? "Big 5 성격 프로파일링" : isVia ? "VIA 강점 선택 (5개)" : type === 'enneagram' ? "에니어그램 유형 선택" : "커리어 앵커 선택"}
+                        <Icon name={isBig5 ? "Brain" : isVia ? "Sparkles" : isEQ ? "Heart" : type === 'enneagram' ? "Fingerprint" : "Anchor"} className="text-amber-600" />
+                        {isBig5 ? "Big 5 성격 프로파일링" : isVia ? "VIA 강점 선택 (5개)" : isEQ ? "EQ 감성지능 프로파일링" : type === 'enneagram' ? "에니어그램 유형 선택" : "커리어 앵커 선택"}
                     </h3>
                     <button onClick={onClose} className="p-2 hover:bg-stone-100 rounded-full text-stone-400 hover:text-blue-900 transition-colors">
                         <Icon name="X" size={24} />
@@ -156,6 +165,49 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                                 })}
                             </div>
                         </div>
+                    ) : isEQ ? (
+                        <div className="space-y-8">
+                            <div className="bg-rose-50 p-4 rounded-lg text-base text-rose-800 mb-6 flex gap-3">
+                                <Icon name="Heart" size={20} className="shrink-0 mt-0.5"/>
+                                <div>
+                                    <span className="font-bold block mb-1">EQ 진단 팁</span>
+                                    사역 현장에서 자신의 평소 모습을 기준으로 선택하십시오. 이상적인 모습이 아닌 실제 모습을 선택해야 정확한 진단이 됩니다.
+                                </div>
+                            </div>
+                            {Object.entries(eqData).map(([key, info]) => (
+                                <div key={key} className="bg-stone-50 p-6 rounded-xl border border-stone-200 hover:border-rose-200 transition-colors">
+                                    <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-4">
+                                        <div>
+                                            <h4 className="text-lg font-bold text-slate-900 font-serif">{info.name}</h4>
+                                            <p className="text-sm text-stone-500 mt-1">{info.desc}</p>
+                                        </div>
+                                        <div className="flex bg-white rounded-lg p-1 border border-stone-200 shadow-sm shrink-0">
+                                            {(['Low', 'Mid', 'High'] as Big5Level[]).map(level => (
+                                                <button
+                                                    key={level}
+                                                    onClick={() => handleEQChange(key as EQTrait, level)}
+                                                    className={`px-5 py-2 rounded-md text-base font-bold transition-all ${
+                                                        inputs.eq[key as EQTrait] === level
+                                                            ? (level === 'High' ? 'bg-rose-700 text-white shadow' : level === 'Low' ? 'bg-stone-500 text-white shadow' : 'bg-stone-400 text-white shadow')
+                                                            : 'text-stone-500 hover:bg-stone-100'
+                                                    }`}
+                                                >
+                                                    {level === 'High' ? '높음' : level === 'Mid' ? '보통' : '낮음'}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4 text-sm mt-3">
+                                        <div className={`p-3 rounded transition-colors ${inputs.eq[key as EQTrait] === 'High' ? 'bg-rose-100 text-rose-900 ring-1 ring-rose-300' : 'bg-white text-stone-400 border border-stone-100'}`}>
+                                            <span className="font-bold mr-1">High:</span> {info.high}
+                                        </div>
+                                        <div className={`p-3 rounded transition-colors ${inputs.eq[key as EQTrait] === 'Low' ? 'bg-stone-200 text-stone-800 ring-1 ring-stone-400' : 'bg-white text-stone-400 border border-stone-100'}`}>
+                                            <span className="font-bold mr-1">Low:</span> {info.low}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     ) : (
                         <div className="grid gap-4">
                             {Object.entries(type === 'enneagram' ? detailData.enneagram : detailData.anchor).map(([k, v]) => (
@@ -184,10 +236,10 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                 {/* Modal Footer */}
                 <div className="sticky bottom-0 bg-white/95 backdrop-blur px-8 py-6 border-t border-stone-100">
                      <button 
-                        onClick={onClose} 
+                        onClick={onClose}
                         className="w-full py-4 bg-blue-900 text-white text-lg font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-lg active:scale-[0.99]"
                     >
-                        {isBig5 ? "입력 완료" : isVia ? `선택 완료 (${inputs.via.length}/5)` : "닫기"}
+                        {isBig5 ? "입력 완료" : isVia ? `선택 완료 (${inputs.via.length}/5)` : isEQ ? `EQ 입력 완료` : "닫기"}
                     </button>
                 </div>
             </div>
@@ -196,7 +248,7 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
 };
 
 export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs, onFinish }) => {
-    const [activeModal, setActiveModal] = useState<'enneagram' | 'big5' | 'anchor' | 'via' | null>(null);
+    const [activeModal, setActiveModal] = useState<'enneagram' | 'big5' | 'anchor' | 'via' | 'eq' | null>(null);
 
     // Calculate Progress
     const isEnneagramDone = !!inputs.enneagram;
@@ -204,20 +256,23 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
     const isBig5Done = big5Count === 5;
     const isAnchorDone = !!inputs.anchor;
     const isViaDone = inputs.via.length === 5;
-    
+    const eqCount = Object.values(inputs.eq).filter(v => v !== '').length;
+    const isEQDone = eqCount === 5;
+
     const progress = useMemo(() => {
         let count = 0;
         if (isEnneagramDone) count += 1;
         if (isAnchorDone) count += 1;
         if (isViaDone) count += 1;
         count += (big5Count / 5); // Big5 counts as 1 total point
-        return (count / 4) * 100;
+        count += (eqCount / 5);   // EQ counts as 1 total point
+        return (count / 5) * 100;
     }, [inputs]);
 
-    const isReady = isEnneagramDone && isBig5Done && isAnchorDone && isViaDone;
+    const isReady = isEnneagramDone && isBig5Done && isAnchorDone && isViaDone && isEQDone;
 
     const renderCard = (
-        type: 'enneagram' | 'big5' | 'anchor' | 'via',
+        type: 'enneagram' | 'big5' | 'anchor' | 'via' | 'eq',
         title: string,
         subtitle: string,
         icon: string,
@@ -226,7 +281,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
         valuePreview?: React.ReactNode
     ) => (
         <div 
-            onClick={() => setActiveModal(type)} 
+            onClick={() => setActiveModal(type as 'enneagram' | 'big5' | 'anchor' | 'via' | 'eq')}
             className={`
                 group relative p-6 bg-white border-2 rounded-2xl cursor-pointer transition-all duration-300
                 ${isDone 
@@ -284,7 +339,8 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 neuroticism: 'Mid',
                 [archetype.traits.big5]: 'High'
             },
-            via: archetype.traits.via.slice(0, 5)
+            via: archetype.traits.via.slice(0, 5),
+            eq: { awareness: 'Mid', regulation: 'Mid', motivation: 'Mid', empathy: 'Mid', social: 'Mid' }
         };
 
         setInputs(syntheticInputs);
@@ -359,10 +415,10 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 )}
 
                 {renderCard(
-                    'via', 
-                    "VIA 대표 강점 (5개)", 
-                    "Signature Strength", 
-                    "Sparkles", 
+                    'via',
+                    "VIA 대표 강점 (5개)",
+                    "Signature Strength",
+                    "Sparkles",
                     "text-amber-600",
                     isViaDone,
                     <div className="flex flex-wrap gap-1">
@@ -371,6 +427,21 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                                 {v}
                             </span>
                         ))}
+                    </div>
+                )}
+
+                {renderCard(
+                    'eq',
+                    "EQ 감성지능 (Goleman)",
+                    "Emotional Intelligence",
+                    "Heart",
+                    "text-rose-600",
+                    isEQDone,
+                    <div className="flex gap-1 items-center">
+                        {Object.entries(inputs.eq).map(([k, v]) => (
+                            <span key={k} title={k} className={`w-2 h-2 rounded-full ${v === 'High' ? 'bg-rose-500' : v === 'Mid' ? 'bg-rose-200' : 'bg-stone-200'}`}></span>
+                        ))}
+                        <span className="ml-2 text-sm text-rose-700">{eqCount}/5 입력됨</span>
                     </div>
                 )}
             </div>

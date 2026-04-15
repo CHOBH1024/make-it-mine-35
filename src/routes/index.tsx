@@ -27,6 +27,7 @@ function Index() {
     big5: { openness: "", conscientiousness: "", extraversion: "", agreeableness: "", neuroticism: "" },
     anchor: "",
     via: [],
+    eq: { awareness: "", regulation: "", motivation: "", empathy: "", social: "" },
   });
   const [results, setResults] = useState<Archetype[]>([]);
 
@@ -39,6 +40,12 @@ function Index() {
       if (targetInputs.big5[targetBig5] === "High") score += 2;
       const viaMatches = targetInputs.via.filter((v) => t.traits.via.includes(v)).length;
       score += viaMatches * 1.5;
+      // EQ bonus: leadership archetypes benefit from high motivation & empathy
+      if (targetInputs.eq) {
+        if (targetInputs.eq.motivation === "High") score += 0.5;
+        if (targetInputs.eq.empathy === "High") score += 0.5;
+        if (targetInputs.eq.awareness === "High") score += 0.3;
+      }
       return { ...t, score };
     });
     scores.sort((a, b) => (b.score || 0) - (a.score || 0));
