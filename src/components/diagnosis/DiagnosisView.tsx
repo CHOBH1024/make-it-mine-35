@@ -31,6 +31,61 @@ const ProgressBar = ({ progress }: { progress: number }) => (
     </div>
 );
 
+const EQ_QUESTIONS: Record<string, string[]> = {
+    awareness: [
+        "힘든 심방을 마친 직후 내 감정 상태가 어떤지 즉시 알아차린다",
+        "사역 중 화가 날 때 그 원인이 무엇인지 정확히 파악한다",
+        "내 감정이 식구들을 대하는 방식에 어떤 영향을 미치는지 인식한다",
+        "나의 사역적 강점과 약점을 객관적으로 파악하고 있다",
+        "나의 내면 상태(지침·불안·기쁨 등)를 다른 사람에게 솔직하게 표현할 수 있다",
+    ],
+    regulation: [
+        "식구가 무례하게 대할 때 즉각 반응하지 않고 감정을 먼저 다스린다",
+        "예상치 못한 사역 변화가 생겨도 침착하게 대처한다",
+        "회의 중 날카로운 비판을 받아도 방어적이 되지 않고 경청한다",
+        "부정적인 감정이 다음 사역에까지 이어지지 않도록 전환할 수 있다",
+        "충동적으로 결정을 내리기보다 감정이 가라앉은 후 판단한다",
+    ],
+    motivation: [
+        "외부 보상이나 인정이 없어도 사역에 열정을 유지한다",
+        "어려운 목표를 스스로 설정하고 끝까지 추구한다",
+        "실패하거나 비판을 받아도 사명감으로 다시 일어난다",
+        "사역이 힘들어도 '왜 이 일을 하는가'를 스스로 되새기며 동기를 유지한다",
+        "단기 성과보다 장기적인 섭리적 목표를 더 중요하게 여긴다",
+    ],
+    empathy: [
+        "식구의 말투나 표정에서 말하지 않은 감정 상태를 읽어낸다",
+        "상담 중 상대방이 무엇을 필요로 하는지 직감적으로 안다",
+        "나와 다른 가치관이나 배경을 가진 식구의 입장도 충분히 이해할 수 있다",
+        "힘든 식구를 만날 때 해결책보다 먼저 공감을 표현한다",
+        "타인의 감정에 영향을 받는 편이며 그들의 아픔이 나의 아픔으로 느껴진다",
+    ],
+    social: [
+        "갈등 상황에서 양쪽이 모두 수긍할 수 있는 해결책을 찾아낸다",
+        "처음 만나는 사람과도 짧은 시간 안에 신뢰 관계를 형성한다",
+        "팀 내 분위기가 가라앉아 있을 때 자연스럽게 분위기를 끌어올린다",
+        "다양한 성격의 사람들로 구성된 팀에서도 협업을 원활하게 이끈다",
+        "설득이 필요한 상황에서 논리보다 관계와 신뢰를 먼저 활용한다",
+    ],
+};
+
+const ENNEAGRAM_KEYWORDS: Record<string, string> = {
+    '1': '원칙·완벽', '2': '돌봄·관계', '3': '성취·인정',
+    '4': '정체성·독창', '5': '지식·독립', '6': '충성·안전',
+    '7': '자유·즐거움', '8': '힘·도전', '9': '평화·화합',
+};
+
+const ANCHOR_HINTS: Record<string, string> = {
+    managerial: "조직 전체를 이끌고 책임질 때 가장 보람을 느낀다",
+    expert: "특정 분야의 깊은 전문성을 쌓고 인정받을 때 보람을 느낀다",
+    autonomy: "내 방식대로 자율적으로 사역할 수 있을 때 최선을 발휘한다",
+    security: "안정적인 환경과 예측 가능한 미래가 보장될 때 헌신한다",
+    entrepreneurial: "새로운 것을 만들고 창조적 도전을 할 때 살아있음을 느낀다",
+    service: "타인을 돕고 세상에 의미 있는 기여를 할 때 보람을 느낀다",
+    challenge: "불가능해 보이는 문제를 해결하는 도전 자체에서 에너지를 얻는다",
+    lifestyle: "사역·가정·개인 삶의 균형이 유지될 때 지속적으로 헌신할 수 있다",
+};
+
 const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs, onClose }) => {
     const isBig5 = type === 'big5';
     const isVia = type === 'via';
@@ -46,6 +101,29 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
 
     const viaList = detailData.via.list || [];
     const eqData = detailData.eq || {};
+    const [viaSearch, setViaSearch] = useState('');
+    const [eqAnswers, setEqAnswers] = useState<Record<string, number[]>>({
+        awareness: [0,0,0,0,0], regulation: [0,0,0,0,0], motivation: [0,0,0,0,0],
+        empathy: [0,0,0,0,0], social: [0,0,0,0,0],
+    });
+
+    const calcEQLevel = (answers: number[]): Big5Level | '' => {
+        if (answers.some(a => a === 0)) return '';
+        const sum = answers.reduce((a, b) => a + b, 0);
+        return sum >= 13 ? 'High' : sum >= 8 ? 'Mid' : 'Low';
+    };
+
+    useEffect(() => {
+        if (!isEQ) return;
+        setInputs(prev => {
+            const newEq = { ...prev.eq };
+            (Object.keys(eqAnswers) as EQTrait[]).forEach(trait => {
+                const lvl = calcEQLevel(eqAnswers[trait]);
+                if (lvl) newEq[trait] = lvl;
+            });
+            return { ...prev, eq: newEq };
+        });
+    }, [eqAnswers]);
 
     const handleBig5Change = (trait: string, value: Big5Level) => {
         setInputs(prev => ({
@@ -91,8 +169,13 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                             <div className="bg-blue-50 p-4 rounded-lg text-base text-blue-800 mb-6 flex gap-3">
                                 <Icon name="Zap" size={20} className="shrink-0"/>
                                 <div>
-                                    <span className="font-bold block mb-1">진단 팁</span>
-                                    자신의 평소 모습과 가장 가까운 태도를 선택해주세요. 옳고 그름은 없습니다.
+                                    <span className="font-bold block mb-1">결과 해석 방법 (bigfive-test.com 기준)</span>
+                                    각 특성의 백분위 점수를 아래 기준으로 변환하여 선택하세요.
+                                    <div className="flex gap-3 mt-2 flex-wrap">
+                                        <span className="bg-blue-900 text-white px-2 py-0.5 rounded text-sm font-bold">60% 이상 → 높음</span>
+                                        <span className="bg-stone-400 text-white px-2 py-0.5 rounded text-sm font-bold">40~60% → 보통</span>
+                                        <span className="bg-stone-600 text-white px-2 py-0.5 rounded text-sm font-bold">40% 미만 → 낮음</span>
+                                    </div>
                                 </div>
                             </div>
                             {Object.entries(detailData.big5).map(([key, info]) => (
@@ -131,14 +214,25 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                         </div>
                     ) : isVia ? (
                         <div className="space-y-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <span className="text-base font-bold text-stone-500">
-                                    선택됨: <span className="text-blue-900 text-xl">{inputs.via.length}</span> / 5
+                            <div className="bg-amber-50 p-4 rounded-lg text-sm text-amber-800 flex gap-2 mb-2">
+                                <Icon name="Sparkles" size={16} className="shrink-0 mt-0.5"/>
+                                <span><span className="font-bold">결과 해석:</span> viacharacter.org 검사 결과 상위 5개 강점을 아래에서 찾아 선택하세요.</span>
+                            </div>
+                            <div className="flex items-center justify-between gap-4">
+                                <input
+                                    type="text"
+                                    placeholder="강점 검색..."
+                                    value={viaSearch}
+                                    onChange={e => setViaSearch(e.target.value)}
+                                    className="flex-grow px-4 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:border-blue-400"
+                                />
+                                <span className="text-base font-bold text-stone-500 shrink-0">
+                                    <span className="text-blue-900 text-xl">{inputs.via.length}</span> / 5
+                                    {inputs.via.length === 5 && <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-1 rounded ml-2">완료</span>}
                                 </span>
-                                {inputs.via.length === 5 && <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-1 rounded">선택 완료</span>}
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                {viaList.map(v => {
+                                {viaList.filter(v => v.includes(viaSearch)).map(v => {
                                     const isSelected = inputs.via.includes(v);
                                     const isDisabled = !isSelected && inputs.via.length >= 5;
                                     return (
@@ -167,66 +261,111 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                         </div>
                     ) : isEQ ? (
                         <div className="space-y-8">
-                            <div className="bg-rose-50 p-4 rounded-lg text-base text-rose-800 mb-6 flex gap-3">
-                                <Icon name="Heart" size={20} className="shrink-0 mt-0.5"/>
-                                <div>
-                                    <span className="font-bold block mb-1">EQ 진단 팁</span>
-                                    사역 현장에서 자신의 평소 모습을 기준으로 선택하십시오. 이상적인 모습이 아닌 실제 모습을 선택해야 정확한 진단이 됩니다.
-                                </div>
-                            </div>
-                            {Object.entries(eqData).map(([key, info]) => (
-                                <div key={key} className="bg-stone-50 p-6 rounded-xl border border-stone-200 hover:border-rose-200 transition-colors">
-                                    <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-4">
-                                        <div>
-                                            <h4 className="text-lg font-bold text-slate-900 font-serif">{info.name}</h4>
-                                            <p className="text-sm text-stone-500 mt-1">{info.desc}</p>
+                            {/* 진행도 */}
+                            {(() => {
+                                const totalAnswered = Object.values(eqAnswers).flat().filter(a => a > 0).length;
+                                return (
+                                    <div>
+                                        <div className="flex justify-between text-sm font-bold mb-1">
+                                            <span className="text-rose-700">진행도</span>
+                                            <span className="text-rose-900">{totalAnswered} / 25 문항</span>
                                         </div>
-                                        <div className="flex bg-white rounded-lg p-1 border border-stone-200 shadow-sm shrink-0">
-                                            {(['Low', 'Mid', 'High'] as Big5Level[]).map(level => (
-                                                <button
-                                                    key={level}
-                                                    onClick={() => handleEQChange(key as EQTrait, level)}
-                                                    className={`px-5 py-2 rounded-md text-base font-bold transition-all ${
-                                                        inputs.eq[key as EQTrait] === level
-                                                            ? (level === 'High' ? 'bg-rose-700 text-white shadow' : level === 'Low' ? 'bg-stone-500 text-white shadow' : 'bg-stone-400 text-white shadow')
-                                                            : 'text-stone-500 hover:bg-stone-100'
-                                                    }`}
-                                                >
-                                                    {level === 'High' ? '높음' : level === 'Mid' ? '보통' : '낮음'}
-                                                </button>
+                                        <div className="h-2 bg-rose-100 rounded-full overflow-hidden">
+                                            <div className="h-full bg-rose-600 rounded-full transition-all duration-300" style={{width: `${(totalAnswered/25)*100}%`}}/>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+                            <div className="bg-rose-50 p-4 rounded-lg text-sm text-rose-800 flex gap-2">
+                                <Icon name="Heart" size={16} className="shrink-0 mt-0.5"/>
+                                <span>사역 현장에서 <span className="font-bold">실제 내 모습</span>을 기준으로 답하세요. 이상적인 모습이 아닌 평소 행동 패턴을 선택해야 정확한 진단이 됩니다.</span>
+                            </div>
+                            {Object.entries(eqData).map(([key, info]) => {
+                                const questions = EQ_QUESTIONS[key] || [];
+                                const answers = eqAnswers[key] || [];
+                                const level = calcEQLevel(answers);
+                                const dimDone = answers.every(a => a > 0);
+                                return (
+                                    <div key={key} className={`rounded-2xl border-2 overflow-hidden transition-all ${dimDone ? 'border-rose-300 shadow-md' : 'border-stone-200'}`}>
+                                        <div className={`px-6 py-4 flex items-center justify-between ${dimDone ? 'bg-rose-50' : 'bg-stone-50'}`}>
+                                            <div>
+                                                <h4 className="text-base font-bold text-slate-900 font-serif">{info.name}</h4>
+                                                <p className="text-xs text-stone-500 mt-0.5">{info.desc}</p>
+                                            </div>
+                                            <div className={`px-3 py-1 rounded-full text-sm font-black shrink-0 ${
+                                                !level ? 'bg-stone-200 text-stone-500' :
+                                                level === 'High' ? 'bg-rose-600 text-white' :
+                                                level === 'Mid' ? 'bg-amber-500 text-white' : 'bg-stone-500 text-white'
+                                            }`}>
+                                                {!level ? '미완료' : level === 'High' ? '높음' : level === 'Mid' ? '보통' : '낮음'}
+                                            </div>
+                                        </div>
+                                        <div className="p-6 space-y-4">
+                                            {questions.map((q, qi) => (
+                                                <div key={qi} className={`p-4 rounded-xl border ${answers[qi] > 0 ? 'bg-rose-50 border-rose-200' : 'bg-white border-stone-100'}`}>
+                                                    <p className="text-sm text-slate-700 mb-3 font-medium leading-relaxed">
+                                                        <span className="text-rose-400 font-black mr-1">Q{qi+1}.</span> {q}
+                                                    </p>
+                                                    <div className="flex gap-2">
+                                                        {[{score:1,label:'전혀 아니다'},{score:2,label:'보통이다'},{score:3,label:'매우 그렇다'}].map(opt => (
+                                                            <button
+                                                                key={opt.score}
+                                                                onClick={() => {
+                                                                    const newA = [...answers]; newA[qi] = opt.score;
+                                                                    setEqAnswers(prev => ({...prev, [key]: newA}));
+                                                                }}
+                                                                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all border ${
+                                                                    answers[qi] === opt.score
+                                                                        ? opt.score === 3 ? 'bg-rose-600 text-white border-rose-600 shadow'
+                                                                        : opt.score === 2 ? 'bg-amber-500 text-white border-amber-500 shadow'
+                                                                        : 'bg-stone-500 text-white border-stone-500 shadow'
+                                                                        : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
+                                                                }`}
+                                                            >
+                                                                {opt.label}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 text-sm mt-3">
-                                        <div className={`p-3 rounded transition-colors ${inputs.eq[key as EQTrait] === 'High' ? 'bg-rose-100 text-rose-900 ring-1 ring-rose-300' : 'bg-white text-stone-400 border border-stone-100'}`}>
-                                            <span className="font-bold mr-1">High:</span> {info.high}
-                                        </div>
-                                        <div className={`p-3 rounded transition-colors ${inputs.eq[key as EQTrait] === 'Low' ? 'bg-stone-200 text-stone-800 ring-1 ring-stone-400' : 'bg-white text-stone-400 border border-stone-100'}`}>
-                                            <span className="font-bold mr-1">Low:</span> {info.low}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : (
-                        <div className="grid gap-4">
+                        <div className="space-y-3">
+                            <div className="bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 text-sm text-stone-600 flex gap-2 mb-4">
+                                <Icon name="Info" size={16} className="shrink-0 mt-0.5 text-blue-500"/>
+                                {type === 'enneagram'
+                                    ? "검사 결과 가장 높은 점수의 유형을 선택하세요. 날개(Wing)가 있다면 주 유형 기준으로 선택하세요."
+                                    : "점수가 가장 높은 앵커 1개를 선택하세요. 동점이라면 '이것을 잃으면 안 된다'고 느끼는 항목을 선택하세요."}
+                            </div>
                             {Object.entries(type === 'enneagram' ? detailData.enneagram : detailData.anchor).map(([k, v]) => (
-                                <button 
-                                    key={k} 
-                                    onClick={() => { setInputs({...inputs, [type]: k}); onClose(); }} 
-                                    className={`text-left p-5 rounded-xl border-2 transition-all hover:shadow-md ${
-                                        inputs[type as 'enneagram'|'anchor'] === k 
-                                            ? 'border-blue-900 bg-blue-50 ring-1 ring-blue-900' 
+                                <button
+                                    key={k}
+                                    onClick={() => { setInputs({...inputs, [type]: k}); onClose(); }}
+                                    className={`w-full text-left p-5 rounded-xl border-2 transition-all hover:shadow-md ${
+                                        inputs[type as 'enneagram'|'anchor'] === k
+                                            ? 'border-blue-900 bg-blue-50 ring-1 ring-blue-900'
                                             : 'border-stone-100 hover:border-blue-200 hover:bg-stone-50'
                                     }`}
                                 >
-                                    <div className="flex justify-between items-center mb-1">
-                                        <span className={`block text-xl font-bold font-serif ${inputs[type as 'enneagram'|'anchor'] === k ? 'text-blue-900' : 'text-slate-900'}`}>
-                                            {v.label}
-                                        </span>
-                                        {inputs[type as 'enneagram'|'anchor'] === k && <Icon name="Check" className="text-blue-900" size={20}/>}
+                                    <div className="flex justify-between items-start mb-1">
+                                        <div>
+                                            <span className={`block text-lg font-bold font-serif ${inputs[type as 'enneagram'|'anchor'] === k ? 'text-blue-900' : 'text-slate-900'}`}>
+                                                {v.label}
+                                            </span>
+                                            {type === 'enneagram' && ENNEAGRAM_KEYWORDS[k] && (
+                                                <span className="inline-block mt-1 text-xs font-bold bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">{ENNEAGRAM_KEYWORDS[k]}</span>
+                                            )}
+                                            {type === 'anchor' && ANCHOR_HINTS[k] && (
+                                                <span className="block mt-1 text-xs text-stone-500 italic">"{ANCHOR_HINTS[k]}"</span>
+                                            )}
+                                        </div>
+                                        {inputs[type as 'enneagram'|'anchor'] === k && <Icon name="Check" className="text-blue-900 shrink-0" size={20}/>}
                                     </div>
-                                    <span className="text-base text-slate-600">{v.desc}</span>
+                                    <span className="text-sm text-slate-600 mt-2 block">{v.desc}</span>
                                 </button>
                             ))}
                         </div>
