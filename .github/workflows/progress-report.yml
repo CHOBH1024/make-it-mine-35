@@ -94,19 +94,19 @@ jobs:
               <td style="padding:8px;border:1px solid #e5e7eb">진단 문항 개선 작업 분배·감독</td>
             </tr>
             <tr>
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>도라에몽</strong> (리서처)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">문항 분석 완료</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">에니어그램·앵커·VIA 현황 파악 → 짱구에 전달</td>
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>지성</strong> (리서처)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">문서·라이브러리 탐색</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">공식 문서 탐색·라이브러리 비교·빠른 초안 구현</td>
             </tr>
             <tr style="background:#f8f9fa">
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>짱구</strong> (기획자)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">가정연합 맞춤 문항 기획</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">에니어그램 9유형·앵커 8항목 사역 언어 초안 작성</td>
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>짱구</strong> (기획·테스트)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">사역 언어 기획</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">콘텐츠 초안 작성·기능 테스트·결과 검증</td>
             </tr>
             <tr>
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>라라</strong> (실무자)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">코드 구현 완료</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">data.ts 문항 텍스트 전면 업데이트 · 커밋 대기</td>
+              <td style="padding:8px;border:1px solid #e5e7eb"><strong>우성</strong> (인프라)</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">서버·아키텍처 담당</td>
+              <td style="padding:8px;border:1px solid #e5e7eb">폴더 구조·빌드 최적화·패키지 관리</td>
             </tr>
             <tr style="background:#f8f9fa">
               <td style="padding:8px;border:1px solid #e5e7eb"><strong>서진</strong> (총괄)</td>
