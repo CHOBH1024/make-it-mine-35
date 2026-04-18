@@ -88,8 +88,9 @@ jobs:
           msg['To'] = 'nokira1024@gmail.com'
           msg.attach(MIMEText(html, 'html', 'utf-8'))
 
+          pw = os.environ['GMAIL_APP_PASSWORD'].encode('ascii', 'ignore').decode('ascii').replace(' ', '').strip()
           with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-              server.login('nokira1024@gmail.com', os.environ['GMAIL_APP_PASSWORD'])
+              server.login('nokira1024@gmail.com', pw)
               server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
               print('정밀 보고서 발송 완료 — ' + kst_str)
           PYEOF
