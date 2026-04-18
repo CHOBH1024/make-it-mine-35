@@ -13,7 +13,7 @@ jobs:
       - name: 오늘의 업무 계획 이메일 발송
         run: |
           python3 << 'PYEOF'
-          import json, subprocess, os
+          import os
           from datetime import datetime, timezone, timedelta
 
           KST = timezone(timedelta(hours=9))
@@ -90,29 +90,21 @@ jobs:
           </div>
           """
 
-          payload = {{
-              "from": "서진 <onboarding@resend.dev>",
-              "to": ["nokira1024@gmail.com"],
-              "subject": f"[서진 출근 브리핑] 오늘 5인 팀 업무 계획 — 각자 3가지 과제",
-              "html": html
-          }}
+          import smtplib
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
 
-          with open('/tmp/plan_payload.json', 'w') as f:
-              json.dump(payload, f, ensure_ascii=False)
+          subject = "[서진 출근 브리핑] 오늘 5인 팀 업무 계획 — 각자 3가지 과제"
+          msg = MIMEMultipart('alternative')
+          msg['Subject'] = subject
+          msg['From'] = 'nokira1024@gmail.com'
+          msg['To'] = 'nokira1024@gmail.com'
+          msg.attach(MIMEText(html, 'html', 'utf-8'))
 
-          result = subprocess.run([
-              'curl', '-s', '-X', 'POST', 'https://api.resend.com/emails',
-              '-H', f'Authorization: Bearer {os.environ["RESEND_API_KEY"]}',
-              '-H', 'Content-Type: application/json',
-              '-d', '@/tmp/plan_payload.json'
-          ], capture_output=True, text=True)
-
-          resp = json.loads(result.stdout)
-          if 'id' in resp:
-              print(f"✅ 오늘의 계획 이메일 발송 완료: {{resp['id']}}")
-          else:
-              print(f"❌ 발송 실패: {{result.stdout}}")
-              exit(1)
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+              server.login('nokira1024@gmail.com', os.environ['GMAIL_APP_PASSWORD'])
+              server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
+              print("✅ 오늘의 계획 이메일 발송 완료")
           PYEOF
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}

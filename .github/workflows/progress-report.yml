@@ -159,32 +159,24 @@ jobs:
           </div>
           """
 
-          payload = {
-              "from": "서진 <onboarding@resend.dev>",
-              "to": ["nokira1024@gmail.com"],
-              "subject": f"[서진 중간보고] {kst_date} {kst_time} — {report_type}",
-              "html": html
-          }
+          import smtplib
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
 
-          with open('/tmp/progress_payload.json', 'w') as f:
-              json.dump(payload, f, ensure_ascii=False)
+          subject = f"[서진 중간보고] {kst_date} {kst_time} — {report_type}"
+          msg = MIMEMultipart('alternative')
+          msg['Subject'] = subject
+          msg['From'] = 'nokira1024@gmail.com'
+          msg['To'] = 'nokira1024@gmail.com'
+          msg.attach(MIMEText(html, 'html', 'utf-8'))
 
-          result = subprocess.run([
-              'curl', '-s', '-X', 'POST', 'https://api.resend.com/emails',
-              '-H', f'Authorization: Bearer {os.environ["RESEND_API_KEY"]}',
-              '-H', 'Content-Type: application/json',
-              '-d', '@/tmp/progress_payload.json'
-          ], capture_output=True, text=True)
-
-          resp = json.loads(result.stdout)
-          if 'id' in resp:
-              print(f"✅ 중간 보고 발송 완료 ({kst_time}): {resp['id']}")
-          else:
-              print(f"❌ 발송 실패: {result.stdout}")
-              exit(1)
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+              server.login('nokira1024@gmail.com', os.environ['GMAIL_APP_PASSWORD'])
+              server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
+              print(f"✅ 중간 보고 발송 완료 ({kst_time})")
           PYEOF
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           KST_TIME: ${{ steps.collect.outputs.kst_time }}
           KST_DATE: ${{ steps.collect.outputs.kst_date }}
           REPORT_TYPE: ${{ steps.collect.outputs.report_type }}
