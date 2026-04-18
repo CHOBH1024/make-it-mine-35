@@ -13,164 +13,165 @@ jobs:
       - name: 정밀 보고서 이메일 발송
         run: |
           python3 << 'PYEOF'
-          import smtplib, os
-          from email.mime.text import MIMEText
-          from email.mime.multipart import MIMEMultipart
-          from datetime import datetime, timezone, timedelta
+import smtplib, os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime, timezone, timedelta
 
-          KST = timezone(timedelta(hours=9))
-          now = datetime.now(KST)
-          kst_str = now.strftime('%Y-%m-%d %H:%M')
+KST = timezone(timedelta(hours=9))
+now = datetime.now(KST)
+kst_str = now.strftime('%Y-%m-%d %H:%M')
 
-          html = f"""
-          <div style="font-family:'Apple SD Gothic Neo',sans-serif;max-width:760px;margin:0 auto;color:#1a1a1a;background:#f8f9fa;padding:20px">
+archetype_tags = ""
+for t in ['1.천일국 설계자','2.심정의 부모','3.성취하는 전략가','4.천일국 살림꾼','5.진리 탐구자','6.충직한 수호자','7.기쁨의 전파자','8.용맹한 개척자','9.평화의 중재자']:
+    archetype_tags += '<span style="background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;margin:2px;display:inline-block">' + t + '</span>'
 
-            <!-- 헤더 -->
-            <div style="background:linear-gradient(135deg,#1e3a5f,#2d5986);color:white;padding:28px 32px;border-radius:16px 16px 0 0">
-              <p style="margin:0 0 6px;font-size:11px;opacity:0.6;text-transform:uppercase;letter-spacing:2px">가정연합 목회자유형 진단 시스템</p>
-              <h1 style="margin:0;font-size:22px;font-weight:900">📊 전체 작업 정밀 보고서</h1>
-              <p style="margin:8px 0 0;opacity:0.75;font-size:13px">서진 → 여보짱 | {kst_str} KST | make-it-mine-35</p>
-            </div>
+html = """
+<div style="font-family:sans-serif;max-width:760px;margin:0 auto;color:#1a1a1a;background:#f8f9fa;padding:20px">
 
-            <div style="background:white;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 16px 16px;padding:32px">
+  <div style="background:linear-gradient(135deg,#1e3a5f,#2d5986);color:white;padding:28px 32px;border-radius:16px 16px 0 0">
+    <p style="margin:0 0 6px;font-size:11px;opacity:0.6;text-transform:uppercase;letter-spacing:2px">가정연합 목회자유형 진단 시스템</p>
+    <h1 style="margin:0;font-size:22px;font-weight:900">전체 작업 정밀 보고서</h1>
+    <p style="margin:8px 0 0;opacity:0.75;font-size:13px">서진 -&gt; 여보짱 | """ + kst_str + """ KST | make-it-mine-35</p>
+  </div>
 
-              <!-- 요약 -->
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:32px">
-                <div style="background:#eff6ff;border-radius:12px;padding:16px;text-align:center">
-                  <div style="font-size:28px;font-weight:900;color:#1d4ed8">9</div>
-                  <div style="font-size:12px;color:#3b82f6;font-weight:700;margin-top:4px">아키타입 유형</div>
-                </div>
-                <div style="background:#f0fdf4;border-radius:12px;padding:16px;text-align:center">
-                  <div style="font-size:28px;font-weight:900;color:#16a34a">5</div>
-                  <div style="font-size:12px;color:#22c55e;font-weight:700;margin-top:4px">진단 도구</div>
-                </div>
-                <div style="background:#fef3c7;border-radius:12px;padding:16px;text-align:center">
-                  <div style="font-size:28px;font-weight:900;color:#d97706">6회/일</div>
-                  <div style="font-size:12px;color:#f59e0b;font-weight:700;margin-top:4px">자동 보고</div>
-                </div>
-              </div>
+  <div style="background:white;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 16px 16px;padding:32px">
 
-              <!-- 섹션 1: 진단 도구 -->
-              <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #1e3a5f;padding-left:12px;margin:0 0 16px">🔬 진단 도구 현황 (5개)</h2>
-              <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:28px">
-                <tr style="background:#1e3a5f;color:white">
-                  <th style="padding:10px 12px;text-align:left;border-radius:6px 0 0 0">도구</th>
-                  <th style="padding:10px 12px;text-align:left">구현 내용</th>
-                  <th style="padding:10px 12px;text-align:center;border-radius:0 6px 0 0">상태</th>
-                </tr>
-                <tr style="background:#f8f9fa">
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">에니어그램</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">9유형 선택 + 유형별 키워드 태그(원칙·완벽 등) + 해석 가이드</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
-                </tr>
-                <tr>
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">Big 5</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">5특성 선택 + 점수→레벨 변환표(60%↑=High/40~60=Mid/40%↓=Low)</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
-                </tr>
-                <tr style="background:#f8f9fa">
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">커리어 앵커</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">8항목 선택 + 항목별 핵심 질문 힌트 한 줄 표시</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
-                </tr>
-                <tr>
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">VIA 강점</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">24강점 중 5개 선택 + 실시간 검색 필터 + 선택 카운터</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
-                </tr>
-                <tr style="background:#fff1f2">
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">EQ 감성지능</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">5차원 × 5문항 = 25문항 사역 시나리오 진단 / 3점 척도 / 자동 레벨 산출(H/M/L) / 진행도 바</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
-                </tr>
-              </table>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:24px">
+      <tr>
+        <td style="background:#eff6ff;border-radius:12px;padding:16px;text-align:center;width:33%">
+          <div style="font-size:28px;font-weight:900;color:#1d4ed8">9</div>
+          <div style="font-size:12px;color:#3b82f6;font-weight:700;margin-top:4px">아키타입 유형</div>
+        </td>
+        <td style="width:8px"></td>
+        <td style="background:#f0fdf4;border-radius:12px;padding:16px;text-align:center;width:33%">
+          <div style="font-size:28px;font-weight:900;color:#16a34a">5</div>
+          <div style="font-size:12px;color:#22c55e;font-weight:700;margin-top:4px">진단 도구</div>
+        </td>
+        <td style="width:8px"></td>
+        <td style="background:#fef3c7;border-radius:12px;padding:16px;text-align:center;width:33%">
+          <div style="font-size:28px;font-weight:900;color:#d97706">6회/일</div>
+          <div style="font-size:12px;color:#f59e0b;font-weight:700;margin-top:4px">자동 보고</div>
+        </td>
+      </tr>
+    </table>
 
-              <!-- 섹션 2: 아키타입 데이터 -->
-              <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #7c3aed;padding-left:12px;margin:0 0 16px">🧬 아키타입 데이터 확장 (9개 유형)</h2>
-              <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:12px;padding:16px;margin-bottom:28px;font-size:13px">
-                <p style="margin:0 0 10px;font-weight:700;color:#5b21b6">모든 9개 유형에 대해 아래 3개 필드를 단문 키워드 → 상세 서술로 전면 확장:</p>
-                <ul style="margin:0;padding-left:20px;line-height:2;color:#4c1d95">
-                  <li><strong>dna.how</strong> — 이 유형이 사역하는 방식 (2~3문장)</li>
-                  <li><strong>dna.what</strong> — 이 유형이 담당하는 구체적 역할 (2~3문장)</li>
-                  <li><strong>dna.why</strong> — 섭리적 소명과 동기 (2~3문장, 참부모님 말씀 기반)</li>
-                  <li><strong>synergyDesc</strong> — 조직 내 시너지 기여 방식 (3문장)</li>
-                  <li><strong>activities</strong> — 주요 활동 4항목 (사역 맥락 포함 상세 설명)</li>
-                </ul>
-                <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
-                  {''.join([f'<span style="background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700">{t}</span>' for t in ['1.천일국 설계자','2.심정의 부모','3.성취하는 전략가','4.천일국 살림꾼','5.진리 탐구자','6.충직한 수호자','7.기쁨의 전파자','8.용맹한 개척자','9.평화의 중재자']])}
-                </div>
-              </div>
+    <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #1e3a5f;padding-left:12px;margin:0 0 16px">진단 도구 현황 (5개)</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:28px">
+      <tr style="background:#1e3a5f;color:white">
+        <th style="padding:10px 12px;text-align:left">도구</th>
+        <th style="padding:10px 12px;text-align:left">구현 내용</th>
+        <th style="padding:10px 12px;text-align:center">상태</th>
+      </tr>
+      <tr style="background:#f8f9fa">
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">에니어그램</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">9유형 선택 + 유형별 키워드 태그 + 해석 가이드</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">Big 5</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">5특성 + 점수 레벨 변환표 (60%이상=High / 40~60=Mid / 40%미만=Low)</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
+      </tr>
+      <tr style="background:#f8f9fa">
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">커리어 앵커</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">8항목 선택 + 항목별 핵심 질문 힌트 한 줄</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">VIA 강점</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">24강점 중 5개 선택 + 실시간 검색 필터</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
+      </tr>
+      <tr style="background:#f8f9fa">
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">EQ 감성지능</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">5차원 x 5문항 = 25문항 / 3점 척도 / 자동 레벨 산출 / 진행도 바</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
+      </tr>
+    </table>
 
-              <!-- 섹션 3: 자동화 -->
-              <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #059669;padding-left:12px;margin:0 0 16px">⚙️ 자동화 시스템</h2>
-              <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:28px">
-                <tr style="background:#1e3a5f;color:white">
-                  <th style="padding:10px 12px;text-align:left">항목</th>
-                  <th style="padding:10px 12px;text-align:left">내용</th>
-                  <th style="padding:10px 12px;text-align:center">상태</th>
-                </tr>
-                <tr style="background:#f8f9fa">
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">2시간 중간 보고</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">매일 08·10·12·14·16·18시 KST 자동 발송 (GitHub Actions cron)</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">가동중</span></td>
-                </tr>
-                <tr>
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">이메일 발송 방식</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">Resend API → Gmail SMTP (smtplib) 전환 완료</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
-                </tr>
-                <tr style="background:#f8f9fa">
-                  <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">오늘의 계획 이메일</td>
-                  <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">5인 팀 각자 3가지 과제 배분 이메일 (push 트리거)</td>
-                  <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
-                </tr>
-              </table>
+    <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #7c3aed;padding-left:12px;margin:0 0 16px">아키타입 데이터 확장 (9개 유형)</h2>
+    <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:12px;padding:16px;margin-bottom:28px;font-size:13px">
+      <p style="margin:0 0 10px;font-weight:700;color:#5b21b6">모든 9개 유형 — dna(how/what/why) + synergyDesc + activities 전면 확장</p>
+      <div style="margin-top:12px">""" + archetype_tags + """</div>
+    </div>
 
-              <!-- 섹션 4: 팀 -->
-              <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #dc2626;padding-left:12px;margin:0 0 16px">👥 5인 팀 구성</h2>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;font-size:12px">
-                <div style="background:#eff6ff;border-radius:10px;padding:12px"><strong style="color:#1d4ed8">⚙️ 우성</strong><br/>인프라·구현 담당</div>
-                <div style="background:#f0fdf4;border-radius:10px;padding:12px"><strong style="color:#16a34a">🔍 지성</strong><br/>리서치·초안 담당</div>
-                <div style="background:#fffbeb;border-radius:10px;padding:12px"><strong style="color:#d97706">🎨 짱구</strong><br/>기획·테스트 담당</div>
-                <div style="background:#fef2f2;border-radius:10px;padding:12px"><strong style="color:#dc2626">🛡️ 김치워리어</strong><br/>PM·코드감사 담당</div>
-                <div style="background:#f5f3ff;border-radius:10px;padding:12px;grid-column:1/-1;text-align:center"><strong style="color:#7c3aed">👑 서진</strong> — 총괄·배포 담당</div>
-              </div>
+    <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #059669;padding-left:12px;margin:0 0 16px">자동화 시스템</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:28px">
+      <tr style="background:#1e3a5f;color:white">
+        <th style="padding:10px 12px;text-align:left">항목</th>
+        <th style="padding:10px 12px;text-align:left">내용</th>
+        <th style="padding:10px 12px;text-align:center">상태</th>
+      </tr>
+      <tr style="background:#f8f9fa">
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">2시간 중간 보고</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">매일 08·10·12·14·16·18시 KST 자동 발송</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">가동중</span></td>
+      </tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">이메일 방식</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">Resend API -&gt; Gmail SMTP 전환 완료</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
+      </tr>
+      <tr style="background:#f8f9fa">
+        <td style="padding:10px 12px;font-weight:700;border-bottom:1px solid #e5e7eb">오늘의 계획 이메일</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e5e7eb">5인 팀 각자 3가지 과제 배분 (push 트리거)</td>
+        <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e5e7eb"><span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;font-weight:700;font-size:11px">완료</span></td>
+      </tr>
+    </table>
 
-              <!-- 섹션 5: 배포 -->
-              <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #0891b2;padding-left:12px;margin:0 0 16px">🚀 배포 현황</h2>
-              <div style="background:#ecfeff;border:1px solid #a5f3fc;border-radius:12px;padding:16px;font-size:13px;margin-bottom:28px">
-                <p style="margin:0 0 8px">🌐 <strong>앱 URL:</strong> <a href="https://make-it-mine-35.lovable.app" style="color:#0891b2">https://make-it-mine-35.lovable.app</a></p>
-                <p style="margin:0 0 8px">📦 <strong>레포:</strong> github.com/CHOBH1024/make-it-mine-35 (main 브랜치 자동 배포)</p>
-                <p style="margin:0">🛠️ <strong>스택:</strong> React 19 + TypeScript + TanStack Router + TailwindCSS + Vite</p>
-              </div>
+    <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #dc2626;padding-left:12px;margin:0 0 16px">5인 팀 구성</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:28px">
+      <tr>
+        <td style="background:#eff6ff;border-radius:10px;padding:12px;width:50%">우성 — 인프라·구현 담당</td>
+        <td style="width:8px"></td>
+        <td style="background:#f0fdf4;border-radius:10px;padding:12px">지성 — 리서치·초안 담당</td>
+      </tr>
+      <tr><td style="height:8px"></td></tr>
+      <tr>
+        <td style="background:#fffbeb;border-radius:10px;padding:12px">짱구 — 기획·테스트 담당</td>
+        <td style="width:8px"></td>
+        <td style="background:#fef2f2;border-radius:10px;padding:12px">김치워리어 — PM·코드감사 담당</td>
+      </tr>
+      <tr><td style="height:8px"></td></tr>
+      <tr>
+        <td colspan="3" style="background:#f5f3ff;border-radius:10px;padding:12px;text-align:center;font-weight:700;color:#7c3aed">서진 — 총괄·배포 담당</td>
+      </tr>
+    </table>
 
-              <!-- 다음 할 일 -->
-              <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px;font-size:13px">
-                <p style="margin:0 0 10px;font-weight:700;color:#92400e">⚠️ 다음 작업 후보</p>
-                <ul style="margin:0;padding-left:20px;color:#78350f;line-height:2">
-                  <li>진단 결과 분석 화면 UI 고도화 (Phase 3)</li>
-                  <li>공유 링크 기능 점검 및 개선</li>
-                  <li>모바일 반응형 UI 검수</li>
-                </ul>
-              </div>
+    <h2 style="color:#1e3a5f;font-size:16px;border-left:4px solid #0891b2;padding-left:12px;margin:0 0 16px">배포 현황</h2>
+    <div style="background:#ecfeff;border:1px solid #a5f3fc;border-radius:12px;padding:16px;font-size:13px;margin-bottom:28px">
+      <p style="margin:0 0 8px">앱: make-it-mine-35.lovable.app</p>
+      <p style="margin:0 0 8px">레포: github.com/CHOBH1024/make-it-mine-35</p>
+      <p style="margin:0">스택: React 19 + TypeScript + TanStack Router + TailwindCSS + Vite</p>
+    </div>
 
-            </div>
-            <p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:12px">
-              정밀 보고서 | 서진 자동 보고 시스템 | {kst_str} KST
-            </p>
-          </div>
-          """
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px;font-size:13px">
+      <p style="margin:0 0 10px;font-weight:700;color:#92400e">다음 작업 후보</p>
+      <ul style="margin:0;padding-left:20px;color:#78350f;line-height:2">
+        <li>진단 결과 분석 화면 UI 고도화 (Phase 3)</li>
+        <li>공유 링크 기능 점검 및 개선</li>
+        <li>모바일 반응형 UI 검수</li>
+      </ul>
+    </div>
 
-          msg = MIMEMultipart('alternative')
-          msg['Subject'] = f"[서진 정밀보고서] make-it-mine-35 전체 작업 현황 — {kst_str}"
-          msg['From'] = 'nokira1024@gmail.com'
-          msg['To'] = 'nokira1024@gmail.com'
-          msg.attach(MIMEText(html, 'html', 'utf-8'))
+  </div>
+  <p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:12px">
+    정밀 보고서 | 서진 자동 보고 시스템 | """ + kst_str + """ KST
+  </p>
+</div>
+"""
 
-          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-              server.login('nokira1024@gmail.com', os.environ['GMAIL_APP_PASSWORD'])
-              server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
-              print(f"✅ 정밀 보고서 발송 완료 — {kst_str}")
-          PYEOF
+msg = MIMEMultipart('alternative')
+msg['Subject'] = '[서진 정밀보고서] make-it-mine-35 전체 작업 현황 — ' + kst_str
+msg['From'] = 'nokira1024@gmail.com'
+msg['To'] = 'nokira1024@gmail.com'
+msg.attach(MIMEText(html, 'html', 'utf-8'))
+
+with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+    server.login('nokira1024@gmail.com', os.environ['GMAIL_APP_PASSWORD'])
+    server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
+    print('정밀 보고서 발송 완료 — ' + kst_str)
+PYEOF
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
