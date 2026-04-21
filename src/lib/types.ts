@@ -46,6 +46,28 @@ export interface MulticulturalGuide {
     tips: string[];
 }
 
+export interface ManagementStyle {
+    organizationManagement: string; // 조직관리 방식
+    teamBuilding: string; // 조직구성 방식
+    selectionAndConcentration: string; // 선택과 집중 (우선순위 설정)
+}
+
+export interface ResilienceAndPsychology {
+    psychologicalTrait: string; // 심리학적 특성
+    resilienceLevel: string; // 회복탄력성
+    recoveryMethod: string; // 극복 방법
+}
+
+export interface WordApproach {
+    strengths: string; // 말씀을 대할 때 장점
+    cautions: string; // 말씀을 대할 때 주의점
+}
+
+export interface LeadershipAndMentoring {
+    mentoringStyle: string; // 지도 및 멘토링 방식
+    feedbackStyle: string; // 피드백 제공 방식
+}
+
 export interface Inputs {
     enneagram: string;
     big5: Big5State;
@@ -277,6 +299,10 @@ export interface Archetype {
     coupleSynergy: CoupleSynergy;
     generationBridge: GenerationBridge;
     multiculturalGuide: MulticulturalGuide;
+    managementStyle: ManagementStyle;
+    resilienceAndPsychology: ResilienceAndPsychology;
+    wordApproach: WordApproach;
+    leadershipAndMentoring: LeadershipAndMentoring;
 }
 
 export interface SavedTeam {
