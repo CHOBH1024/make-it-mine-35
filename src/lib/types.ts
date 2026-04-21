@@ -15,6 +15,37 @@ export interface EQState {
     social: Big5Level | '';
 }
 
+export interface HeartBalance {
+    parent: number; // 부모의 심정 (0-100)
+    teacher: number; // 스승의 심정 (0-100)
+    owner: number; // 주인의 심정 (0-100)
+    advice: string;
+}
+
+export interface BurnoutDefense {
+    type: string;
+    description: string;
+    historicalExample: string;
+}
+
+export interface CoupleSynergy {
+    matchType: string;
+    description: string;
+    weeklyReading: string;
+    communicationTip: string;
+}
+
+export interface GenerationBridge {
+    mzPerception: string;
+    advice: string;
+    icebreaker: string;
+}
+
+export interface MulticulturalGuide {
+    approachStyle: string;
+    tips: string[];
+}
+
 export interface Inputs {
     enneagram: string;
     big5: Big5State;
@@ -241,6 +272,11 @@ export interface Archetype {
     deploymentFit: DeploymentFit;
     kpiTemplate: KPITemplate;
     careerRoadmap: CareerRoadmap;
+    heartBalance: HeartBalance;
+    burnoutDefense: BurnoutDefense;
+    coupleSynergy: CoupleSynergy;
+    generationBridge: GenerationBridge;
+    multiculturalGuide: MulticulturalGuide;
 }
 
 export interface SavedTeam {

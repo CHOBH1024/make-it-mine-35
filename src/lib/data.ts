@@ -188,6 +188,36 @@ export const detailData: DetailData = {
 export const archetypes: Archetype[] = [
     {
         id: 1,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "천일국 설계자",
         engTitle: "The Cheon Il Guk Architect",
         subtitle: "모호한 비전을 '천법(Constitution)'과 시스템으로 안착시키는 행정의 달인",
@@ -258,6 +288,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 2,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "심정의 부모",
         engTitle: "The Parent of Heart",
         subtitle: "상처받은 식구를 어머니의 심정으로 품어 다시 낳아 기르는 참사랑의 목자",
@@ -323,6 +383,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 3,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "성취하는 전략가",
         engTitle: "The Achiever Strategist",
         subtitle: "명확한 목표와 효율적인 전략으로 섭리의 승리를 쟁취하는 현장 사령관",
@@ -383,6 +473,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 4,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "천일국 살림꾼",
         engTitle: "The Creative Artist",
         subtitle: "고유한 감성과 창의성으로 섭리에 깊이를 더하는 영적 예술가",
@@ -443,6 +563,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 5,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "진리 탐구자",
         engTitle: "The Truth Seeker",
         subtitle: "깊이 있는 통찰과 연구로 말씀의 깊이를 더하는 섭리적 학자",
@@ -503,6 +653,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 6,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "충직한 수호자",
         engTitle: "The Loyal Guardian",
         subtitle: "투철한 사명감과 책임감으로 공동체를 든든히 지키는 섭리의 방패",
@@ -563,6 +743,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 7,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "기쁨의 전파자",
         engTitle: "The Joyful Evangelist",
         subtitle: "긍정적인 에너지와 열정으로 섭리의 새로운 지평을 여는 분위기 메이커",
@@ -623,6 +833,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 8,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "용맹한 개척자",
         engTitle: "The Brave Pioneer",
         subtitle: "두려움 없는 용기로 불의에 맞서고 섭리의 영토를 확장하는 대장부",
@@ -683,6 +923,36 @@ export const archetypes: Archetype[] = [
     },
     {
         id: 9,
+    heartBalance: {
+        parent: 80,
+        teacher: 70,
+        owner: 90,
+        advice: "부모의 심정과 스승의 심정의 조화가 필요합니다. 식구들을 따뜻하게 품으면서도 원리적 기준을 세워주세요."
+    },
+    burnoutDefense: {
+        type: "기도 및 훈독 집중형",
+        description: "스트레스가 극에 달할 때 홀로 정성을 들이며 영적 에너지를 회복하는 타입입니다.",
+        historicalExample: "참아버님께서 댄버리 수감 시절 옥중에서도 평상심을 잃지 않으시고 오히려 다른 수감자들을 품으셨던 일화."
+    },
+    coupleSynergy: {
+        matchType: "전도-관리 상호 보완형",
+        description: "한 분이 외부 전도 활동에 집중할 때, 다른 분이 내부 식구 관리를 전담하는 완벽한 콤비네이션입니다.",
+        weeklyReading: "참부모경 제4편 인류 구원과 평화세계 신형 - 제2장 축복가정의 가치",
+        communicationTip: "서로의 다름을 '틀림'이 아닌 '보완'으로 인정하고, 주간 훈독회 시간에 서로의 수고를 칭찬해주세요."
+    },
+    generationBridge: {
+        mzPerception: "목사님의 열정은 본받고 싶으나, 때로는 일방적인 소통으로 느껴질 수 있습니다.",
+        advice: "지시나 설명보다는 '경청'과 '질문'으로 대화를 시작해보세요.",
+        icebreaker: "'요즘 가장 고민되는 게 뭐야?' 보다는 '최근에 가장 재밌었던 일이 뭐였어?'로 시작해보세요."
+    },
+    multiculturalGuide: {
+        approachStyle: "감정적 공감 최우선",
+        tips: [
+            "언어의 한계로 표현하지 못하는 감정을 먼저 읽어주세요.",
+            "신앙적 잣대로 평가하기 전에 타향살이의 외로움을 위로해주세요.",
+            "문화적 차이를 존중하며, 한국식 문화를 일방적으로 강요하지 마세요."
+        ]
+    },
         title: "평화의 중재자",
         engTitle: "The Peace Maker",
         subtitle: "모든 사람을 포용하고 화합하게 하여 하나 된 공동체를 만드는 섭리의 접착제",
