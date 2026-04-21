@@ -1254,7 +1254,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                 인사 배치 & 성과 관리
                             </h3>
                             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                                인사TF 회의 결과를 반영한 배치 적합도, KPI 템플릿, 생애주기 로드맵입니다.
+                                유형 분석을 기반으로 배치 적합도, KPI 템플릿, 생애주기 로드맵을 제공합니다.
                             </p>
                         </section>
 
@@ -1271,7 +1271,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                     <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                                     <div className="relative z-10">
                                         <h4 className="text-xl font-bold mb-4 flex items-center gap-2 font-serif">
-                                            <Icon name="FileText" size={20} className="text-amber-400"/> 인사TF 종합 권고사항
+                                            <Icon name="FileText" size={20} className="text-amber-400"/> 커리어 종합 권고사항
                                         </h4>
                                         <p className="text-slate-200 leading-loose text-sm">{result.deploymentFit.hrRecommendation}</p>
                                     </div>
@@ -1357,7 +1357,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                         <div className="p-2 bg-white/20 rounded-lg"><Icon name="Scale" size={24} className="text-white"/></div>
                                         <div>
                                             <h4 className="text-lg font-bold text-white font-serif">배치 원칙 및 근거</h4>
-                                            <p className="text-sm text-blue-100">인사TF 회의 결정 사항 기반</p>
+                                            <p className="text-sm text-blue-100">유형 분석 및 커리어 가이드 기반</p>
                                         </div>
                                     </div>
                                     <div className="p-6 space-y-4">

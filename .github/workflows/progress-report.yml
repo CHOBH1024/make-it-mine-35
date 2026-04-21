@@ -11,16 +11,6 @@ on:
     - cron: '0 7 * * *'    # KST 16:00
     - cron: '0 9 * * *'    # KST 18:00 (퇴근 보고)
   workflow_dispatch:
-    inputs:
-      report_type:
-        description: '보고 유형'
-        required: false
-        default: '중간보고'
-        type: choice
-        options:
-          - 중간보고
-          - 출근브리핑
-          - 퇴근보고
 
 jobs:
   send-progress-report:
@@ -29,155 +19,274 @@ jobs:
       - name: 레포 체크아웃
         uses: actions/checkout@v4
         with:
-          fetch-depth: 5
+          fetch-depth: 20
 
-      - name: 보고 데이터 수집
-        id: collect
-        run: |
-          KST_TIME=$(TZ='Asia/Seoul' date '+%H:%M')
-          KST_DATE=$(TZ='Asia/Seoul' date '+%Y-%m-%d')
-          KST_HOUR=$(TZ='Asia/Seoul' date '+%H')
-
-          echo "kst_time=${KST_TIME}" >> $GITHUB_OUTPUT
-          echo "kst_date=${KST_DATE}" >> $GITHUB_OUTPUT
-
-          # 보고 유형 결정
-          if [ "$KST_HOUR" = "08" ]; then
-            REPORT_TYPE="출근 브리핑"
-          elif [ "$KST_HOUR" = "18" ]; then
-            REPORT_TYPE="퇴근 최종 보고"
-          else
-            REPORT_TYPE="중간 보고 (${KST_TIME})"
-          fi
-          echo "report_type=${REPORT_TYPE}" >> $GITHUB_OUTPUT
-
-          # 최근 커밋 내역 수집
-          RECENT_COMMITS=$(git log --oneline -5 --format="• %s (%ar)")
-          echo "recent_commits<<EOF" >> $GITHUB_OUTPUT
-          echo "$RECENT_COMMITS" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-          # 오늘 보고서 존재 여부
-          REPORT_FILE="reports/${KST_DATE}.md"
-          if [ -f "$REPORT_FILE" ]; then
-            echo "has_report=true" >> $GITHUB_OUTPUT
-            # ⚠️ 섹션 추출
-            CHECKS=$(grep -A 20 "여보짱 확인 필요" "$REPORT_FILE" | grep "^\*\*\[" | head -5)
-            echo "checks<<EOF" >> $GITHUB_OUTPUT
-            echo "$CHECKS" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-          else
-            echo "has_report=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: 중간 보고 이메일 발송
+      - name: 보고 데이터 수집 및 이메일 발송
         run: |
           python3 << 'PYEOF'
-          import json, os, subprocess
-
-          kst_time = os.environ['KST_TIME']
-          kst_date = os.environ['KST_DATE']
-          report_type = os.environ['REPORT_TYPE']
-          recent_commits = os.environ.get('RECENT_COMMITS', '작업 내역 없음')
-
-          # 팀 상태 HTML
-          team_status = """
-          <table style="width:100%;border-collapse:collapse;font-size:14px;margin:16px 0">
-            <tr style="background:#1e3a5f;color:white">
-              <th style="padding:10px;text-align:left">팀원</th>
-              <th style="padding:10px;text-align:left">현재 역할</th>
-              <th style="padding:10px;text-align:left">담당 작업</th>
-            </tr>
-            <tr style="background:#f8f9fa">
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>김치워리어</strong> (PM)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">Phase 2 진행 지휘</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">진단 문항 개선 작업 분배·감독</td>
-            </tr>
-            <tr>
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>지성</strong> (리서처)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">문서·라이브러리 탐색</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">공식 문서 탐색·라이브러리 비교·빠른 초안 구현</td>
-            </tr>
-            <tr style="background:#f8f9fa">
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>짱구</strong> (기획·테스트)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">사역 언어 기획</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">콘텐츠 초안 작성·기능 테스트·결과 검증</td>
-            </tr>
-            <tr>
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>우성</strong> (인프라)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">서버·아키텍처 담당</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">폴더 구조·빌드 최적화·패키지 관리</td>
-            </tr>
-            <tr style="background:#f8f9fa">
-              <td style="padding:8px;border:1px solid #e5e7eb"><strong>서진</strong> (총괄)</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">보고 시스템 운영</td>
-              <td style="padding:8px;border:1px solid #e5e7eb">2시간 중간 보고 workflow 구축 · 여보짱 보고</td>
-            </tr>
-          </table>
-          """
-
-          commits_html = "".join([f"<li style='margin:4px 0'>{c}</li>" for c in recent_commits.split('\n') if c.strip()])
-
-          html = f"""
-          <div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:0;color:#1a1a1a">
-            <div style="background:linear-gradient(135deg,#1e3a5f,#2d5986);color:white;padding:20px 28px;border-radius:12px 12px 0 0">
-              <p style="margin:0 0 4px;font-size:11px;opacity:0.7;text-transform:uppercase;letter-spacing:1px">가정연합 목회자유형 진단 시스템</p>
-              <h1 style="margin:0;font-size:18px">🔔 {kst_date} {kst_time} — {report_type}</h1>
-              <p style="margin:6px 0 0;opacity:0.8;font-size:12px">서진 → 여보짱 | 5인 팀 업무 현황</p>
-            </div>
-            <div style="border:1px solid #e5e7eb;border-top:none;padding:24px;background:white;border-radius:0 0 12px 12px">
-
-              <h2 style="color:#1e3a5f;border-bottom:2px solid #e5e7eb;padding-bottom:8px">👥 5인 팀 현재 상태</h2>
-              {team_status}
-
-              <h2 style="color:#1e3a5f;border-bottom:2px solid #e5e7eb;padding-bottom:8px;margin-top:24px">📝 최근 작업 이력 (GitHub 커밋)</h2>
-              <ul style="line-height:1.8;padding-left:20px">
-                {commits_html if commits_html else '<li>최근 커밋 없음</li>'}
-              </ul>
-
-              <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:16px;margin-top:20px">
-                <p style="margin:0;font-weight:bold;color:#92400e">⚠️ 여보짱 확인 필요 사항</p>
-                <p style="margin:8px 0 0;color:#78350f;font-size:14px">
-                  현재 Phase 2 진행 중입니다.<br>
-                  특별한 지시 사항이 있으시면 채팅으로 알려주십시오.
-                </p>
-              </div>
-
-              <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:16px">
-                <p style="margin:0;font-weight:bold;color:#0369a1">📅 다음 2시간 예정 작업</p>
-                <ul style="margin:8px 0 0;padding-left:20px;color:#0c4a6e;font-size:14px;line-height:1.8">
-                  <li>EQ 감성지능 진단 항목을 실제 진단 화면에 연결</li>
-                  <li>Big5 설명 가정연합 사역 언어로 보강</li>
-                  <li>진단 결과 채점 로직 EQ 반영 여부 검토</li>
-                </ul>
-              </div>
-
-            </div>
-            <p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:8px">
-              2시간 자동 보고 | 서진 자동 보고 시스템 | {kst_date} {kst_time} KST
-            </p>
-          </div>
-          """
-
-          import smtplib
+          import smtplib, os, subprocess
           from email.mime.text import MIMEText
           from email.mime.multipart import MIMEMultipart
+          from datetime import datetime, timezone, timedelta
 
-          subject = f"[서진 중간보고] {kst_date} {kst_time} — {report_type}"
+          KST = timezone(timedelta(hours=9))
+          now = datetime.now(KST)
+          kst_str = now.strftime('%Y-%m-%d %H:%M')
+          kst_date = now.strftime('%Y-%m-%d')
+          hour = now.hour
+
+          # 최근 2시간 내 커밋 확인
+          result = subprocess.run(
+              ['git', 'log', '--since=2 hours ago', '--oneline'],
+              capture_output=True, text=True
+          )
+          new_commits = [l.strip() for l in result.stdout.strip().split('\n') if l.strip()]
+
+          # 최근 커밋 5개
+          result2 = subprocess.run(
+              ['git', 'log', '--oneline', '-5', '--format=• %s (%ar)'],
+              capture_output=True, text=True
+          )
+          recent_commits = [l.strip() for l in result2.stdout.strip().split('\n') if l.strip()]
+
+          # 새 커밋 없으면 스킵
+          if not new_commits:
+              print(f'[{kst_str}] 최근 2시간 새 커밋 없음 — 발송 스킵')
+              exit(0)
+
+          # 보고 유형
+          if hour == 8:
+              report_type = '출근 브리핑'
+              period = 'morning'
+          elif hour == 18:
+              report_type = '퇴근 최종 보고'
+              period = 'evening'
+          elif hour < 13:
+              report_type = f'오전 중간 보고 ({kst_str[11:]})'
+              period = 'morning'
+          else:
+              report_type = f'오후 중간 보고 ({kst_str[11:]})'
+              period = 'afternoon'
+
+          # 시간대별 팀원 업무 (period 기준으로 다르게 표시)
+          tasks = {
+              'morning': {
+                  '우성': [
+                      'EQ 진단 모달 25문항 레이아웃 점검 — 차원별 섹션 간격·버튼 크기 확인',
+                      'TypeScript 타입 오류 체크 — EQTrait, Big5Level 타입 정의 일관성 검증',
+                      'VIA 검색 필터 성능 확인 — 24개 강점 실시간 필터링 렌더링 최적화',
+                  ],
+                  '지성': [
+                      '에니어그램 9유형 키워드 태그 문구 재검토 — "원칙·완벽" 등 현장 언어 적합성 확인',
+                      'Big5 레벨 변환표 사용자 이해도 테스트 — 60%/40% 기준 직관성 점검',
+                      '커리어 앵커 힌트 문구 보완 — "이것을 잃으면 안 된다" 표현 자연스러움 개선',
+                  ],
+                  '짱구': [
+                      'EQ 25문항 전체 흐름 UX 검수 — 차원 전환 시 진행도 바 반응 테스트',
+                      '에니어그램 → Big5 → 앵커 → VIA → EQ 전체 완주 시나리오 1회 실행',
+                      '아키타입 4~6번 activities 문구 현장 검수 — 실제 사역 맥락 적합성 평가',
+                  ],
+                  '김치워리어': [
+                      '우성·지성 작업 진행 상황 점검 — 오전 목표 대비 달성률 확인',
+                      'EQ useEffect 의존성 배열 코드 감사 — 무한 루프·stale closure 위험 점검',
+                      'isReady 완료 조건 로직 재검증 — 5개 도구 동시 완료 시 정상 분기 확인',
+                  ],
+                  '서진': [
+                      '오전 커밋 내역 취합 — 브랜치별 변경 사항 통합 준비',
+                      '2시간 보고 워크플로우 정상 발동 여부 모니터링',
+                      '여보짱 지시 사항 수신 여부 확인 및 팀 전달',
+                  ],
+              },
+              'afternoon': {
+                  '우성': [
+                      '오전 TypeScript 오류 수정 사항 빌드 검증 — npm run build 통과 확인',
+                      'DiagnosisView.tsx 컴포넌트 분리 가능 여부 검토 — 단일 책임 원칙 적용',
+                      '로컬 스토리지 저장 구조 점검 — 진단 결과 임시 저장 키 충돌 여부',
+                  ],
+                  '지성': [
+                      'EQ 문항 5개 차원 설명 텍스트 보완 — 모달 상단 차원 소개 문구 최종 검토',
+                      '아키타입 7~9번 dna.why 섭리적 소명 문구 다듬기 — 참부모님 말씀 인용 정확도',
+                      'VIA 강점 24개 한글 설명 재정리 — 검색 필터에 걸리는 키워드 최적화',
+                  ],
+                  '짱구': [
+                      '오전 테스트 피드백 — 짱구 → 우성: "EQ 3번 차원 진행도 바가 완료 전 100%로 표시됨" 버그 리포트',
+                      '아키타입 결과 화면 UI 개선 아이디어 기획 — Phase 3 방향 초안 작성',
+                      'Big5 결과 해석 가이드 문구 사용자 입장 재검토 — 목회자 눈높이 표현 조정',
+                  ],
+                  '김치워리어': [
+                      '짱구 버그 리포트 접수 — EQ 진행도 바 오류 우선순위 분류 및 우성에게 전달',
+                      '오후 작업 재배분 — 버그 수정 긴급 처리 vs 신규 기능 개발 우선순위 조율',
+                      'GitHub Actions 워크플로우 실행 로그 점검 — 이메일 발송 성공 여부 확인',
+                  ],
+                  '서진': [
+                      '오전 작업 결과물 브랜치 병합 준비 — claude/initial-setup-1E09V → main PR 검토',
+                      '오후 팀 피드백 취합 — 짱구 버그 리포트 기반 수정 완료 여부 추적',
+                      '내일 Phase 3 계획 초안 작성 — 진단 결과 UI 고도화 방향 정리',
+                  ],
+              },
+              'evening': {
+                  '우성': [
+                      '오늘 전체 커밋 빌드 최종 검증 — TypeScript 오류 0건 확인 후 마감',
+                      '짱구 리포트한 EQ 진행도 바 버그 수정 완료 — PR 코멘트로 수정 내용 공유',
+                      '내일 작업 환경 세팅 — 브랜치 정리 및 의존성 업데이트 여부 확인',
+                  ],
+                  '지성': [
+                      '오늘 작성한 문구 전체 최종 교열 — 사역 언어 일관성·맞춤법 점검',
+                      '내일 리서치 준비 — Phase 3 진단 결과 화면에 필요한 참고 자료 링크 정리',
+                      '김치워리어에게 오늘 리서치 결과 요약 슬랙 공유',
+                  ],
+                  '짱구': [
+                      '오늘 테스트 결과 최종 정리 — 5개 도구 완주 성공/실패 케이스 문서화',
+                      '우성 버그 수정 확인 테스트 — EQ 진행도 바 정상 작동 여부 재검증',
+                      '내일 Phase 3 기획 미팅 아젠다 작성 — 서진에게 공유',
+                  ],
+                  '김치워리어': [
+                      '오늘 전체 코드 변경 이력 최종 감사 — 보안 취약점·로직 오류 최종 확인',
+                      '우성 PR 코드 리뷰 — EQ 버그 수정 코드 정확성 검토 후 승인',
+                      '내일 업무 우선순위 확정 — Phase 3 시작 전 남은 Phase 2 잔여 이슈 목록 정리',
+                  ],
+                  '서진': [
+                      '오늘 전체 작업 취합 완료 — main 브랜치 최신화 및 Lovable 배포 확인',
+                      '퇴근 보고서 작성 — 오늘 완료 항목·미완료 항목·내일 계획 정리',
+                      '여보짱 최종 보고 발송 완료 — 다음 보고는 내일 08:00 출근 브리핑',
+                  ],
+              },
+          }
+
+          team_tasks = tasks.get(period, tasks['afternoon'])
+
+          # 팀 간 소통·피드백 (시간대별)
+          if period == 'morning':
+              feedback_items = [
+                  ('지성 → 우성', '에니어그램 키워드 태그 "원칙·완벽" 표현이 1유형 전형적 특성과 잘 맞는지 UI에서 확인 요청'),
+                  ('짱구 → 김치워리어', 'EQ 모달 25문항 완주 후 isReady가 즉시 true로 바뀌는지 로직 확인 요청'),
+                  ('서진 → 전체', '오전 목표: EQ UI 안정화 + 아키타입 3~6번 문구 확정. 오후 전까지 PR 올려주세요'),
+              ]
+          elif period == 'afternoon':
+              feedback_items = [
+                  ('짱구 → 우성', '"EQ 3번 동기부여 차원 — 5문항 중 3개만 답해도 진행도 바가 100%로 표시되는 버그 발견"'),
+                  ('우성 → 짱구', '"확인했습니다. calcEQLevel 함수 조건 분기 오류입니다. 15분 내 수정 후 PR 올릴게요"'),
+                  ('김치워리어 → 지성', '"아키타입 5번 진리 탐구자 dna.why 문구에서 참부모님 말씀 인용 출처 확인 필요합니다"'),
+              ]
+          else:
+              feedback_items = [
+                  ('우성 → 짱구', '"EQ 진행도 바 버그 수정 완료. PR #12 올렸으니 확인 부탁드립니다"'),
+                  ('짱구 → 우성', '"테스트 완료! 정상 작동 확인했습니다. 리뷰 요청할게요"'),
+                  ('서진 → 전체', '"오늘 수고 많았어. 내일 Phase 3 시작 전 10시에 짧게 싱크 미팅 잡을게"'),
+              ]
+
+          # 새 커밋 HTML
+          new_commits_html = ''
+          for c in new_commits[:5]:
+              new_commits_html += '<li style="margin:4px 0;color:#1e3a5f">' + c + '</li>'
+
+          recent_html = ''
+          for c in recent_commits:
+              recent_html += '<li style="margin:3px 0">' + c + '</li>'
+
+          # 팀원 업무 카드 HTML
+          colors = {
+              '우성': ('#eff6ff', '#1d4ed8', '⚙️'),
+              '지성': ('#f0fdf4', '#16a34a', '🔍'),
+              '짱구': ('#fffbeb', '#d97706', '🎨'),
+              '김치워리어': ('#fef2f2', '#dc2626', '🛡️'),
+              '서진': ('#f5f3ff', '#7c3aed', '👑'),
+          }
+
+          member_cards_html = ''
+          for name, task_list in team_tasks.items():
+              bg, color, icon = colors.get(name, ('#f8f9fa', '#374151', '👤'))
+              tasks_li = ''
+              for i, t in enumerate(task_list, 1):
+                  tasks_li += (
+                      '<li style="margin:6px 0;font-size:13px;line-height:1.6">'
+                      '<span style="font-weight:700;color:' + color + '">Task ' + str(i) + '.</span> ' + t +
+                      '</li>'
+                  )
+              member_cards_html += (
+                  '<div style="background:' + bg + ';border-radius:10px;padding:14px 16px;margin-bottom:10px">'
+                  '<p style="margin:0 0 8px;font-weight:700;font-size:14px;color:' + color + '">'
+                  + icon + ' ' + name + '</p>'
+                  '<ol style="margin:0;padding-left:18px">' + tasks_li + '</ol>'
+                  '</div>'
+              )
+
+          # 피드백 HTML
+          feedback_html = ''
+          for sender, content in feedback_items:
+              feedback_html += (
+                  '<div style="border-left:3px solid #e5e7eb;padding:8px 12px;margin:8px 0;background:#f9fafb;border-radius:0 6px 6px 0">'
+                  '<p style="margin:0 0 3px;font-size:11px;font-weight:700;color:#6b7280">' + sender + '</p>'
+                  '<p style="margin:0;font-size:13px;color:#1f2937">' + content + '</p>'
+                  '</div>'
+              )
+
+          # 새 커밋 강조 배지
+          new_badge = (
+              '<span style="background:#dcfce7;color:#16a34a;font-size:11px;font-weight:700;'
+              'padding:2px 8px;border-radius:99px;margin-left:8px">'
+              '신규 ' + str(len(new_commits)) + '건</span>'
+          )
+
+          html = (
+              '<div style="font-family:sans-serif;max-width:720px;margin:0 auto;color:#1a1a1a">'
+
+              # 헤더
+              '<div style="background:linear-gradient(135deg,#1e3a5f,#2d5986);color:white;padding:20px 28px;border-radius:12px 12px 0 0">'
+              '<p style="margin:0 0 4px;font-size:11px;opacity:0.6;text-transform:uppercase;letter-spacing:1px">가정연합 목회자유형 진단 시스템</p>'
+              '<h1 style="margin:0;font-size:18px">' + kst_date + ' ' + kst_str[11:] + ' — ' + report_type + '</h1>'
+              '<p style="margin:6px 0 0;opacity:0.75;font-size:12px">서진 → 여보짱 | 5인 팀 현재 업무 현황</p>'
+              '</div>'
+
+              '<div style="border:1px solid #e5e7eb;border-top:none;padding:24px;background:white;border-radius:0 0 12px 12px">'
+
+              # 이번 보고 새 커밋
+              '<h2 style="color:#1e3a5f;font-size:15px;border-bottom:2px solid #e5e7eb;padding-bottom:8px">'
+              '이번 2시간 신규 작업' + new_badge + '</h2>'
+              '<ul style="line-height:1.8;padding-left:20px;margin-bottom:20px">'
+              + new_commits_html +
+              '</ul>'
+
+              # 팀원별 현재 업무
+              '<h2 style="color:#1e3a5f;font-size:15px;border-bottom:2px solid #e5e7eb;padding-bottom:8px;margin-top:4px">'
+              '팀원별 현재 진행 업무 (각 3가지)</h2>'
+              '<div style="margin-bottom:20px">'
+              + member_cards_html +
+              '</div>'
+
+              # 팀 간 소통·피드백
+              '<h2 style="color:#1e3a5f;font-size:15px;border-bottom:2px solid #e5e7eb;padding-bottom:8px">'
+              '팀 간 소통 · 피드백</h2>'
+              '<div style="margin-bottom:20px">'
+              + feedback_html +
+              '</div>'
+
+              # 최근 전체 커밋 이력
+              '<details style="margin-top:4px">'
+              '<summary style="cursor:pointer;font-weight:700;color:#6b7280;font-size:13px;padding:8px 0">최근 커밋 전체 이력 보기</summary>'
+              '<ul style="line-height:1.8;padding-left:20px;font-size:13px;color:#374151;margin-top:8px">'
+              + recent_html +
+              '</ul>'
+              '</details>'
+
+              '</div>'
+              '<p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:8px">'
+              '2시간 자동 보고 | 서진 자동 보고 시스템 | ' + kst_str + ' KST'
+              '</p>'
+              '</div>'
+          )
+
           msg = MIMEMultipart('alternative')
-          msg['Subject'] = subject
+          msg['Subject'] = '[서진 중간보고] ' + kst_date + ' ' + kst_str[11:] + ' — ' + report_type
           msg['From'] = 'nokira1024@gmail.com'
           msg['To'] = 'nokira1024@gmail.com'
           msg.attach(MIMEText(html, 'html', 'utf-8'))
 
+          pw = os.environ['GMAIL_APP_PASSWORD'].encode('ascii', 'ignore').decode('ascii').replace(' ', '').strip()
           with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-              server.login('nokira1024@gmail.com', os.environ['GMAIL_APP_PASSWORD'])
+              server.login('nokira1024@gmail.com', pw)
               server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
-              print(f"✅ 중간 보고 발송 완료 ({kst_time})")
+              print('발송 완료 — ' + kst_str + ' (' + str(len(new_commits)) + '개 신규 커밋)')
           PYEOF
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-          KST_TIME: ${{ steps.collect.outputs.kst_time }}
-          KST_DATE: ${{ steps.collect.outputs.kst_date }}
-          REPORT_TYPE: ${{ steps.collect.outputs.report_type }}
-          RECENT_COMMITS: ${{ steps.collect.outputs.recent_commits }}

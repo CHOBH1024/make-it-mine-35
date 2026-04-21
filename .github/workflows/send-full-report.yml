@@ -1,0 +1,98 @@
+name: 정밀 보고서 발송
+
+on:
+  push:
+    paths:
+      - '.github/full-report-trigger'
+  workflow_dispatch:
+
+jobs:
+  send-full-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 정밀 보고서 이메일 발송
+        run: |
+          python3 << 'PYEOF'
+          import smtplib, os
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+          from datetime import datetime, timezone, timedelta
+
+          KST = timezone(timedelta(hours=9))
+          now = datetime.now(KST)
+          kst_str = now.strftime('%Y-%m-%d %H:%M')
+
+          archetype_tags = ""
+          for t in ['1.천일국 설계자','2.심정의 부모','3.성취하는 전략가','4.천일국 살림꾼','5.진리 탐구자','6.충직한 수호자','7.기쁨의 전파자','8.용맹한 개척자','9.평화의 중재자']:
+              archetype_tags += '<span style="background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;margin:2px;display:inline-block">' + t + '</span>'
+
+          html = (
+              '<div style="font-family:sans-serif;max-width:760px;margin:0 auto;color:#1a1a1a;padding:20px">'
+              '<div style="background:linear-gradient(135deg,#1e3a5f,#2d5986);color:white;padding:28px 32px;border-radius:16px 16px 0 0">'
+              '<h1 style="margin:0;font-size:20px">전체 작업 정밀 보고서</h1>'
+              '<p style="margin:8px 0 0;opacity:0.75;font-size:13px">서진 -&gt; 여보짱 | ' + kst_str + ' KST</p>'
+              '</div>'
+              '<div style="background:white;border:1px solid #e5e7eb;border-top:none;padding:28px">'
+
+              '<h2 style="color:#1e3a5f;border-left:4px solid #1e3a5f;padding-left:10px">진단 도구 현황 (5개)</h2>'
+              '<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px">'
+              '<tr style="background:#1e3a5f;color:white">'
+              '<th style="padding:8px 12px;text-align:left">도구</th>'
+              '<th style="padding:8px 12px;text-align:left">구현 내용</th>'
+              '<th style="padding:8px 12px;text-align:center">상태</th>'
+              '</tr>'
+              '<tr style="background:#f8f9fa"><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">에니어그램</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">9유형 선택 + 키워드 태그 + 해석 가이드</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">완료</td></tr>'
+              '<tr><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">Big 5</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">5특성 + 점수 레벨 변환표 (High/Mid/Low)</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">완료</td></tr>'
+              '<tr style="background:#f8f9fa"><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">커리어 앵커</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">8항목 + 핵심 질문 힌트</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">완료</td></tr>'
+              '<tr><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">VIA 강점</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">24강점 중 5개 + 실시간 검색 필터</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">완료</td></tr>'
+              '<tr style="background:#f8f9fa"><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">EQ 감성지능</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">5차원 x 5문항 = 25문항 / 3점 척도 / 자동 레벨 / 진행도 바</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">완료</td></tr>'
+              '</table>'
+
+              '<h2 style="color:#1e3a5f;border-left:4px solid #7c3aed;padding-left:10px">아키타입 데이터 확장 (9개 유형)</h2>'
+              '<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:12px;padding:16px;margin-bottom:24px">'
+              '<p style="margin:0 0 10px;font-weight:700;color:#5b21b6">dna(how/what/why) + synergyDesc + activities 전면 확장</p>'
+              + archetype_tags +
+              '</div>'
+
+              '<h2 style="color:#1e3a5f;border-left:4px solid #059669;padding-left:10px">자동화 시스템</h2>'
+              '<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px">'
+              '<tr style="background:#1e3a5f;color:white"><th style="padding:8px 12px;text-align:left">항목</th><th style="padding:8px 12px;text-align:left">내용</th><th style="padding:8px 12px;text-align:center">상태</th></tr>'
+              '<tr style="background:#f8f9fa"><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">2시간 중간 보고</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">매일 08·10·12·14·16·18시 KST 자동 발송</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">가동중</td></tr>'
+              '<tr><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">이메일 방식</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">Gmail SMTP (smtplib) 전환 완료</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">완료</td></tr>'
+              '<tr style="background:#f8f9fa"><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;font-weight:700">오늘의 계획 이메일</td><td style="padding:8px 12px;border-bottom:1px solid #e5e7eb">5인 팀 각자 3가지 과제 배분</td><td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb">완료</td></tr>'
+              '</table>'
+
+              '<h2 style="color:#1e3a5f;border-left:4px solid #dc2626;padding-left:10px">5인 팀</h2>'
+              '<p style="font-size:13px">우성(인프라) · 지성(리서치) · 짱구(기획·테스트) · 김치워리어(PM·코드감사) · 서진(총괄·배포)</p>'
+
+              '<h2 style="color:#1e3a5f;border-left:4px solid #0891b2;padding-left:10px">배포 현황</h2>'
+              '<p style="font-size:13px">make-it-mine-35.lovable.app | React 19 + TypeScript + TailwindCSS + Vite</p>'
+
+              '<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px">'
+              '<p style="margin:0 0 8px;font-weight:700;color:#92400e">다음 작업 후보</p>'
+              '<ul style="margin:0;padding-left:20px;color:#78350f;font-size:13px;line-height:2">'
+              '<li>진단 결과 분석 화면 UI 고도화 (Phase 3)</li>'
+              '<li>공유 링크 기능 점검</li>'
+              '<li>모바일 반응형 UI 검수</li>'
+              '</ul>'
+              '</div>'
+
+              '</div>'
+              '<p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:12px">정밀 보고서 | ' + kst_str + ' KST</p>'
+              '</div>'
+          )
+
+          msg = MIMEMultipart('alternative')
+          msg['Subject'] = '[서진 정밀보고서] make-it-mine-35 전체 작업 현황 — ' + kst_str
+          msg['From'] = 'nokira1024@gmail.com'
+          msg['To'] = 'nokira1024@gmail.com'
+          msg.attach(MIMEText(html, 'html', 'utf-8'))
+
+          pw = os.environ['GMAIL_APP_PASSWORD'].encode('ascii', 'ignore').decode('ascii').replace(' ', '').strip()
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+              server.login('nokira1024@gmail.com', pw)
+              server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
+              print('정밀 보고서 발송 완료 — ' + kst_str)
+          PYEOF
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
