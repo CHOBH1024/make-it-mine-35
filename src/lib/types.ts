@@ -117,6 +117,13 @@ export interface RoleModel {
     lesson: string;
 }
 
+/** 
+ * \uc560\ub2c8\uc5b4\uadf8\ub7a8 \uae30\ubc18\uc758 9\ub300 \ubaa9\ud68c\uc790 \uc720\ud615(\ub300\uc720\ud615).
+ * \uac01 \ub300\uc720\ud615\uc740 \uac80\uc0ac \uacb0\uacfc\uc5d0 \ub530\ub77c 3\uac00\uc9c0 \uc138\ubd80 \ubcc0\uc774(\uc18c\uc720\ud615)\ub85c \ubd84\ud654\ub41c\ub2e4.
+ * - Variation A: \uac15\uc810 \uc2ec\ud654\ud615 (\ud575\uc2ec \uc5ed\ub7c9\uc774 \uadf9\ub300\ud654\ub41c \uc0c1\ud0dc)
+ * - Variation B: \uc704\uae30 \uad00\ub9ac\ud615 (\ub098\uc758 \ubca0\ub4dc\ub77c\uc784 \uae30\uc624\uac00 \uc2a4\ud2b8\ub808\uc2a4\ub97c \uc720\ubc1c\ud558\ub294 \uc0c1\ud0dc)
+ * - Variation C: \uad00\uacc4 \uc9c0\ud5a5\ud615 (\uc2ec\uc815\uc801 \uc720\ub300\uc640 \uc18c\ud1b5\uc5d0 \uc624\uc9c0\ud558\ub294 \uc0c1\ud0dc)
+ */
 export interface ArchetypeSubType {
     title: string;
     catchphrase: string;
@@ -125,6 +132,25 @@ export interface ArchetypeSubType {
     symbol: string;
     strength: string;
     risk: string;
+    // \uc18c\uc720\ud615 \uad6c\uc870 (Variation A/B/C)
+    variationKey: 'strength' | 'crisis' | 'relational';
+}
+
+/**
+ * 9\ub300 \ub300\uc720\ud615 \uc548\uc5d0\uc11c \uac80\uc0ac \uc218\uce58\ub85c \ub3c4\ucd9c\ub418\ub294
+ * 3\uac00\uc9c0 \uc138\ubd80 \ubcc0\uc774(Sub-variation) \uad6c\uc870.
+ * \uac01 Variation\uc740 \ubaa9\ud68c \ud604\uc7a5\uc5d0\uc11c\uc758 \uad6c\uccb4\uc801\uc778 \ud589\ub3d9 \ud328\ud134\uc774 \ub2e4\ub974\ub2e4.
+ */
+export interface PastorSubVariation {
+    variationKey: 'strength' | 'crisis' | 'relational';
+    label: string;               // \uc608: "\uac15\uc810 \uc2ec\ud654\ud615", "\uc704\uae30 \uad00\ub9ac\ud615", "\uad00\uacc4 \uc9c0\ud5a5\ud615"
+    triggerCondition: string;    // \uc5b4\ub5a4 \uac80\uc0ac \uc218\uce58\uc77c \ub54c \uc774 Variation\uc774 \ud65c\uc131\ud654\ub418\ub294\uc9c0
+    ministryFocus: string;       // \uc774 \uc0c1\ud0dc\uc77c \ub54c \uc9d1\uc911\ud574\uc57c \ud560 \uc12d\ub9ac \ud588\uc2ec
+    wordApproachTip: string;     // \ub9d0\uc500(\ud6c8\ub3c5)\uc744 \ub300\ud560 \ub54c \uc774 \uc0c1\ud0dc\uc5d0\uc11c \ud2b9\ud788 \uc8fc\uc758\ud560 \uc810
+    managementTip: string;       // \uc870\uc9c1 \uad00\ub9ac \ubc0f \uc778\uc0ac\ubc30\uce58 \uc2dc \uace0\ub824\ud560 \uc810
+    resilienceTip: string;       // \ud68c\ubcf5\ud0c4\ub825\uc131: \uc774 \uc0c1\ud0dc\uc5d0\uc11c \uc5b4\ub5bb\uac8c \ubc88\uc544\uc6c3\uc744 \uc608\ubc29\ud560\uc9c0
+    prayerKey: string;           // \uc774 \uc0c1\ud0dc\uc5d0 \uc801\ud569\ud55c \uae30\ub3c4 \ud0a4\uc6cc\ub4dc
+    warningSign: string;         // \uc704\ud5d8 \uc2e0\ud638: \uc774\ub7f0 \ud328\ud134\uc774 \ub098\ud0c0\ub098\uba74 \uc8fc\uc758
 }
 
 export interface SimulationData {
@@ -275,6 +301,7 @@ export interface Archetype {
     roleModel: RoleModel;
     roles: string[];
     subTypes: ArchetypeSubType[];
+    pastorSubVariations: PastorSubVariation[]; // 9\ub300 \uc720\ud615 x 3\uac00\uc9c0 \ubcc0\uc774 = 27\uac00\uc9c0 \uc138\ubc00 \ud504\ub85c\ud544
     symbol: string;
     score?: number;
     dna: ArchetypeDNA;
