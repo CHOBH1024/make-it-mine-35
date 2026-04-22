@@ -1376,41 +1376,35 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                     </div>
                                 </div>
 
-                                {/* CLA Requirement */}
-                                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl border border-amber-200 shadow-lg p-8">
-                                    <h4 className="text-xl font-bold text-amber-900 mb-6 font-serif flex items-center gap-2">
-                                        <Icon name="GraduationCap" className="text-amber-600"/> CLA 교육 요건
+                                {/* Organization Expectation */}
+                                {result.deploymentFit.organizationExpectation && (
+                                <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-3xl border border-indigo-200 shadow-lg p-8">
+                                    <h4 className="text-xl font-bold text-indigo-900 mb-6 font-serif flex items-center gap-2">
+                                        <Icon name="Users" className="text-indigo-600"/> 조직이 이 유형에게 기대하는 것
                                     </h4>
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <div className="space-y-4">
-                                            <div className="bg-white rounded-xl p-4 border border-amber-200">
-                                                <h5 className="font-bold text-slate-800 text-sm mb-1">필수 이수 기간</h5>
-                                                <p className="text-amber-800 font-bold">{result.deploymentFit.claRequirement.minimumPeriod}</p>
-                                            </div>
-                                            {result.deploymentFit.claRequirement.exemptionCondition && (
-                                                <div className="bg-white rounded-xl p-4 border border-amber-200">
-                                                    <h5 className="font-bold text-slate-800 text-sm mb-1">전문직 예외 조항</h5>
-                                                    <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.claRequirement.exemptionCondition}</p>
-                                                </div>
-                                            )}
+                                    <div className="space-y-4">
+                                        <div className="bg-white rounded-xl p-4 border border-indigo-200">
+                                            <h5 className="font-bold text-indigo-800 text-sm mb-2">핵심 역할</h5>
+                                            <p className="text-slate-800 font-semibold text-base">{result.deploymentFit.organizationExpectation.role}</p>
                                         </div>
-                                        <div>
-                                            {result.deploymentFit.claRequirement.alternativePrograms && (
-                                                <div className="bg-white rounded-xl p-4 border border-amber-200">
-                                                    <h5 className="font-bold text-slate-800 text-sm mb-3">대체 인정 프로그램</h5>
-                                                    <ul className="space-y-2">
-                                                        {result.deploymentFit.claRequirement.alternativePrograms.map((prog, idx) => (
-                                                            <li key={idx} className="flex items-start gap-2 text-sm text-slate-700">
-                                                                <Icon name="BookOpen" size={14} className="text-amber-600 mt-0.5 shrink-0"/>
-                                                                <span>{prog}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            )}
+                                        <div className="bg-white rounded-xl p-4 border border-indigo-200">
+                                            <h5 className="font-bold text-indigo-800 text-sm mb-3">구체적 기대 사항</h5>
+                                            <ul className="space-y-2">
+                                                {result.deploymentFit.organizationExpectation.expectations.map((exp, idx) => (
+                                                    <li key={idx} className="flex items-start gap-2 text-sm text-slate-700">
+                                                        <Icon name="ChevronRight" size={14} className="text-indigo-400 mt-0.5 shrink-0"/>
+                                                        <span>{exp}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className="bg-indigo-100/60 rounded-xl p-4 border border-indigo-200">
+                                            <h5 className="font-bold text-indigo-800 text-sm mb-1">함께하면 시너지 나는 유형</h5>
+                                            <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.organizationExpectation.idealPartner}</p>
                                         </div>
                                     </div>
                                 </div>
+                                )}
 
                                 {/* Onboarding Steps */}
                                 <div className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden">
@@ -1476,40 +1470,36 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                     </div>
                                 </div>
 
-                                {/* Gender Support Policy */}
-                                <div className="bg-gradient-to-br from-pink-50 to-fuchsia-50 rounded-3xl border border-pink-200 shadow-lg overflow-hidden">
-                                    <div className="bg-gradient-to-r from-pink-500 to-fuchsia-600 p-6 flex items-center gap-3">
-                                        <div className="p-2 bg-white/20 rounded-lg"><Icon name="Heart" size={24} className="text-white"/></div>
+                                {/* HR Placement Guide */}
+                                {result.deploymentFit.hrPlacementGuide && (
+                                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl border border-emerald-200 shadow-lg overflow-hidden">
+                                    <div className="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 flex items-center gap-3">
+                                        <div className="p-2 bg-white/20 rounded-lg"><Icon name="TrendingUp" size={24} className="text-white"/></div>
                                         <div>
-                                            <h4 className="text-lg font-bold text-white font-serif">여성 공직자 지원 정책</h4>
-                                            <p className="text-sm text-pink-100">부부 목회 선택제 · 육아휴직 · 복직 지원</p>
+                                            <h4 className="text-lg font-bold text-white font-serif">인사 배치 가이드</h4>
+                                            <p className="text-sm text-emerald-100">단기 · 중기 · 장기 성장 경로 및 인사 주의사항</p>
                                         </div>
                                     </div>
                                     <div className="p-6 grid md:grid-cols-2 gap-4">
-                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
-                                            <h5 className="font-bold text-pink-800 text-sm mb-2">🤰 육아휴직</h5>
-                                            <p className="text-sm text-slate-700">{result.deploymentFit.genderSupport.maternityLeave}</p>
+                                        <div className="bg-white rounded-xl p-4 border border-emerald-200">
+                                            <h5 className="font-bold text-emerald-800 text-sm mb-2">단기 (1~3년)</h5>
+                                            <p className="text-sm text-slate-700 leading-relaxed">{result.deploymentFit.hrPlacementGuide.shortTerm}</p>
                                         </div>
-                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
-                                            <h5 className="font-bold text-pink-800 text-sm mb-2">🔄 대체 인력</h5>
-                                            <p className="text-sm text-slate-700">{result.deploymentFit.genderSupport.substituteArrangement}</p>
+                                        <div className="bg-white rounded-xl p-4 border border-emerald-200">
+                                            <h5 className="font-bold text-emerald-800 text-sm mb-2">중기 (4~7년)</h5>
+                                            <p className="text-sm text-slate-700 leading-relaxed">{result.deploymentFit.hrPlacementGuide.midTerm}</p>
                                         </div>
-                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
-                                            <h5 className="font-bold text-pink-800 text-sm mb-2">💒 부부 목회</h5>
-                                            <p className="text-sm text-slate-700">{result.deploymentFit.genderSupport.coupleMinistryOption}</p>
+                                        <div className="bg-white rounded-xl p-4 border border-teal-200">
+                                            <h5 className="font-bold text-teal-800 text-sm mb-2">장기 (8년 이상)</h5>
+                                            <p className="text-sm text-slate-700 leading-relaxed">{result.deploymentFit.hrPlacementGuide.longTerm}</p>
                                         </div>
-                                        <div className="bg-white rounded-xl p-4 border border-pink-200">
-                                            <h5 className="font-bold text-pink-800 text-sm mb-2">✨ 추가 지원</h5>
-                                            <ul className="space-y-1">
-                                                {result.deploymentFit.genderSupport.additionalSupport.map((s, i) => (
-                                                    <li key={i} className="text-sm text-slate-700 flex items-start gap-1">
-                                                        <span className="text-pink-400 shrink-0">•</span> {s}
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                        <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                                            <h5 className="font-bold text-amber-800 text-sm mb-2">인사 주의사항</h5>
+                                            <p className="text-sm text-slate-700 leading-relaxed">{result.deploymentFit.hrPlacementGuide.watchOut}</p>
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </section>
                         )}
 
@@ -1824,34 +1814,30 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                 </div>
                             </section>
 
-                            {/* CLA Requirement */}
-                            {result.deploymentFit?.claRequirement && (
-                                <section className="bg-amber-50 rounded-3xl border border-amber-200 p-8">
-                                    <h3 className="text-2xl font-bold text-amber-900 mb-6 font-serif flex items-center gap-3">
-                                        <Icon name="BookOpen" className="text-amber-600"/> CLA 이수 요건
+                            {/* HR Placement Guide (compact) */}
+                            {result.deploymentFit?.hrPlacementGuide && (
+                                <section className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl border border-emerald-200 p-8">
+                                    <h3 className="text-2xl font-bold text-emerald-900 mb-6 font-serif flex items-center gap-3">
+                                        <Icon name="TrendingUp" className="text-emerald-600"/> 단계별 인사 배치 가이드
                                     </h3>
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <div>
-                                            <p className="text-sm font-bold text-amber-700 mb-1">최소 이수 기간</p>
-                                            <p className="text-lg font-bold text-slate-900">{result.deploymentFit.claRequirement.minimumPeriod}</p>
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                        <div className="bg-white rounded-xl p-4 border border-emerald-200">
+                                            <p className="text-sm font-bold text-emerald-700 mb-1">단기 (1~3년)</p>
+                                            <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.hrPlacementGuide.shortTerm}</p>
                                         </div>
-                                        {result.deploymentFit.claRequirement.exemptionCondition && (
-                                            <div>
-                                                <p className="text-sm font-bold text-amber-700 mb-1">면제 조건</p>
-                                                <p className="text-slate-700 text-sm">{result.deploymentFit.claRequirement.exemptionCondition}</p>
-                                            </div>
-                                        )}
+                                        <div className="bg-white rounded-xl p-4 border border-emerald-200">
+                                            <p className="text-sm font-bold text-emerald-700 mb-1">중기 (4~7년)</p>
+                                            <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.hrPlacementGuide.midTerm}</p>
+                                        </div>
+                                        <div className="bg-white rounded-xl p-4 border border-teal-200">
+                                            <p className="text-sm font-bold text-teal-700 mb-1">장기 (8년 이상)</p>
+                                            <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.hrPlacementGuide.longTerm}</p>
+                                        </div>
+                                        <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                                            <p className="text-sm font-bold text-amber-700 mb-1">인사 주의사항</p>
+                                            <p className="text-slate-700 text-sm leading-relaxed">{result.deploymentFit.hrPlacementGuide.watchOut}</p>
+                                        </div>
                                     </div>
-                                    {result.deploymentFit.claRequirement.alternativePrograms && (
-                                        <div className="mt-4">
-                                            <p className="text-sm font-bold text-amber-700 mb-2">대체 프로그램</p>
-                                            <div className="flex flex-wrap gap-2">
-                                                {result.deploymentFit.claRequirement.alternativePrograms.map((p, i) => (
-                                                    <span key={i} className="bg-white border border-amber-200 text-amber-800 text-sm px-3 py-1 rounded-full font-bold">{p}</span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
                                 </section>
                             )}
 
