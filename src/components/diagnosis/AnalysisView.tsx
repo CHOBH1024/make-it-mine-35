@@ -145,6 +145,28 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
     // Primary result is the first element
     const result = results.length > 0 ? results[0] : null;
 
+    // Determine active sub-variation from EQ + Big5 inputs
+    const activeVariationKey = useMemo((): 'strength' | 'crisis' | 'relational' => {
+        const eq = inputs.eq;
+        const big5 = inputs.big5;
+        // Crisis: stress/regulation issues
+        if (eq.regulation === 'Low' || big5.neuroticism === 'High') return 'crisis';
+        // Relational: empathy + agreeableness focused
+        if (eq.empathy === 'High' && big5.agreeableness === 'High') return 'relational';
+        // Strength: motivation + awareness at peak
+        if (eq.motivation === 'High' && eq.awareness === 'High') return 'strength';
+        // Default
+        return 'strength';
+    }, [inputs]);
+
+    const activePastorVariation = useMemo(() =>
+        result?.pastorSubVariations?.find(v => v.variationKey === activeVariationKey) ?? null,
+    [result, activeVariationKey]);
+
+    const activeSubType = useMemo(() =>
+        result?.subTypes?.find(s => s.variationKey === activeVariationKey) ?? null,
+    [result, activeVariationKey]);
+
     // Load saved analyses
     useEffect(() => {
         const stored = localStorage.getItem('cig_saved_analyses');
@@ -521,23 +543,57 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                         {/* NEW: Enhanced Sub-Type Exploration Section */}
                         <section className="bg-stone-50 p-8 lg:p-12 rounded-[2.5rem] border border-stone-200">
                             <h3 className="text-3xl font-bold text-slate-900 mb-3 font-serif flex items-center gap-3">
-                                <Icon name="ZoomIn" className="text-blue-900"/> 
+                                <Icon name="ZoomIn" className="text-blue-900"/>
                                 세부 유형 탐색 (Deep Dive)
                             </h3>
-                            <p className="text-lg text-slate-600 mb-10 max-w-2xl leading-relaxed">
-                                같은 유형이라도 집중하는 섭리적 포인트가 다릅니다. 각 세부 유형의 강점과 그림자(Risk)를 이해하면 더 정교한 자기 발전이 가능합니다.
+                            <p className="text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed">
+                                같은 유형이라도 집중하는 섭리적 포인트가 다릅니다. EQ·Big5 진단 결과를 기반으로 현재 활성화된 세부 유형을 확인하세요.
                             </p>
-                            
-                            <div className="grid lg:grid-cols-3 gap-6">
-                                {result.subTypes?.map((sub, idx) => (
-                                    <div key={idx} className="bg-white rounded-2xl border border-stone-200 shadow-sm hover:shadow-2xl hover:border-blue-300 hover:-translate-y-2 transition-all duration-300 group cursor-default flex flex-col overflow-hidden">
+
+                            {/* Active Sub-Type Banner */}
+                            {activePastorVariation && activeSubType && (
+                                <div className="mb-10 bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-6 text-white flex flex-col md:flex-row items-start md:items-center gap-4 shadow-xl">
+                                    <div className="w-14 h-14 bg-white/15 rounded-2xl flex items-center justify-center shrink-0">
+                                        <Icon name={activeSubType.symbol} size={28} className="text-white"/>
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="text-xs font-bold bg-white/20 text-white px-2.5 py-0.5 rounded-full uppercase tracking-widest">현재 활성 세부 유형</span>
+                                        </div>
+                                        <h4 className="text-xl font-bold font-serif mb-1">{activePastorVariation.label} — {activeSubType.title}</h4>
+                                        <p className="text-blue-200 text-sm leading-relaxed">{activePastorVariation.triggerCondition}</p>
+                                    </div>
+                                    <div className="shrink-0 text-right">
+                                        <div className="text-xs text-blue-300 mb-1">집중 사역</div>
+                                        <p className="text-sm text-white font-medium max-w-xs">{activePastorVariation.ministryFocus}</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="grid lg:grid-cols-3 gap-6 mb-10">
+                                {result.subTypes?.map((sub, idx) => {
+                                    const isActive = sub.variationKey === activeVariationKey;
+                                    return (
+                                    <div key={idx} className={`rounded-2xl border shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group cursor-default flex flex-col overflow-hidden relative
+                                        ${isActive
+                                            ? 'bg-white border-blue-600 ring-2 ring-blue-600 ring-offset-2'
+                                            : 'bg-white border-stone-200 hover:border-blue-300'
+                                        }`}>
+                                        {isActive && (
+                                            <div className="absolute top-3 right-3 z-10">
+                                                <span className="text-[10px] font-bold bg-blue-600 text-white px-2.5 py-1 rounded-full flex items-center gap-1">
+                                                    <Icon name="Zap" size={10}/> 현재 나의 유형
+                                                </span>
+                                            </div>
+                                        )}
                                         {/* Card Header */}
                                         <div className="p-8 pb-4">
                                             <div className="flex justify-between items-start mb-6">
-                                                <div className="w-14 h-14 bg-stone-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-blue-900 group-hover:text-white transition-colors shadow-inner">
+                                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner transition-colors
+                                                    ${isActive ? 'bg-blue-900 text-white' : 'bg-stone-50 text-slate-400 group-hover:bg-blue-900 group-hover:text-white'}`}>
                                                     <Icon name={sub.symbol} size={28}/>
                                                 </div>
-                                                <span className="text-[10px] font-bold bg-blue-50 text-blue-800 px-3 py-1 rounded-full uppercase tracking-wider border border-blue-100">
+                                                <span className="text-[10px] font-bold bg-blue-50 text-blue-800 px-3 py-1 rounded-full uppercase tracking-wider border border-blue-100 mt-8">
                                                     {sub.keyFocus}
                                                 </span>
                                             </div>
@@ -551,7 +607,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                         </div>
 
                                         {/* Card Footer - Strength & Risk */}
-                                        <div className="mt-auto bg-stone-50 p-6 border-t border-stone-100 text-sm space-y-3">
+                                        <div className={`mt-auto p-6 border-t text-sm space-y-3 ${isActive ? 'bg-blue-50/50 border-blue-100' : 'bg-stone-50 border-stone-100'}`}>
                                             <div className="flex gap-3">
                                                 <Icon name="ThumbsUp" size={16} className="text-blue-600 shrink-0 mt-0.5"/>
                                                 <div>
@@ -568,8 +624,77 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                             </div>
                                         </div>
                                     </div>
-                                ))}
+                                    );
+                                })}
                             </div>
+
+                            {/* Active Pastoral Variation — Detailed Guide */}
+                            {activePastorVariation && (
+                                <div className="bg-white rounded-2xl border border-blue-100 shadow-lg overflow-hidden">
+                                    <div className="bg-blue-900 px-8 py-5">
+                                        <h4 className="text-white text-xl font-bold font-serif flex items-center gap-2">
+                                            <Icon name="BookOpen" size={20}/> 세부 유형 목회 실전 가이드
+                                        </h4>
+                                        <p className="text-blue-200 text-sm mt-1">{activePastorVariation.label} 유형의 구체적인 사역 전략</p>
+                                    </div>
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-stone-100">
+                                        <div className="p-6 space-y-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+                                                    <Icon name="Target" size={16} className="text-emerald-700"/>
+                                                </span>
+                                                <span className="font-bold text-slate-900 text-sm">사역 핵심 집중</span>
+                                            </div>
+                                            <p className="text-slate-600 text-sm leading-relaxed">{activePastorVariation.ministryFocus}</p>
+                                        </div>
+                                        <div className="p-6 space-y-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                                                    <Icon name="BookMarked" size={16} className="text-purple-700"/>
+                                                </span>
+                                                <span className="font-bold text-slate-900 text-sm">말씀 접근 팁</span>
+                                            </div>
+                                            <p className="text-slate-600 text-sm leading-relaxed">{activePastorVariation.wordApproachTip}</p>
+                                        </div>
+                                        <div className="p-6 space-y-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                                                    <Icon name="Users" size={16} className="text-blue-700"/>
+                                                </span>
+                                                <span className="font-bold text-slate-900 text-sm">조직 관리 팁</span>
+                                            </div>
+                                            <p className="text-slate-600 text-sm leading-relaxed">{activePastorVariation.managementTip}</p>
+                                        </div>
+                                        <div className="p-6 space-y-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                                                    <Icon name="Flame" size={16} className="text-orange-700"/>
+                                                </span>
+                                                <span className="font-bold text-slate-900 text-sm">회복탄력성</span>
+                                            </div>
+                                            <p className="text-slate-600 text-sm leading-relaxed">{activePastorVariation.resilienceTip}</p>
+                                        </div>
+                                        <div className="p-6 space-y-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                                                    <Icon name="HandsPraying" size={16} className="text-indigo-700"/>
+                                                </span>
+                                                <span className="font-bold text-slate-900 text-sm">기도 키워드</span>
+                                            </div>
+                                            <p className="text-slate-600 text-sm leading-relaxed">{activePastorVariation.prayerKey}</p>
+                                        </div>
+                                        <div className="p-6 space-y-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                                    <Icon name="AlertCircle" size={16} className="text-red-700"/>
+                                                </span>
+                                                <span className="font-bold text-slate-900 text-sm">위험 신호</span>
+                                            </div>
+                                            <p className="text-slate-600 text-sm leading-relaxed">{activePastorVariation.warningSign}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </section>
 
                         {/* 2. Contextual Recommendations (HQ vs Field) */}
