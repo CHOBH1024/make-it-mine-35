@@ -212,13 +212,6 @@ export interface OnboardingStep {
     mentor: string;
 }
 
-export interface CLARequirement {
-    required: boolean;
-    exemptionCondition?: string;
-    alternativePrograms?: string[];
-    minimumPeriod: string;
-}
-
 export interface DISCProfile {
     primaryType: string;
     description: string;
@@ -231,11 +224,17 @@ export interface SalaryStructure {
     note: string;
 }
 
-export interface GenderSupportPolicy {
-    maternityLeave: string;
-    substituteArrangement: string;
-    coupleMinistryOption: string;
-    additionalSupport: string[];
+export interface OrganizationExpectation {
+    role: string;
+    expectations: string[];
+    idealPartner: string;
+}
+
+export interface HRPlacementGuide {
+    shortTerm: string;
+    midTerm: string;
+    longTerm: string;
+    watchOut: string;
 }
 
 export interface DeploymentFit {
@@ -246,12 +245,12 @@ export interface DeploymentFit {
     warningPlacements: string[];
     placementPrinciples: PlacementPrinciple[];
     discProfile: DISCProfile;
-    claRequirement: CLARequirement;
     onboardingSteps: OnboardingStep[];
     salaryStructure: SalaryStructure;
-    genderSupport: GenderSupportPolicy;
     centralHiringNote: string;
     hrRecommendation: string;
+    organizationExpectation: OrganizationExpectation;
+    hrPlacementGuide: HRPlacementGuide;
 }
 
 export interface KPITemplate {
