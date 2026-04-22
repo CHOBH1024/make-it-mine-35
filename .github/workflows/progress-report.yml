@@ -49,10 +49,7 @@ jobs:
           )
           recent_commits = [l.strip() for l in result2.stdout.strip().split('\n') if l.strip()]
 
-          # 새 커밋 없으면 스킵
-          if not new_commits:
-              print(f'[{kst_str}] 최근 2시간 새 커밋 없음 — 발송 스킵')
-              exit(0)
+          # 새 커밋 없어도 정시 보고는 항상 발송 (코드 작업 없음으로 표시)
 
           # 보고 유형
           if hour == 8:
@@ -176,9 +173,24 @@ jobs:
               ]
 
           # 새 커밋 HTML
-          new_commits_html = ''
-          for c in new_commits[:5]:
-              new_commits_html += '<li style="margin:4px 0;color:#1e3a5f">' + c + '</li>'
+          if new_commits:
+              new_commits_html = ''
+              for c in new_commits[:5]:
+                  new_commits_html += '<li style="margin:4px 0;color:#1e3a5f">' + c + '</li>'
+              new_badge = (
+                  '<span style="background:#dcfce7;color:#16a34a;font-size:11px;font-weight:700;'
+                  'padding:2px 8px;border-radius:99px;margin-left:8px">'
+                  '신규 ' + str(len(new_commits)) + '건</span>'
+              )
+          else:
+              new_commits_html = (
+                  '<li style="color:#9ca3af;font-style:italic">'
+                  '이번 2시간 코드 커밋 없음 — 기획·검토·회의 진행 중</li>'
+              )
+              new_badge = (
+                  '<span style="background:#f3f4f6;color:#9ca3af;font-size:11px;font-weight:700;'
+                  'padding:2px 8px;border-radius:99px;margin-left:8px">코드 작업 없음</span>'
+              )
 
           recent_html = ''
           for c in recent_commits:
@@ -220,13 +232,6 @@ jobs:
                   '<p style="margin:0;font-size:13px;color:#1f2937">' + content + '</p>'
                   '</div>'
               )
-
-          # 새 커밋 강조 배지
-          new_badge = (
-              '<span style="background:#dcfce7;color:#16a34a;font-size:11px;font-weight:700;'
-              'padding:2px 8px;border-radius:99px;margin-left:8px">'
-              '신규 ' + str(len(new_commits)) + '건</span>'
-          )
 
           html = (
               '<div style="font-family:sans-serif;max-width:720px;margin:0 auto;color:#1a1a1a">'
