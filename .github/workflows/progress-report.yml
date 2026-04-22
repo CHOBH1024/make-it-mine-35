@@ -287,11 +287,34 @@ jobs:
           msg['To'] = 'nokira1024@gmail.com'
           msg.attach(MIMEText(html, 'html', 'utf-8'))
 
-          pw = os.environ['GMAIL_APP_PASSWORD'].encode('ascii', 'ignore').decode('ascii').replace(' ', '').strip()
-          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-              server.login('nokira1024@gmail.com', pw)
-              server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
-              print('발송 완료 — ' + kst_str + ' (' + str(len(new_commits)) + '개 신규 커밋)')
+          # 시크릿 존재 여부 확인
+          raw_pw = os.environ.get('GMAIL_APP_PASSWORD', '')
+          if not raw_pw:
+              print('ERROR: GMAIL_APP_PASSWORD 시크릿이 비어있거나 설정되지 않음')
+              exit(1)
+
+          pw = raw_pw.encode('ascii', 'ignore').decode('ascii').replace(' ', '').strip()
+          print(f'비밀번호 길이: {len(pw)}자 (정상이면 16자)')
+
+          try:
+              import socket
+              socket.setdefaulttimeout(15)
+              print('Gmail SMTP 연결 시도 중...')
+              with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+                  server.login('nokira1024@gmail.com', pw)
+                  print('로그인 성공')
+                  server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
+                  print('발송 완료 — ' + kst_str + ' (' + str(len(new_commits)) + '개 신규 커밋)')
+          except smtplib.SMTPAuthenticationError as e:
+              print(f'ERROR 인증 실패: {e}')
+              print('해결: Google 계정 → 보안 → 앱 비밀번호 재발급 후 GitHub Secrets 업데이트 필요')
+              exit(1)
+          except smtplib.SMTPException as e:
+              print(f'ERROR SMTP 오류: {e}')
+              exit(1)
+          except Exception as e:
+              print(f'ERROR 기타: {type(e).__name__}: {e}')
+              exit(1)
           PYEOF
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
