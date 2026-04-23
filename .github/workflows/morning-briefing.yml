@@ -1,0 +1,189 @@
+name: 서진 출근 브리핑 (수동 발송)
+
+on:
+  push:
+    paths:
+      - '.trigger-morning-email'
+  workflow_dispatch:
+
+jobs:
+  send-morning-briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      - name: 출근 브리핑 이메일 발송
+        run: |
+          python3 << 'PYEOF'
+          import smtplib, os, subprocess
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+          from datetime import datetime, timezone, timedelta
+
+          KST = timezone(timedelta(hours=9))
+          now = datetime.now(KST)
+          kst_str = now.strftime('%Y-%m-%d %H:%M')
+          kst_date = now.strftime('%Y-%m-%d')
+
+          # 최근 커밋
+          result = subprocess.run(
+              ['git', 'log', '--oneline', '-5', '--format=• %s (%ar)'],
+              capture_output=True, text=True
+          )
+          recent_commits = [l.strip() for l in result.stdout.strip().split('\n') if l.strip()]
+          recent_html = ''.join(f'<li style="margin:3px 0;color:#374151">{c}</li>' for c in recent_commits)
+
+          # 오늘의 팀원별 구체적 작업 계획
+          team_plans = [
+              {
+                  "name": "우성",
+                  "icon": "⚙️",
+                  "role": "인프라 & 구조 담당",
+                  "color": "#1d4ed8",
+                  "bg": "#eff6ff",
+                  "border": "#bfdbfe",
+                  "tasks": [
+                      "ValidityView.tsx 컴포넌트 뼈대 설계 — 섹션별 sticky 사이드바 네비게이션 구조 구축 (Section 1~7 앵커 링크)",
+                      "Icon 컴포넌트 의존성 확인 — ValidityView에서 사용할 FlaskConical, BookOpenCheck, AlertTriangle, Building2 아이콘 가용성 점검",
+                      "TypeScript 타입 정의 — ValidityToolData, ScoreCard, ReferenceItem 인터페이스 설계 및 data 분리 여부 결정",
+                  ]
+              },
+              {
+                  "name": "지성",
+                  "icon": "🔍",
+                  "role": "학술 리서치 & 콘텐츠 담당",
+                  "color": "#16a34a",
+                  "bg": "#f0fdf4",
+                  "border": "#bbf7d0",
+                  "tasks": [
+                      "Big Five 섹션 학술 근거 집필 — Costa & McCrae(1992) 신뢰도(α=0.78~0.92), Barrick & Mount(1991) 메타분석(직무성과 예측 r=0.22~0.46), 56개국 교차문화 검증(McCrae & Terracciano, 2005) 내용 정리",
+                      "에니어그램 + 커리어 앵커 섹션 집필 — Newgent et al.(2004) 신뢰도 편차(α=0.56~0.80), Schein(1978) 원본 표본 44명 한계, Fortune 500 기업 활용 현황 정리",
+                      "VIA 강점 + EQ 섹션 집필 — Peterson & Seligman(2004) 24개 강점 체계, MSCEIT 능력모델(α=0.91~0.93), Joseph & Newman(2010) 메타분석(r=0.24~0.30), Goleman 모델 학술 비판 내용 집필",
+                  ]
+              },
+              {
+                  "name": "짱구",
+                  "icon": "🎨",
+                  "role": "UI/UX 기획 & 콘텐츠 검수 담당",
+                  "color": "#d97706",
+                  "bg": "#fffbeb",
+                  "border": "#fed7aa",
+                  "tasks": [
+                      "도구별 신뢰도 점수 시각화 카드 기획 — 각 도구의 학술 신뢰도를 별점(★★★★☆)과 색상 배지(검증됨/논란있음/제한적)로 직관적 표시 설계",
+                      "기업 활용 사례 섹션 기획 — Google·삼성·McKinsey·Shell 등 기업별 활용 도구와 성과 수치를 카드 그리드로 시각화하는 레이아웃 설계",
+                      "한계점 섹션 UX 설계 — 경고(주의)·정보(참고)·오류(치명적 한계)를 색상으로 구분하는 알림 카드 시스템 설계, 참고문헌 접이식 APA 인용 목록 설계",
+                  ]
+              },
+              {
+                  "name": "김치워리어",
+                  "icon": "🛡️",
+                  "role": "PM & 코드 감사 담당",
+                  "color": "#dc2626",
+                  "bg": "#fef2f2",
+                  "border": "#fecaca",
+                  "tasks": [
+                      "학술 정보 정확성 감사 — 지성이 작성한 신뢰도 계수·논문 저자·연도 데이터가 실제 문헌과 일치하는지 교차 검증 (오류 시 수정 지시)",
+                      "기업 활용 사례 사실 확인 — Google, McKinsey, 삼성 등 실제 활용 사례 출처 확인, 검증되지 않은 주장에 '추정' 표기 요청",
+                      "전체 작업 진행도 추적 — 오전 12시·오후 3시 중간 점검, 3만자 목표 달성 여부 추적, 미완성 섹션 우성·지성에게 재배분",
+                  ]
+              },
+              {
+                  "name": "서진",
+                  "icon": "👑",
+                  "role": "총괄 & 통합 보고 담당",
+                  "color": "#7c3aed",
+                  "bg": "#f5f3ff",
+                  "border": "#ddd6fe",
+                  "tasks": [
+                      "ValidityView.tsx 최종 통합 — 우성 구조 + 지성 콘텐츠 + 짱구 UI 병합, TypeScript 오류 0건 확인 후 main 브랜치 push",
+                      "3만자 달성 검증 — 완성된 컴포넌트의 한국어 텍스트 총량 카운트, 미달 시 부족한 섹션 보강 지시",
+                      "Lovable 배포 확인 및 최종 보고 — 새 '학술 타당성' 탭 정상 노출 확인, 오늘 작업 결과 여보짱에게 저녁 퇴근 보고",
+                  ]
+              },
+          ]
+
+          # 팀원 카드 HTML 생성
+          team_html = ""
+          for m in team_plans:
+              tasks_html = "".join(
+                  f'<li style="margin:8px 0;font-size:13px;line-height:1.7;color:#1f2937">'
+                  f'<span style="font-weight:700;color:{m["color"]}">Task {i+1}.</span> {t}</li>'
+                  for i, t in enumerate(m["tasks"])
+              )
+              team_html += f"""
+              <div style="background:{m['bg']};border:1px solid {m['border']};border-radius:12px;padding:16px 18px;margin-bottom:12px">
+                <p style="margin:0 0 4px;font-weight:800;font-size:15px;color:{m['color']}">{m['icon']} {m['name']} <span style="font-weight:400;font-size:12px;color:#6b7280">— {m['role']}</span></p>
+                <ol style="margin:8px 0 0;padding-left:18px">{tasks_html}</ol>
+              </div>"""
+
+          html = f"""
+          <div style="font-family:sans-serif;max-width:760px;margin:0 auto;color:#1a1a1a">
+
+            <div style="background:linear-gradient(135deg,#1e3a5f,#7c3aed);color:white;padding:28px 32px;border-radius:14px 14px 0 0">
+              <p style="margin:0 0 6px;font-size:11px;opacity:0.6;text-transform:uppercase;letter-spacing:2px">가정연합 목회공직자 유형진단 시스템</p>
+              <h1 style="margin:0;font-size:22px;font-weight:800">{kst_date} 출근 브리핑 🌅</h1>
+              <p style="margin:8px 0 0;opacity:0.8;font-size:13px">서진 → 여보짱 | 오늘 하루 5인 팀 작업 계획 전체 보고</p>
+            </div>
+
+            <div style="border:1px solid #e5e7eb;border-top:none;padding:28px 32px;background:white;border-radius:0 0 14px 14px">
+
+              <div style="background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:14px 18px;margin-bottom:24px">
+                <p style="margin:0;font-weight:700;color:#854d0e;font-size:14px">🎯 오늘의 핵심 목표</p>
+                <p style="margin:6px 0 0;color:#92400e;font-size:13px;line-height:1.7">
+                  <strong>ValidityView.tsx 완성 — 학술 타당성 보고서 탭 신규 추가</strong><br>
+                  목표 분량: 한국어 텍스트 3만자 이상 | 도구 5종 학술 검증 + 기업 사례 + 한계 + 참고문헌 완전 수록
+                </p>
+              </div>
+
+              <h2 style="color:#1e3a5f;font-size:16px;border-bottom:2px solid #e5e7eb;padding-bottom:10px;margin-bottom:16px">
+                👥 팀원별 오늘 작업 계획 (각 3가지 이상)
+              </h2>
+
+              {team_html}
+
+              <h2 style="color:#1e3a5f;font-size:16px;border-bottom:2px solid #e5e7eb;padding-bottom:10px;margin:24px 0 16px">
+                📋 최근 커밋 이력
+              </h2>
+              <ul style="line-height:1.9;padding-left:20px;font-size:13px">{recent_html}</ul>
+
+              <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px 18px;margin-top:20px">
+                <p style="margin:0;font-size:13px;color:#0c4a6e;line-height:1.7">
+                  💬 <strong>서진 멘트:</strong> 오늘 하루 걸려서라도 3만자 다 쓴다. 중간에 포기 없어.
+                  2시간마다 자동 이메일로 진행 상황 올라가니까 여보짱도 수시로 확인해줘.
+                  퇴근 보고 때 완성본 배포 링크 함께 보낼게.
+                </p>
+              </div>
+
+            </div>
+            <p style="text-align:center;color:#9ca3af;font-size:11px;margin-top:8px">
+              출근 브리핑 자동 발송 | {kst_str} KST
+            </p>
+          </div>
+          """
+
+          raw_pw = os.environ.get('GMAIL_APP_PASSWORD', '')
+          if not raw_pw:
+              print('ERROR: GMAIL_APP_PASSWORD 없음')
+              exit(1)
+          pw = raw_pw.encode('ascii', 'ignore').decode('ascii').replace(' ', '').strip()
+
+          msg = MIMEMultipart('alternative')
+          msg['Subject'] = f'[서진 출근브리핑] {kst_date} — 오늘 ValidityView 3만자 완성 도전'
+          msg['From'] = 'nokira1024@gmail.com'
+          msg['To'] = 'nokira1024@gmail.com'
+          msg.attach(MIMEText(html, 'html', 'utf-8'))
+
+          try:
+              with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+                  server.login('nokira1024@gmail.com', pw)
+                  server.sendmail('nokira1024@gmail.com', ['nokira1024@gmail.com'], msg.as_string())
+                  print(f'출근 브리핑 발송 완료 — {kst_str}')
+          except Exception as e:
+              print(f'발송 실패: {e}')
+              exit(1)
+          PYEOF
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}

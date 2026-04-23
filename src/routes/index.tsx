@@ -6,6 +6,7 @@ import { DiagnosisView } from "@/components/diagnosis/DiagnosisView";
 import { AnalysisView } from "@/components/diagnosis/AnalysisView";
 import { LibraryView } from "@/components/diagnosis/LibraryView";
 import { GuideView } from "@/components/diagnosis/GuideView";
+import { ValidityView } from "@/components/diagnosis/ValidityView";
 import { archetypes } from "@/lib/data";
 import { decodeInputs } from "@/lib/share";
 import type { Inputs, Archetype } from "@/lib/types";
@@ -105,7 +106,7 @@ function Index() {
             </div>
           </div>
           <nav className="hidden lg:flex gap-8">
-            {(["home", "diagnosis", "analysis", "library", "guide"] as const).map((tab) => (
+            {(["home", "diagnosis", "analysis", "library", "guide", "validity"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -123,7 +124,9 @@ function Index() {
                       ? "종합 분석 결과"
                       : tab === "library"
                         ? "아키타입 도서관"
-                        : "지표 가이드"}
+                        : tab === "guide"
+                          ? "지표 가이드"
+                          : "학술 타당성"}
               </button>
             ))}
           </nav>
@@ -139,6 +142,7 @@ function Index() {
         )}
         {activeTab === "library" && <LibraryView />}
         {activeTab === "guide" && <GuideView />}
+        {activeTab === "validity" && <ValidityView />}
       </main>
       <footer className="bg-secondary border-t border-border py-12 text-center text-muted-foreground text-sm font-serif">
         Cheon Il Guk Public Official Assessment Tool © 2024
