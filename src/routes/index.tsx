@@ -131,6 +131,34 @@ function Index() {
             ))}
           </nav>
         </div>
+        {/* 모바일 가로 스크롤 탭바 */}
+        <div className="lg:hidden border-t border-border bg-card/95">
+          <div className="flex overflow-x-auto scrollbar-none">
+            {(["home", "diagnosis", "analysis", "library", "guide", "validity"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`shrink-0 px-4 py-3 text-xs font-bold tracking-wide transition-all border-b-2 whitespace-nowrap ${
+                  activeTab === tab
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground"
+                }`}
+              >
+                {tab === "home"
+                  ? "소명의 여정"
+                  : tab === "diagnosis"
+                    ? "성향 진단"
+                    : tab === "analysis"
+                      ? "종합 분석"
+                      : tab === "library"
+                        ? "도서관"
+                        : tab === "guide"
+                          ? "지표 가이드"
+                          : "학술 타당성"}
+              </button>
+            ))}
+          </div>
+        </div>
       </header>
       <main className="flex-grow">
         {activeTab === "home" && <HomeView onStart={() => setActiveTab("diagnosis")} />}
