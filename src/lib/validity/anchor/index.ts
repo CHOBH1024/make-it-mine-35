@@ -1,0 +1,1 @@
+export { anchorData } from '../anchor';

@@ -1,0 +1,1 @@
+export { enneagramData } from '../enneagram';
