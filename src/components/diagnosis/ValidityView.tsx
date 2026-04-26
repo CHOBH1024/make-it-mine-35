@@ -12,6 +12,8 @@ import { big5Data } from '@/lib/validity/big5';
 import { enneagramHistory } from '@/lib/validity/enneagram/history';
 import { enneagramEvidence } from '@/lib/validity/enneagram/evidence';
 import { enneagramNineTypes } from '@/lib/validity/enneagram/nine-types';
+import { enneagramSDT } from '@/lib/validity/enneagram/sdt-connection';
+import { enneagramOrgResearch } from '@/lib/validity/enneagram/org-research';
 import { enneagramData } from '@/lib/validity/enneagram';
 
 // Anchor
@@ -26,6 +28,7 @@ import { viaTwentyFourStrengths } from '@/lib/validity/via/twenty-four-strengths
 import { viaData } from '@/lib/validity/via';
 
 // EQ
+import { eqMSCEIT } from '@/lib/validity/eq/msceit-framework';
 import { eqModels } from '@/lib/validity/eq/models';
 import { eqResearch } from '@/lib/validity/eq/research';
 import { eqFiveDimensions } from '@/lib/validity/eq/five-dimensions';
@@ -69,6 +72,8 @@ const tools: ToolSection[] = [
   {
     ...enneagramData,
     subSections: [
+      enneagramSDT,
+      enneagramOrgResearch,
       enneagramHistory,
       enneagramNineTypes,
       enneagramEvidence,
@@ -92,8 +97,9 @@ const tools: ToolSection[] = [
   {
     ...eqData,
     subSections: [
-      eqModels,
+      eqMSCEIT,
       eqFiveDimensions,
+      eqModels,
       eqResearch,
     ],
   },

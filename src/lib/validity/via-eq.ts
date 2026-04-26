@@ -56,14 +56,14 @@ export const eqData = {
   subtitle: "Mayer-Salovey 능력 모델 + Goleman 혼합 모델",
   icon: "Heart",
   color: "#dc2626",
-  badge: "논란있음",
-  badgeColor: "#d97706",
-  reliabilityScore: 3,
-  overview: `정서 지능(Emotional Intelligence, EI 또는 EQ)은 1990년 Yale 대학의 Peter Salovey와 New Hampshire 대학의 John D. Mayer가 심리학 학술지 Imagination, Cognition and Personality에 발표한 이론에서 출발했다. 이들은 정서 지능을 "자신과 타인의 감정을 모니터링하고 식별하여 사고와 행동을 안내하는 능력"으로 정의했다. 이후 Daniel Goleman(1995)이 대중서 [EQ: Emotional Intelligence]를 통해 전 세계에 개념을 확산시켰고, Reuven Bar-On(1997)이 별도의 혼합 모델을 발전시켰다.
+  badge: "능력모델 기반",
+  badgeColor: "#0891b2",
+  reliabilityScore: 4,
+  overview: `정서 지능(EQ)의 학술적 금본위는 Mayer-Salovey-Caruso 능력 모델(1990~1997)이다. 측정 도구 MSCEIT v2.0의 신뢰도 α=0.91~0.93으로, IQ 검사에 준하는 심리측정 안정성을 갖는다. 이 시스템의 EQ 진단은 Goleman의 5차원 프레임(자기인식·자기조절·동기·공감·사회적 기술)을 사용하되, 각 차원을 측정하는 방식을 MSCEIT의 능력 기반 원리로 설계했다.
 
-현재 주류 EQ 모델은 세 가지다. (1) Mayer-Salovey-Caruso 능력 모델: 정서 인식·정서 활용·정서 이해·정서 관리의 4계층 능력 구조. 측정 도구 MSCEIT(v2)의 Cronbach's α=0.91~0.93으로 신뢰도가 높다. (2) Goleman의 혼합 모델: 자기인식·자기조절·동기·공감·사회적 기술의 5개 역량 프레임. 리더십 개발 맥락에서 광범위하게 사용되지만 학술 심리측정학 기준에서는 "능력과 성격 특성의 혼합"이라는 비판을 받는다. (3) Bar-On의 EI 모델: 개인 내적·개인 간·적응·스트레스 관리·일반 기분의 5개 영역.
+차원별 5개 사역 현장 시나리오(총 25문항)는 단순 자기평가("나는 감정을 잘 조절한다")가 아니라 실제 행동 패턴을 묻는다. 이는 MSCEIT의 성취형 측정 원리 — "능력은 수행으로 드러난다" — 를 목회 맥락에 적용한 것이다. Brackett et al.(2006)이 지적한 자기보고 EQ의 낮은 정확성 문제(MSCEIT와 r=0.18)를 시나리오 기반 설계로 부분 극복했다.
 
-이 시스템은 Goleman의 5개 역량 프레임(자기인식·자기조절·동기·공감·사회적 기술)을 채택했다. 이는 목회 현장의 관계적 역량과 리더십 역량 평가에 가장 직접적으로 대응하기 때문이다.`,
+Joseph & Newman(2010) 메타분석에서 감정 노동이 핵심인 역할(상담·교육·목회)에서 EQ의 직무 성과 예측력은 r=0.33~0.45로, 전체 평균(r=0.24~0.30)보다 유의미하게 높았다.`,
 
   academicEvidence: [
     {
