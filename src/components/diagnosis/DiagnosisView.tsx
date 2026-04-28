@@ -153,12 +153,12 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
             className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end md:items-center justify-center md:p-4 transition-opacity duration-300"
             onClick={handleBackdropClick}
         >
-            <div className="bg-white w-full md:max-w-4xl max-h-[92vh] md:max-h-[85vh] overflow-y-auto rounded-t-3xl md:rounded-2xl shadow-2xl relative flex flex-col animate-[slideUp_0.3s_ease-out] md:animate-[scaleUp_0.3s_ease-out]">
+            <div className="modal-sheet bg-white w-full md:max-w-4xl max-h-[92vh] md:max-h-[85vh] overflow-y-auto rounded-t-3xl md:rounded-2xl shadow-2xl relative flex flex-col">
                 {/* Modal Header */}
-                <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-4 py-4 md:px-8 md:py-6 border-b border-stone-100 flex justify-between items-center">
-                    <h3 className="text-2xl font-serif font-bold text-blue-900 capitalize flex items-center gap-3">
-                        <Icon name={isBig5 ? "Brain" : isVia ? "Sparkles" : isEQ ? "Heart" : type === 'enneagram' ? "Fingerprint" : "Anchor"} className="text-amber-600" />
-                        {isBig5 ? "Big 5 성격 프로파일링" : isVia ? "VIA 강점 선택 (5개)" : isEQ ? "EQ 감성지능 프로파일링" : type === 'enneagram' ? "에니어그램 유형 선택" : "커리어 앵커 선택"}
+                <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-4 py-3 md:px-8 md:py-5 border-b border-stone-100 flex justify-between items-center">
+                    <h3 className="text-lg md:text-2xl font-serif font-bold text-blue-900 flex items-center gap-2">
+                        <Icon name={isBig5 ? "Brain" : isVia ? "Sparkles" : isEQ ? "Heart" : type === 'enneagram' ? "Fingerprint" : "Anchor"} className="text-amber-600" size={20} />
+                        {isBig5 ? "Big 5 성격 프로파일링" : isVia ? "VIA 강점 선택 (5개)" : isEQ ? "EQ 감성지능" : type === 'enneagram' ? "에니어그램 유형 선택" : "커리어 앵커 선택"}
                     </h3>
                     <button onClick={onClose} className="p-2 hover:bg-stone-100 rounded-full text-stone-400 hover:text-blue-900 transition-colors">
                         <Icon name="X" size={24} />
@@ -168,34 +168,33 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                 {/* Modal Content */}
                 <div className="p-4 md:p-8 lg:p-10">
                     {isBig5 ? (
-                        <div className="space-y-8">
-                            <div className="bg-blue-50 p-4 rounded-lg text-base text-blue-800 mb-6 flex gap-3">
-                                <Icon name="Zap" size={20} className="shrink-0"/>
+                        <div className="space-y-4 md:space-y-6">
+                            <div className="bg-blue-50 p-3 md:p-4 rounded-lg text-sm text-blue-800 flex gap-2">
+                                <Icon name="Zap" size={16} className="shrink-0 mt-0.5"/>
                                 <div>
-                                    <span className="font-bold block mb-1">결과 해석 방법 (bigfive-test.com 기준)</span>
-                                    각 특성의 백분위 점수를 아래 기준으로 변환하여 선택하세요.
-                                    <div className="flex gap-3 mt-2 flex-wrap">
-                                        <span className="bg-blue-900 text-white px-2 py-0.5 rounded text-sm font-bold">60% 이상 → 높음</span>
-                                        <span className="bg-stone-400 text-white px-2 py-0.5 rounded text-sm font-bold">40~60% → 보통</span>
-                                        <span className="bg-stone-600 text-white px-2 py-0.5 rounded text-sm font-bold">40% 미만 → 낮음</span>
+                                    <span className="font-bold block mb-1">결과 해석 (bigfive-test.com 기준)</span>
+                                    <div className="flex gap-2 mt-1 flex-wrap text-xs">
+                                        <span className="bg-blue-900 text-white px-2 py-0.5 rounded font-bold">60%↑ 높음</span>
+                                        <span className="bg-stone-400 text-white px-2 py-0.5 rounded font-bold">40~60% 보통</span>
+                                        <span className="bg-stone-600 text-white px-2 py-0.5 rounded font-bold">40%↓ 낮음</span>
                                     </div>
                                 </div>
                             </div>
                             {Object.entries(detailData.big5).map(([key, info]) => (
-                                <div key={key} className="bg-stone-50 p-6 rounded-xl border border-stone-200 hover:border-blue-200 transition-colors">
-                                    <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-4">
-                                        <div>
-                                            <h4 className="text-lg font-bold text-slate-900 font-serif">{info.name}</h4>
-                                            <p className="text-sm text-stone-500 mt-1">{info.desc}</p>
+                                <div key={key} className={`rounded-xl border-2 transition-all ${inputs.big5[key] ? 'border-blue-200 bg-blue-50/50' : 'border-stone-100 bg-stone-50'}`}>
+                                    <div className="p-4 flex items-center justify-between gap-3">
+                                        <div className="min-w-0">
+                                            <h4 className="text-base font-bold text-slate-900 font-serif">{info.name}</h4>
+                                            <p className="text-xs text-stone-500 mt-0.5 leading-snug">{info.desc}</p>
                                         </div>
                                         <div className="flex bg-white rounded-lg p-1 border border-stone-200 shadow-sm shrink-0">
                                             {(['Low', 'Mid', 'High'] as Big5Level[]).map(level => (
-                                                <button 
-                                                    key={level} 
+                                                <button
+                                                    key={level}
                                                     onClick={() => handleBig5Change(key, level)}
-                                                    className={`px-5 py-2 rounded-md text-base font-bold transition-all ${
-                                                        inputs.big5[key] === level 
-                                                            ? (level==='High'?'bg-blue-900 text-white shadow':level==='Low'?'bg-stone-500 text-white shadow':'bg-stone-400 text-white shadow') 
+                                                    className={`px-3 md:px-5 py-2.5 rounded-md text-sm font-bold transition-all ${
+                                                        inputs.big5[key] === level
+                                                            ? (level==='High'?'bg-blue-900 text-white shadow':level==='Low'?'bg-stone-500 text-white shadow':'bg-stone-400 text-white shadow')
                                                             : 'text-stone-500 hover:bg-stone-100'
                                                     }`}
                                                 >
@@ -204,14 +203,16 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 text-sm mt-3">
-                                        <div className={`p-3 rounded transition-colors ${inputs.big5[key] === 'High' ? 'bg-blue-100 text-blue-900 ring-1 ring-blue-300' : 'bg-white text-stone-400 border border-stone-100'}`}>
-                                            <span className="font-bold mr-1">High:</span> {info.high}
+                                    {inputs.big5[key] && (
+                                        <div className="grid grid-cols-2 gap-2 px-4 pb-3 text-xs">
+                                            <div className={`p-2 rounded ${inputs.big5[key] === 'High' ? 'bg-blue-100 text-blue-900 font-bold' : 'bg-white text-stone-400 border border-stone-100'}`}>
+                                                High: {info.high}
+                                            </div>
+                                            <div className={`p-2 rounded ${inputs.big5[key] === 'Low' ? 'bg-stone-200 text-stone-800 font-bold' : 'bg-white text-stone-400 border border-stone-100'}`}>
+                                                Low: {info.low}
+                                            </div>
                                         </div>
-                                        <div className={`p-3 rounded transition-colors ${inputs.big5[key] === 'Low' ? 'bg-stone-200 text-stone-800 ring-1 ring-stone-400' : 'bg-white text-stone-400 border border-stone-100'}`}>
-                                            <span className="font-bold mr-1">Low:</span> {info.low}
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -290,7 +291,7 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                                 const dimDone = answers.every(a => a > 0);
                                 return (
                                     <div key={key} className={`rounded-2xl border-2 overflow-hidden transition-all ${dimDone ? 'border-rose-300 shadow-md' : 'border-stone-200'}`}>
-                                        <div className={`px-6 py-4 flex items-center justify-between ${dimDone ? 'bg-rose-50' : 'bg-stone-50'}`}>
+                                        <div className={`px-4 py-3 md:px-6 md:py-4 flex items-center justify-between ${dimDone ? 'bg-rose-50' : 'bg-stone-50'}`}>
                                             <div>
                                                 <h4 className="text-base font-bold text-slate-900 font-serif">{info.name}</h4>
                                                 <p className="text-xs text-stone-500 mt-0.5">{info.desc}</p>
@@ -303,21 +304,21 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                                                 {!level ? '미완료' : level === 'High' ? '높음' : level === 'Mid' ? '보통' : '낮음'}
                                             </div>
                                         </div>
-                                        <div className="p-6 space-y-4">
+                                        <div className="p-3 md:p-6 space-y-3">
                                             {questions.map((q, qi) => (
-                                                <div key={qi} className={`p-4 rounded-xl border ${answers[qi] > 0 ? 'bg-rose-50 border-rose-200' : 'bg-white border-stone-100'}`}>
+                                                <div key={qi} className={`p-3 rounded-xl border ${answers[qi] > 0 ? 'bg-rose-50 border-rose-200' : 'bg-white border-stone-100'}`}>
                                                     <p className="text-sm text-slate-700 mb-3 font-medium leading-relaxed">
                                                         <span className="text-rose-400 font-black mr-1">Q{qi+1}.</span> {q}
                                                     </p>
-                                                    <div className="flex gap-2">
-                                                        {[{score:1,label:'전혀 아니다'},{score:2,label:'보통이다'},{score:3,label:'매우 그렇다'}].map(opt => (
+                                                    <div className="grid grid-cols-3 gap-1.5">
+                                                        {[{score:1,label:'아니다'},{score:2,label:'보통'},{score:3,label:'그렇다'}].map(opt => (
                                                             <button
                                                                 key={opt.score}
                                                                 onClick={() => {
                                                                     const newA = [...answers]; newA[qi] = opt.score;
                                                                     setEqAnswers(prev => ({...prev, [key]: newA}));
                                                                 }}
-                                                                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all border ${
+                                                                className={`py-3 rounded-lg text-sm font-bold transition-all border active:scale-95 ${
                                                                     answers[qi] === opt.score
                                                                         ? opt.score === 3 ? 'bg-rose-600 text-white border-rose-600 shadow'
                                                                         : opt.score === 2 ? 'bg-amber-500 text-white border-amber-500 shadow'
@@ -348,7 +349,7 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                                 <button
                                     key={k}
                                     onClick={() => { setInputs({...inputs, [type]: k}); onClose(); }}
-                                    className={`w-full text-left p-5 rounded-xl border-2 transition-all hover:shadow-md ${
+                                    className={`w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all active:scale-[0.99] ${
                                         inputs[type as 'enneagram'|'anchor'] === k
                                             ? 'border-blue-900 bg-blue-50 ring-1 ring-blue-900'
                                             : 'border-stone-100 hover:border-blue-200 hover:bg-stone-50'
@@ -356,7 +357,7 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                                 >
                                     <div className="flex justify-between items-start mb-1">
                                         <div>
-                                            <span className={`block text-lg font-bold font-serif ${inputs[type as 'enneagram'|'anchor'] === k ? 'text-blue-900' : 'text-slate-900'}`}>
+                                            <span className={`block text-base md:text-lg font-bold font-serif ${inputs[type as 'enneagram'|'anchor'] === k ? 'text-blue-900' : 'text-slate-900'}`}>
                                                 {v.label}
                                             </span>
                                             {type === 'enneagram' && ENNEAGRAM_KEYWORDS[k] && (
@@ -508,7 +509,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
             <SectionTitle title="성향 프로파일링" subtitle="당신의 내면을 있는 그대로 비추어 주십시오." />
             
             {/* External Links Box */}
-            <div className="bg-white border border-stone-200 rounded-2xl p-6 mb-10 shadow-sm">
+            <div className="bg-white border border-stone-200 rounded-2xl p-4 md:p-6 mb-6 md:mb-10 shadow-sm">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                     <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                         <Icon name="ExternalLink" size={16}/> 
@@ -591,7 +592,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 {renderCard(
                     'big5',
                     "Big 5 성격검사",
-                    "Personality ★★★★★",
+                    "Personality · 신뢰도 최상",
                     "Brain",
                     "text-green-600",
                     isBig5Done,
@@ -606,7 +607,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 {renderCard(
                     'via',
                     "VIA 대표 강점 (5개)",
-                    "Signature Strength ★★★★",
+                    "Signature Strength · 신뢰도 높음",
                     "Sparkles",
                     "text-amber-600",
                     isViaDone,
@@ -622,7 +623,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 {renderCard(
                     'eq',
                     "EQ 감성지능 (Goleman)",
-                    "Emotional Intelligence ★★★★",
+                    "Emotional Intelligence · 신뢰도 높음",
                     "Heart",
                     "text-rose-600",
                     isEQDone,
@@ -637,7 +638,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 {renderCard(
                     'anchor',
                     "커리어 앵커 (Value)",
-                    "Core Value ★★★★",
+                    "Core Value · 신뢰도 높음",
                     "Anchor",
                     "text-blue-600",
                     isAnchorDone,
@@ -649,7 +650,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 {renderCard(
                     'enneagram',
                     "에니어그램 (Enneagram)",
-                    "Motivation ★★★",
+                    "Motivation · 참고 도구",
                     "Fingerprint",
                     "text-purple-600",
                     isEnneagramDone,
@@ -750,8 +751,16 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                     to { transform: scale(1); opacity: 1; }
                 }
                 @keyframes slideUp {
-                    from { transform: translateY(100%); opacity: 0; }
+                    from { transform: translateY(60px); opacity: 0; }
                     to { transform: translateY(0); opacity: 1; }
+                }
+                .modal-sheet {
+                    animation: slideUp 0.28s cubic-bezier(0.32,0.72,0,1);
+                }
+                @media (min-width: 768px) {
+                    .modal-sheet {
+                        animation: scaleUp 0.22s ease-out;
+                    }
                 }
             `}</style>
         </div>
