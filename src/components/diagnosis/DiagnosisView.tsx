@@ -150,12 +150,12 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
 
     return (
         <div 
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity duration-300"
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end md:items-center justify-center md:p-4 transition-opacity duration-300"
             onClick={handleBackdropClick}
         >
-            <div className="bg-white w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl relative flex flex-col animate-[scaleUp_0.3s_ease-out]">
+            <div className="bg-white w-full md:max-w-4xl max-h-[92vh] md:max-h-[85vh] overflow-y-auto rounded-t-3xl md:rounded-2xl shadow-2xl relative flex flex-col animate-[slideUp_0.3s_ease-out] md:animate-[scaleUp_0.3s_ease-out]">
                 {/* Modal Header */}
-                <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-8 py-6 border-b border-stone-100 flex justify-between items-center">
+                <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-4 py-4 md:px-8 md:py-6 border-b border-stone-100 flex justify-between items-center">
                     <h3 className="text-2xl font-serif font-bold text-blue-900 capitalize flex items-center gap-3">
                         <Icon name={isBig5 ? "Brain" : isVia ? "Sparkles" : isEQ ? "Heart" : type === 'enneagram' ? "Fingerprint" : "Anchor"} className="text-amber-600" />
                         {isBig5 ? "Big 5 성격 프로파일링" : isVia ? "VIA 강점 선택 (5개)" : isEQ ? "EQ 감성지능 프로파일링" : type === 'enneagram' ? "에니어그램 유형 선택" : "커리어 앵커 선택"}
@@ -166,7 +166,7 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                 </div>
 
                 {/* Modal Content */}
-                <div className="p-8 md:p-10">
+                <div className="p-4 md:p-8 lg:p-10">
                     {isBig5 ? (
                         <div className="space-y-8">
                             <div className="bg-blue-50 p-4 rounded-lg text-base text-blue-800 mb-6 flex gap-3">
@@ -376,7 +376,7 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
                 </div>
 
                 {/* Modal Footer */}
-                <div className="sticky bottom-0 bg-white/95 backdrop-blur px-8 py-6 border-t border-stone-100">
+                <div className="sticky bottom-0 bg-white/95 backdrop-blur px-4 py-4 md:px-8 md:py-6 border-t border-stone-100">
                      <button 
                         onClick={onClose}
                         className="w-full py-4 bg-blue-900 text-white text-lg font-bold rounded-xl hover:bg-blue-800 transition-colors shadow-lg active:scale-[0.99]"
@@ -439,38 +439,38 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
         <div 
             onClick={() => setActiveModal(type as 'enneagram' | 'big5' | 'anchor' | 'via' | 'eq')}
             className={`
-                group relative p-6 bg-white border-2 rounded-2xl cursor-pointer transition-all duration-300
-                ${isDone 
-                    ? 'border-blue-900 shadow-md ring-1 ring-blue-900/10' 
+                group relative p-4 md:p-6 bg-white border-2 rounded-2xl cursor-pointer transition-all duration-300
+                ${isDone
+                    ? 'border-blue-900 shadow-md ring-1 ring-blue-900/10'
                     : 'border-stone-200 hover:border-amber-400 hover:shadow-lg'
                 }
             `}
         >
-            <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between mb-2 md:mb-4">
+                <div className="flex items-center gap-3">
                     <div className={`
-                        w-12 h-12 rounded-2xl flex items-center justify-center transition-colors
+                        w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center transition-colors shrink-0
                         ${isDone ? 'bg-blue-900 text-white' : `bg-stone-100 ${colorClass}`}
                     `}>
-                        <Icon name={icon} size={24}/>
+                        <Icon name={icon} size={20}/>
                     </div>
                     <div>
-                        <p className="text-sm font-bold text-stone-400 uppercase tracking-wider mb-0.5">{subtitle}</p>
-                        <p className={`text-xl font-bold font-serif ${isDone ? 'text-blue-900' : 'text-slate-900'}`}>
+                        <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-0.5 leading-none">{subtitle}</p>
+                        <p className={`text-base md:text-xl font-bold font-serif leading-tight ${isDone ? 'text-blue-900' : 'text-slate-900'}`}>
                             {title}
                         </p>
                     </div>
                 </div>
                 <div className={`
-                    w-8 h-8 rounded-full flex items-center justify-center transition-all
+                    w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all shrink-0
                     ${isDone ? 'bg-blue-100 text-blue-900' : 'text-stone-300 group-hover:text-amber-500'}
                 `}>
-                    <Icon name={isDone ? "Check" : "ChevronRight"} size={20}/>
+                    <Icon name={isDone ? "Check" : "ChevronRight"} size={18}/>
                 </div>
             </div>
-            
+
             {/* Value Preview Section */}
-            <div className="pl-16 min-h-[1.5rem]">
+            <div className="pl-[52px] md:pl-[60px] min-h-[1.25rem]">
                 {isDone ? (
                     <div className="text-base font-medium text-slate-700 animate-[fadeIn_0.5s_ease-out]">
                         {valuePreview}
@@ -504,7 +504,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
     };
 
     return (
-        <div className="max-w-4xl mx-auto px-6 py-16 fade-in">
+        <div className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-16 fade-in">
             <SectionTitle title="성향 프로파일링" subtitle="당신의 내면을 있는 그대로 비추어 주십시오." />
             
             {/* External Links Box */}
@@ -528,8 +528,31 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 </div>
             </div>
 
-            {/* 다중 프로필 스위처 */}
-            <div className="flex gap-3 mb-8">
+            {/* 다중 프로필 스위처 — 데스크탑: 카드, 모바일: 탭 */}
+            {/* 모바일 탭 */}
+            <div className="flex md:hidden gap-0 mb-6 bg-stone-100 rounded-xl p-1">
+                {allProfiles.map((profile, idx) => {
+                    const pct = profileCompletionPct(profile);
+                    const isDone = pct >= 100;
+                    const isActive = activeProfile === idx;
+                    return (
+                        <button
+                            key={idx}
+                            onClick={() => onSwitchProfile(idx)}
+                            className={`flex-1 flex flex-col items-center py-2 px-1 rounded-lg text-xs font-bold transition-all ${
+                                isActive ? 'bg-white shadow text-blue-900' : 'text-stone-400'
+                            }`}
+                        >
+                            <span>{PROFILE_LABELS[idx]}</span>
+                            <span className={`mt-0.5 text-[10px] font-black ${isDone ? 'text-green-600' : isActive ? 'text-blue-600' : 'text-stone-300'}`}>
+                                {isDone ? '✓ 완료' : `${Math.round(pct)}%`}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+            {/* 데스크탑 카드 */}
+            <div className="hidden md:flex gap-3 mb-8">
                 {allProfiles.map((profile, idx) => {
                     const pct = profileCompletionPct(profile);
                     const isDone = pct >= 100;
@@ -549,20 +572,13 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                                     {PROFILE_LABELS[idx]}
                                 </span>
                                 <span className={`text-xs font-black px-2 py-0.5 rounded-full ${
-                                    isDone
-                                        ? 'bg-green-100 text-green-700'
-                                        : isActive
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'bg-stone-100 text-stone-400'
+                                    isDone ? 'bg-green-100 text-green-700' : isActive ? 'bg-blue-100 text-blue-700' : 'bg-stone-100 text-stone-400'
                                 }`}>
                                     {isDone ? '완료' : `${Math.round(pct)}%`}
                                 </span>
                             </div>
                             <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
-                                <div
-                                    className={`h-full rounded-full transition-all duration-500 ${isDone ? 'bg-green-500' : 'bg-blue-600'}`}
-                                    style={{ width: `${pct}%` }}
-                                />
+                                <div className={`h-full rounded-full transition-all duration-500 ${isDone ? 'bg-green-500' : 'bg-blue-600'}`} style={{ width: `${pct}%` }} />
                             </div>
                         </button>
                     );
@@ -573,22 +589,10 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
 
             <div className="space-y-4">
                 {renderCard(
-                    'enneagram', 
-                    "에니어그램 (Enneagram)", 
-                    "Motivation", 
-                    "Fingerprint", 
-                    "text-purple-600",
-                    isEnneagramDone,
-                    <span className="bg-purple-50 text-purple-900 px-2 py-1 rounded-md text-sm font-bold border border-purple-100">
-                        {inputs.enneagram ? detailData.enneagram[inputs.enneagram]?.label?.split(':')[0] : ''}
-                    </span>
-                )}
-
-                {renderCard(
-                    'big5', 
-                    "Big 5 성격검사", 
-                    "Personality", 
-                    "Brain", 
+                    'big5',
+                    "Big 5 성격검사",
+                    "Personality ★★★★★",
+                    "Brain",
                     "text-green-600",
                     isBig5Done,
                     <div className="flex gap-1">
@@ -600,21 +604,9 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 )}
 
                 {renderCard(
-                    'anchor', 
-                    "커리어 앵커 (Value)", 
-                    "Core Value", 
-                    "Anchor", 
-                    "text-blue-600",
-                    isAnchorDone,
-                    <span className="bg-blue-50 text-blue-900 px-2 py-1 rounded-md text-sm font-bold border border-blue-100">
-                        {inputs.anchor ? detailData.anchor[inputs.anchor]?.label : ''}
-                    </span>
-                )}
-
-                {renderCard(
                     'via',
                     "VIA 대표 강점 (5개)",
-                    "Signature Strength",
+                    "Signature Strength ★★★★",
                     "Sparkles",
                     "text-amber-600",
                     isViaDone,
@@ -630,7 +622,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 {renderCard(
                     'eq',
                     "EQ 감성지능 (Goleman)",
-                    "Emotional Intelligence",
+                    "Emotional Intelligence ★★★★",
                     "Heart",
                     "text-rose-600",
                     isEQDone,
@@ -640,6 +632,30 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                         ))}
                         <span className="ml-2 text-sm text-rose-700">{eqCount}/5 입력됨</span>
                     </div>
+                )}
+
+                {renderCard(
+                    'anchor',
+                    "커리어 앵커 (Value)",
+                    "Core Value ★★★★",
+                    "Anchor",
+                    "text-blue-600",
+                    isAnchorDone,
+                    <span className="bg-blue-50 text-blue-900 px-2 py-1 rounded-md text-sm font-bold border border-blue-100">
+                        {inputs.anchor ? detailData.anchor[inputs.anchor]?.label : ''}
+                    </span>
+                )}
+
+                {renderCard(
+                    'enneagram',
+                    "에니어그램 (Enneagram)",
+                    "Motivation ★★★",
+                    "Fingerprint",
+                    "text-purple-600",
+                    isEnneagramDone,
+                    <span className="bg-purple-50 text-purple-900 px-2 py-1 rounded-md text-sm font-bold border border-purple-100">
+                        {inputs.enneagram ? detailData.enneagram[inputs.enneagram]?.label?.split(':')[0] : ''}
+                    </span>
                 )}
             </div>
 
@@ -658,7 +674,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                     onClick={() => onFinish()}
                     disabled={!isMinReady}
                     className={`
-                        px-16 py-6 rounded-xl text-xl font-bold font-serif shadow-xl transition-all duration-300
+                        w-full md:w-auto px-6 md:px-16 py-5 md:py-6 rounded-xl text-lg md:text-xl font-bold font-serif shadow-xl transition-all duration-300
                         ${isReady
                             ? 'bg-blue-900 text-white hover:bg-blue-800 transform hover:-translate-y-1 hover:shadow-2xl'
                             : isMinReady
@@ -732,6 +748,10 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 @keyframes scaleUp {
                     from { transform: scale(0.95); opacity: 0; }
                     to { transform: scale(1); opacity: 1; }
+                }
+                @keyframes slideUp {
+                    from { transform: translateY(100%); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
                 }
             `}</style>
         </div>
