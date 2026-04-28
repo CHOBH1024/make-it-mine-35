@@ -424,6 +424,8 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
     }, [inputs]);
 
     const isReady = isEnneagramDone && isBig5Done && isAnchorDone && isViaDone && isEQDone;
+    const completedCount = [isEnneagramDone, isBig5Done, isAnchorDone, isViaDone, isEQDone].filter(Boolean).length;
+    const isMinReady = completedCount >= 2;
 
     const renderCard = (
         type: 'enneagram' | 'big5' | 'anchor' | 'via' | 'eq',
@@ -642,25 +644,47 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
             </div>
 
             <div className="mt-12 text-center">
-                <button 
-                    onClick={() => onFinish()} 
-                    disabled={!isReady} 
+                {/* 학술 타당성 높은 도구 안내 */}
+                {!isReady && !isMinReady && (
+                    <div className="mb-5 bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 text-sm text-blue-800 text-left flex gap-2">
+                        <Icon name="Info" size={16} className="shrink-0 mt-0.5 text-blue-500"/>
+                        <span>
+                            <span className="font-bold">2개 이상 입력하면 예비 분석이 가능합니다.</span>
+                            {' '}학술 타당도 기준으로는 <span className="font-bold">Big 5 (★★★★★)</span>와 <span className="font-bold">에니어그램</span>을 우선 입력하세요.
+                        </span>
+                    </div>
+                )}
+                <button
+                    onClick={() => onFinish()}
+                    disabled={!isMinReady}
                     className={`
                         px-16 py-6 rounded-xl text-xl font-bold font-serif shadow-xl transition-all duration-300
-                        ${isReady 
-                            ? 'bg-blue-900 text-white hover:bg-blue-800 transform hover:-translate-y-1 hover:shadow-2xl' 
-                            : 'bg-stone-200 text-stone-400 cursor-not-allowed grayscale'
+                        ${isReady
+                            ? 'bg-blue-900 text-white hover:bg-blue-800 transform hover:-translate-y-1 hover:shadow-2xl'
+                            : isMinReady
+                                ? 'bg-amber-600 text-white hover:bg-amber-500 transform hover:-translate-y-1 hover:shadow-xl'
+                                : 'bg-stone-200 text-stone-400 cursor-not-allowed grayscale'
                         }
                     `}
                 >
                     <span className="flex items-center gap-3">
-                        {PROFILE_LABELS[activeProfile]} 소명 아키타입 분석하기
-                        {isReady && <Icon name="ArrowRight" />}
+                        {isReady
+                            ? `${PROFILE_LABELS[activeProfile]} 소명 아키타입 분석하기`
+                            : isMinReady
+                                ? `${PROFILE_LABELS[activeProfile]} 예비 분석하기 (${completedCount}/5)`
+                                : `${PROFILE_LABELS[activeProfile]} 소명 아키타입 분석하기`
+                        }
+                        {isMinReady && <Icon name="ArrowRight" />}
                     </span>
                 </button>
-                {!isReady && (
+                {isMinReady && !isReady && (
+                    <p className="text-sm text-amber-600 mt-3 font-medium">
+                        나머지 {5 - completedCount}개 도구 완료 시 더 정밀한 결과를 얻을 수 있습니다.
+                    </p>
+                )}
+                {!isMinReady && (
                     <p className="text-base text-stone-400 mt-4 animate-pulse">
-                        * 모든 항목을 입력해야 분석이 가능합니다. ({Math.round(progress)}%)
+                        * 2개 이상 입력하면 예비 분석이 가능합니다. ({Math.round(progress)}%)
                     </p>
                 )}
             </div>

@@ -231,6 +231,15 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
 
     if (!result || !matchMetrics) return null;
 
+    const completedToolsCount = [
+        !!inputs.enneagram,
+        Object.values(inputs.big5).every(v => v !== ''),
+        !!inputs.anchor,
+        inputs.via.length === 5,
+        Object.values(inputs.eq).every(v => v !== ''),
+    ].filter(Boolean).length;
+    const isPartialAnalysis = completedToolsCount < 5;
+
     const userMBTI = getMBTI(inputs.big5);
     const userAnchorLabel = detailData.anchor[inputs.anchor]?.label;
     const maxScore = Math.max(...results.map(r => r.score || 0));
@@ -343,6 +352,32 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                         >
                             저장
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {/* 예비 분석 배너 */}
+            {isPartialAnalysis && (
+                <div className="mb-8 bg-amber-50 border border-amber-300 rounded-2xl px-6 py-4 flex gap-3 items-start">
+                    <Icon name="AlertTriangle" size={20} className="text-amber-600 shrink-0 mt-0.5"/>
+                    <div className="flex-1">
+                        <div className="font-bold text-amber-800 mb-1">
+                            예비 분석 결과 — {completedToolsCount}/5 도구 완료
+                        </div>
+                        <div className="text-sm text-amber-700 leading-relaxed mb-2">
+                            {[
+                                !inputs.enneagram && '에니어그램',
+                                !Object.values(inputs.big5).every(v => v !== '') && 'Big 5',
+                                !inputs.anchor && '커리어 앵커',
+                                inputs.via.length < 5 && 'VIA 강점',
+                                !Object.values(inputs.eq).every(v => v !== '') && 'EQ',
+                            ].filter(Boolean).join(' · ')} 항목을 추가 입력하면 더 정밀한 분석 결과를 얻을 수 있습니다.
+                        </div>
+                        <div className="flex gap-3 text-xs flex-wrap">
+                            <span className="bg-white border border-amber-200 text-amber-700 px-2 py-1 rounded-full font-bold">
+                                학술 타당도 최우선: Big 5 (★★★★★) → VIA (★★★★) → EQ (★★★★)
+                            </span>
+                        </div>
                     </div>
                 </div>
             )}
