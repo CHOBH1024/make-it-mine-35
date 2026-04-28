@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Icon } from "@/components/diagnosis/Icon";
 import { HomeView } from "@/components/diagnosis/HomeView";
 import { DiagnosisView } from "@/components/diagnosis/DiagnosisView";
@@ -23,13 +23,33 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [activeTab, setActiveTab] = useState<string>("home");
-  const [inputs, setInputs] = useState<Inputs>({
+
+  const emptyInputs = (): Inputs => ({
     enneagram: "",
     big5: { openness: "", conscientiousness: "", extraversion: "", agreeableness: "", neuroticism: "" },
     anchor: "",
     via: [],
     eq: { awareness: "", regulation: "", motivation: "", empathy: "", social: "" },
   });
+
+  const [profileInputs, setProfileInputs] = useState<[Inputs, Inputs, Inputs]>([
+    emptyInputs(), emptyInputs(), emptyInputs(),
+  ]);
+  const [activeProfile, setActiveProfile] = useState(0);
+  const inputs = profileInputs[activeProfile];
+  const setInputs = useCallback<React.Dispatch<React.SetStateAction<Inputs>>>(
+    (updater) => {
+      setProfileInputs(prev => {
+        const current = prev[activeProfile];
+        const newVal = typeof updater === "function" ? (updater as (p: Inputs) => Inputs)(current) : updater;
+        const next = [...prev] as [Inputs, Inputs, Inputs];
+        next[activeProfile] = newVal;
+        return next;
+      });
+    },
+    [activeProfile]
+  );
+
   const [results, setResults] = useState<Archetype[]>([]);
 
   const calculateResults = (targetInputs: Inputs): Archetype[] => {
@@ -68,11 +88,14 @@ function Index() {
     if (encoded) {
       const decoded = decodeInputs(encoded);
       if (decoded) {
-        setInputs(decoded);
+        setProfileInputs(prev => {
+          const next = [...prev] as [Inputs, Inputs, Inputs];
+          next[0] = decoded;
+          return next;
+        });
         const scores = calculateResults(decoded);
         setResults(scores);
         setActiveTab("analysis");
-        // Clean URL without reload
         window.history.replaceState({}, '', window.location.pathname);
       }
     }
@@ -163,7 +186,14 @@ function Index() {
       <main className="flex-grow">
         {activeTab === "home" && <HomeView onStart={() => setActiveTab("diagnosis")} />}
         {activeTab === "diagnosis" && (
-          <DiagnosisView inputs={inputs} setInputs={setInputs} onFinish={handleAnalyze} />
+          <DiagnosisView
+            inputs={inputs}
+            setInputs={setInputs}
+            onFinish={handleAnalyze}
+            allProfiles={profileInputs}
+            activeProfile={activeProfile}
+            onSwitchProfile={setActiveProfile}
+          />
         )}
         {activeTab === "analysis" && (
           <AnalysisView results={results} inputs={inputs} onRestore={handleRestore} />

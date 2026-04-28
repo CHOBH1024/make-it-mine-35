@@ -8,6 +8,9 @@ interface DiagnosisViewProps {
     inputs: Inputs;
     setInputs: React.Dispatch<React.SetStateAction<Inputs>>;
     onFinish: (inputs?: Inputs) => void;
+    allProfiles: Inputs[];
+    activeProfile: number;
+    onSwitchProfile: (idx: number) => void;
 }
 
 interface DiagnosisModalProps {
@@ -386,7 +389,19 @@ const DiagnosisModal: React.FC<DiagnosisModalProps> = ({ type, inputs, setInputs
     );
 };
 
-export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs, onFinish }) => {
+const PROFILE_LABELS = ['나', '파트너 1', '파트너 2'];
+
+const profileCompletionPct = (p: Inputs): number => {
+    let count = 0;
+    if (p.enneagram) count += 1;
+    if (p.anchor) count += 1;
+    if (p.via.length === 5) count += 1;
+    count += Object.values(p.big5).filter(v => v !== '').length / 5;
+    count += Object.values(p.eq).filter(v => v !== '').length / 5;
+    return (count / 5) * 100;
+};
+
+export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs, onFinish, allProfiles, activeProfile, onSwitchProfile }) => {
     const [activeModal, setActiveModal] = useState<'enneagram' | 'big5' | 'anchor' | 'via' | 'eq' | null>(null);
 
     // Calculate Progress
@@ -511,6 +526,47 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 </div>
             </div>
 
+            {/* 다중 프로필 스위처 */}
+            <div className="flex gap-3 mb-8">
+                {allProfiles.map((profile, idx) => {
+                    const pct = profileCompletionPct(profile);
+                    const isDone = pct >= 100;
+                    const isActive = activeProfile === idx;
+                    return (
+                        <button
+                            key={idx}
+                            onClick={() => onSwitchProfile(idx)}
+                            className={`flex-1 rounded-xl border-2 p-4 text-left transition-all ${
+                                isActive
+                                    ? 'border-blue-900 bg-blue-50 shadow-md ring-1 ring-blue-900/10'
+                                    : 'border-stone-200 bg-white hover:border-stone-300 hover:shadow-sm'
+                            }`}
+                        >
+                            <div className="flex items-center justify-between mb-2">
+                                <span className={`text-sm font-bold ${isActive ? 'text-blue-900' : 'text-stone-500'}`}>
+                                    {PROFILE_LABELS[idx]}
+                                </span>
+                                <span className={`text-xs font-black px-2 py-0.5 rounded-full ${
+                                    isDone
+                                        ? 'bg-green-100 text-green-700'
+                                        : isActive
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'bg-stone-100 text-stone-400'
+                                }`}>
+                                    {isDone ? '완료' : `${Math.round(pct)}%`}
+                                </span>
+                            </div>
+                            <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                                <div
+                                    className={`h-full rounded-full transition-all duration-500 ${isDone ? 'bg-green-500' : 'bg-blue-600'}`}
+                                    style={{ width: `${pct}%` }}
+                                />
+                            </div>
+                        </button>
+                    );
+                })}
+            </div>
+
             <ProgressBar progress={progress} />
 
             <div className="space-y-4">
@@ -598,7 +654,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                     `}
                 >
                     <span className="flex items-center gap-3">
-                        소명 아키타입 분석하기
+                        {PROFILE_LABELS[activeProfile]} 소명 아키타입 분석하기
                         {isReady && <Icon name="ArrowRight" />}
                     </span>
                 </button>
