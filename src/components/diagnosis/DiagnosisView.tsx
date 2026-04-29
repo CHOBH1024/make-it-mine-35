@@ -426,7 +426,9 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
 
     const isReady = isEnneagramDone && isBig5Done && isAnchorDone && isViaDone && isEQDone;
     const completedCount = [isEnneagramDone, isBig5Done, isAnchorDone, isViaDone, isEQDone].filter(Boolean).length;
-    const isMinReady = completedCount >= 2;
+    // 완전검증 도구(Big5·VIA·EQ·앵커)만 카운트 — 에니어그램(부분검증)은 최소 조건 미포함
+    const validatedCount = [isBig5Done, isViaDone, isEQDone, isAnchorDone].filter(Boolean).length;
+    const isMinReady = validatedCount >= 2;
 
     const renderCard = (
         type: 'enneagram' | 'big5' | 'anchor' | 'via' | 'eq',
@@ -666,8 +668,9 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                     <div className="mb-5 bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 text-sm text-blue-800 text-left flex gap-2">
                         <Icon name="Info" size={16} className="shrink-0 mt-0.5 text-blue-500"/>
                         <span>
-                            <span className="font-bold">2개 이상 입력하면 예비 분석이 가능합니다.</span>
-                            {' '}학술 타당도 기준으로는 <span className="font-bold">Big 5 (★★★★★)</span>와 <span className="font-bold">에니어그램</span>을 우선 입력하세요.
+                            <span className="font-bold">완전검증 도구 2개 이상 입력 시 예비 분석이 가능합니다.</span>
+                            {' '}Big 5 · VIA · EQ · 커리어 앵커 중 2개를 먼저 완료하세요.
+                            {' '}<span className="text-stone-500">(에니어그램은 부분검증 단계로 최소 조건에 포함되지 않습니다)</span>
                         </span>
                     </div>
                 )}
@@ -688,7 +691,7 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                         {isReady
                             ? `${PROFILE_LABELS[activeProfile]} 소명 아키타입 분석하기`
                             : isMinReady
-                                ? `${PROFILE_LABELS[activeProfile]} 예비 분석하기 (${completedCount}/5)`
+                                ? `${PROFILE_LABELS[activeProfile]} 예비 분석하기 (완전검증 ${validatedCount}/4)`
                                 : `${PROFILE_LABELS[activeProfile]} 소명 아키타입 분석하기`
                         }
                         {isMinReady && <Icon name="ArrowRight" />}
@@ -696,12 +699,12 @@ export const DiagnosisView: React.FC<DiagnosisViewProps> = ({ inputs, setInputs,
                 </button>
                 {isMinReady && !isReady && (
                     <p className="text-sm text-amber-600 mt-3 font-medium">
-                        나머지 {5 - completedCount}개 도구 완료 시 더 정밀한 결과를 얻을 수 있습니다.
+                        나머지 {4 - validatedCount}개 완전검증 도구 + 에니어그램까지 완료하면 정밀 분석이 가능합니다.
                     </p>
                 )}
                 {!isMinReady && (
-                    <p className="text-base text-stone-400 mt-4 animate-pulse">
-                        * 2개 이상 입력하면 예비 분석이 가능합니다. ({Math.round(progress)}%)
+                    <p className="text-sm text-stone-400 mt-4 animate-pulse">
+                        완전검증 도구(Big 5 · VIA · EQ · 앵커) 중 2개 이상 입력 시 분석 가능 ({Math.round(progress)}%)
                     </p>
                 )}
             </div>
