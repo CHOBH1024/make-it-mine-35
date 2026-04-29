@@ -6,6 +6,7 @@ import { educationContent } from '@/lib/educationData';
 import { Archetype, Inputs, SavedAnalysis } from '@/lib/types';
 import { TeamBuilder } from '@/components/diagnosis/TeamBuilder';
 import { generateAnalysisPdf } from '@/lib/generatePdf';
+import { downloadMarkdown } from '@/lib/generateMarkdown';
 import { buildShareUrl, copyToClipboard, webShare } from '@/lib/share';
 
 interface AnalysisViewProps {
@@ -140,6 +141,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
     const [saveName, setSaveName] = useState('');
     const [showSaveUI, setShowSaveUI] = useState(false);
     const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+    const [isDownloadingMd, setIsDownloadingMd] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
 
     // Primary result is the first element
@@ -216,12 +218,41 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
     return (
         <div className="max-w-7xl mx-auto px-6 py-12 fade-in">
             {/* Save/Load Control Bar */}
-            <div className="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                    <Icon name="User" className="text-blue-900"/> 분석 결과 대시보드
-                </h2>
-                <div className="flex gap-2">
-                    <button 
+            <div className="mb-8 flex flex-col gap-3">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                    <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <Icon name="User" className="text-blue-900"/> 분석 결과 대시보드
+                    </h2>
+                    {savedAnalyses.length > 0 && (
+                        <div className="relative group self-end md:self-auto">
+                            <button className="px-3 py-2 bg-stone-50 text-stone-700 rounded-lg font-bold hover:bg-stone-100 transition-colors flex items-center gap-2 text-sm border border-stone-200">
+                                <Icon name="BookOpen" size={15}/> 불러오기 ({savedAnalyses.length})
+                            </button>
+                            <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-xl border border-stone-200 overflow-hidden hidden group-hover:block z-50">
+                                <div className="p-3 bg-stone-50 border-b border-stone-100 text-sm font-bold text-stone-500">저장된 분석 기록</div>
+                                <div className="max-h-64 overflow-y-auto">
+                                    {savedAnalyses.map(a => (
+                                        <div key={a.id} className="p-3 hover:bg-blue-50 border-b border-stone-50 flex justify-between items-center transition-colors cursor-pointer" onClick={() => handleLoadAnalysis(a)}>
+                                            <div>
+                                                <div className="font-bold text-slate-800 text-sm">{a.name}</div>
+                                                <div className="text-xs text-stone-500 mt-0.5">{a.resultTitle} • {new Date(a.createdAt).toLocaleDateString()}</div>
+                                            </div>
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); handleDeleteAnalysis(a.id); }}
+                                                className="p-1.5 text-stone-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                                            >
+                                                <Icon name="X" size={14}/>
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                {/* Action buttons — responsive grid */}
+                <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
+                    <button
                         onClick={async () => {
                             if (!result) return;
                             setIsGeneratingPdf(true);
@@ -235,11 +266,26 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                             }
                         }}
                         disabled={isGeneratingPdf}
-                        className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-bold hover:bg-blue-100 transition-colors flex items-center gap-2 text-base border border-blue-200 disabled:opacity-50"
+                        className="px-3 py-2.5 bg-blue-50 text-blue-700 rounded-lg font-bold hover:bg-blue-100 transition-colors flex items-center justify-center gap-1.5 text-sm border border-blue-200 disabled:opacity-50"
                     >
-                    <Icon name="Download" size={16}/> {isGeneratingPdf ? 'PDF 생성 중...' : 'PDF 다운로드'}
+                        <Icon name="Printer" size={15}/> {isGeneratingPdf ? '생성 중...' : 'PDF 저장'}
                     </button>
-                    <button 
+                    <button
+                        onClick={() => {
+                            if (!result) return;
+                            setIsDownloadingMd(true);
+                            try {
+                                downloadMarkdown(result, results, inputs);
+                            } finally {
+                                setIsDownloadingMd(false);
+                            }
+                        }}
+                        disabled={isDownloadingMd}
+                        className="px-3 py-2.5 bg-violet-50 text-violet-700 rounded-lg font-bold hover:bg-violet-100 transition-colors flex items-center justify-center gap-1.5 text-sm border border-violet-200 disabled:opacity-50"
+                    >
+                        <Icon name="FileText" size={15}/> MD 다운로드
+                    </button>
+                    <button
                         onClick={async () => {
                             const url = buildShareUrl(inputs);
                             const ok = await copyToClipboard(url);
@@ -248,11 +294,11 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                 setTimeout(() => setCopySuccess(false), 2000);
                             }
                         }}
-                        className="px-4 py-2 bg-green-50 text-green-700 rounded-lg font-bold hover:bg-green-100 transition-colors flex items-center gap-2 text-base border border-green-200"
+                        className="px-3 py-2.5 bg-green-50 text-green-700 rounded-lg font-bold hover:bg-green-100 transition-colors flex items-center justify-center gap-1.5 text-sm border border-green-200"
                     >
-                        <Icon name="Link2" size={16}/> {copySuccess ? '복사됨!' : '링크 복사'}
+                        <Icon name="Link2" size={15}/> {copySuccess ? '복사됨!' : '링크 복사'}
                     </button>
-                    <button 
+                    <button
                         onClick={() => {
                             if (!result) return;
                             const url = buildShareUrl(inputs);
@@ -262,42 +308,16 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ results, inputs, onR
                                 url
                             );
                         }}
-                        className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg font-bold hover:bg-indigo-100 transition-colors flex items-center gap-2 text-base border border-indigo-200"
+                        className="px-3 py-2.5 bg-indigo-50 text-indigo-700 rounded-lg font-bold hover:bg-indigo-100 transition-colors flex items-center justify-center gap-1.5 text-sm border border-indigo-200"
                     >
-                        <Icon name="Share2" size={16}/> 공유하기
+                        <Icon name="Share2" size={15}/> 공유하기
                     </button>
-                    <button 
+                    <button
                         onClick={() => setShowSaveUI(!showSaveUI)}
-                        className="px-4 py-2 bg-amber-50 text-amber-700 rounded-lg font-bold hover:bg-amber-100 transition-colors flex items-center gap-2 text-base border border-amber-200"
+                        className="px-3 py-2.5 bg-amber-50 text-amber-700 rounded-lg font-bold hover:bg-amber-100 transition-colors flex items-center justify-center gap-1.5 text-sm border border-amber-200 col-span-2 md:col-span-1"
                     >
-                        <Icon name="Save" size={16}/> 결과 저장
+                        <Icon name="Save" size={15}/> 결과 저장
                     </button>
-                    {savedAnalyses.length > 0 && (
-                        <div className="relative group">
-                            <button className="px-4 py-2 bg-stone-50 text-stone-700 rounded-lg font-bold hover:bg-stone-100 transition-colors flex items-center gap-2 text-base border border-stone-200">
-                                <Icon name="BookOpen" size={16}/> 불러오기 ({savedAnalyses.length})
-                            </button>
-                            <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-xl border border-stone-200 overflow-hidden hidden group-hover:block z-50">
-                                <div className="p-3 bg-stone-50 border-b border-stone-100 text-sm font-bold text-stone-500">저장된 분석 기록</div>
-                                <div className="max-h-64 overflow-y-auto">
-                                    {savedAnalyses.map(a => (
-                                        <div key={a.id} className="p-3 hover:bg-blue-50 border-b border-stone-50 flex justify-between items-center group/item transition-colors cursor-pointer" onClick={() => handleLoadAnalysis(a)}>
-                                            <div>
-                                                <div className="font-bold text-slate-800 text-base">{a.name}</div>
-                                                <div className="text-sm text-stone-500 mt-0.5">{a.resultTitle} • {new Date(a.createdAt).toLocaleDateString()}</div>
-                                            </div>
-                                            <button 
-                                                onClick={(e) => { e.stopPropagation(); handleDeleteAnalysis(a.id); }}
-                                                className="p-1.5 text-stone-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
-                                            >
-                                                <Icon name="X" size={14}/>
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
 

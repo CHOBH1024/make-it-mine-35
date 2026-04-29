@@ -1,179 +1,165 @@
-import { jsPDF } from 'jspdf';
 import type { Archetype, Inputs } from '@/lib/types';
 import { detailData } from '@/lib/data';
 
-// Korean text support: jsPDF doesn't have built-in Korean font support,
-// so we render via HTML and use the browser's font rendering
 export async function generateAnalysisPdf(result: Archetype, results: Archetype[], inputs: Inputs) {
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const userAnchorLabel = detailData.anchor[inputs.anchor]?.label || inputs.anchor || '-';
+    const top3 = results.slice(0, 3);
+    const date = new Date().toLocaleDateString('ko-KR');
+    const growthKeys = ['discipline', 'skill', 'leadership', 'relationship'] as const;
 
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-  const margin = 15;
-  const contentWidth = pageWidth - margin * 2;
-  let y = margin;
+    const eqLabels: Record<string, string> = {
+        awareness: '자기인식', regulation: '감정조절', motivation: '동기부여',
+        empathy: '공감능력', social: '사회적기술',
+    };
 
-  const addPage = () => {
-    doc.addPage();
-    y = margin;
-  };
-
-  const checkPage = (needed: number) => {
-    if (y + needed > pageHeight - margin) {
-      addPage();
-    }
-  };
-
-  // Create an HTML-based PDF for Korean support
-  const container = document.createElement('div');
-  container.style.width = '700px';
-  container.style.fontFamily = "'Noto Sans KR', 'Malgun Gothic', sans-serif";
-  container.style.color = '#1e293b';
-  container.style.padding = '40px';
-  container.style.background = '#fff';
-  container.style.position = 'fixed';
-  container.style.left = '-9999px';
-  container.style.top = '0';
-
-  const userAnchorLabel = detailData.anchor[inputs.anchor]?.label || inputs.anchor;
-  const top3 = results.slice(0, 3);
-
-  container.innerHTML = `
-    <div style="text-align:center; margin-bottom:30px;">
-      <div style="font-size:11px; color:#92400e; letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; font-weight:bold;">
-        CHEON IL GUK PASTORAL ARCHETYPE REPORT
-      </div>
-      <h1 style="font-size:32px; font-weight:800; color:#1e3a8a; margin:0 0 6px 0; font-family:serif;">
-        ${result.title}
-      </h1>
-      <div style="font-size:16px; color:#64748b; font-style:italic; margin-bottom:12px;">
-        ${result.engTitle}
-      </div>
-      <div style="font-size:13px; color:#78716c; border-left:3px solid #d97706; padding-left:12px; text-align:left; max-width:550px; margin:0 auto; line-height:1.7;">
-        "${result.verse}"
-      </div>
-    </div>
-
-    <hr style="border:none; border-top:2px solid #e7e5e4; margin:20px 0;">
-
-    <h2 style="font-size:18px; color:#1e3a8a; font-weight:700; margin-bottom:12px;">📋 입력 요약</h2>
-    <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:13px;">
-      <tr style="background:#f8fafc;">
-        <td style="padding:8px 12px; border:1px solid #e2e8f0; font-weight:bold; width:30%;">에니어그램</td>
-        <td style="padding:8px 12px; border:1px solid #e2e8f0;">${inputs.enneagram || '-'} 유형</td>
-      </tr>
-      <tr>
-        <td style="padding:8px 12px; border:1px solid #e2e8f0; font-weight:bold;">Big 5 성격</td>
-        <td style="padding:8px 12px; border:1px solid #e2e8f0;">
-          개방성: ${inputs.big5.openness || '-'} | 성실성: ${inputs.big5.conscientiousness || '-'} | 외향성: ${inputs.big5.extraversion || '-'} | 친화성: ${inputs.big5.agreeableness || '-'} | 신경성: ${inputs.big5.neuroticism || '-'}
-        </td>
-      </tr>
-      <tr style="background:#f8fafc;">
-        <td style="padding:8px 12px; border:1px solid #e2e8f0; font-weight:bold;">커리어 앵커</td>
-        <td style="padding:8px 12px; border:1px solid #e2e8f0;">${userAnchorLabel}</td>
-      </tr>
-      <tr>
-        <td style="padding:8px 12px; border:1px solid #e2e8f0; font-weight:bold;">VIA 강점</td>
-        <td style="padding:8px 12px; border:1px solid #e2e8f0;">${inputs.via.join(', ') || '-'}</td>
-      </tr>
-    </table>
-
-    <h2 style="font-size:18px; color:#1e3a8a; font-weight:700; margin-bottom:12px;">🏆 진단 결과 TOP 3</h2>
-    ${top3.map((r, i) => `
-      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; margin-bottom:6px; background:${i === 0 ? '#eff6ff' : '#fff'}; border:1px solid ${i === 0 ? '#bfdbfe' : '#e2e8f0'}; border-radius:8px;">
-        <div style="font-size:20px; font-weight:800; color:${i === 0 ? '#1e3a8a' : '#94a3b8'}; min-width:30px;">${i + 1}</div>
-        <div style="flex:1;">
-          <div style="font-weight:700; color:#1e293b; font-size:14px;">${r.title} <span style="color:#94a3b8; font-weight:400; font-size:12px;">${r.engTitle}</span></div>
-          <div style="font-size:12px; color:#64748b;">${r.subtitle}</div>
-        </div>
-        <div style="font-size:16px; font-weight:800; color:${i === 0 ? '#1e3a8a' : '#64748b'};">${(r.score || 0).toFixed(1)}점</div>
-      </div>
-    `).join('')}
-
-    <hr style="border:none; border-top:2px solid #e7e5e4; margin:24px 0;">
-
-    <h2 style="font-size:18px; color:#1e3a8a; font-weight:700; margin-bottom:8px;">📖 정체성 및 섭리적 맥락</h2>
-    <p style="font-size:13px; line-height:1.8; color:#334155; margin-bottom:12px; text-align:justify;">${result.summary}</p>
-    
-    <div style="background:#eff6ff; padding:14px 16px; border-radius:8px; border:1px solid #bfdbfe; margin-bottom:20px;">
-      <div style="font-weight:700; font-size:13px; color:#1e3a8a; margin-bottom:4px;">💼 공직 가이드</div>
-      <div style="font-size:12px; color:#1e40af; line-height:1.7;">${result.details.guide}</div>
-    </div>
-
-    <h2 style="font-size:18px; color:#1e3a8a; font-weight:700; margin-bottom:8px;">🧬 섭리적 DNA</h2>
-    <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:12px;">
-      <tr style="background:#f8fafc;">
-        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:bold; width:33%; text-align:center;">HOW (행동)</td>
-        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:bold; width:33%; text-align:center;">WHAT (역할)</td>
-        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:bold; width:33%; text-align:center;">WHY (소명)</td>
-      </tr>
-      <tr>
-        <td style="padding:10px; border:1px solid #e2e8f0; line-height:1.6;">${result.dna.how}</td>
-        <td style="padding:10px; border:1px solid #e2e8f0; line-height:1.6;">${result.dna.what}</td>
-        <td style="padding:10px; border:1px solid #e2e8f0; line-height:1.6;">${result.dna.why}</td>
-      </tr>
-    </table>
-
-    <h2 style="font-size:18px; color:#1e3a8a; font-weight:700; margin-bottom:8px;">🤝 시너지 & 파트너</h2>
-    <div style="font-size:12px; line-height:1.7; color:#334155; margin-bottom:10px;">${result.synergyDesc}</div>
-    <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:12px;">
-      <tr>
-        <td style="padding:10px; border:1px solid #e2e8f0; background:#f0fdf4; width:50%;">
-          <div style="font-weight:700; color:#166534;">✅ 최적 파트너: ${result.partners.best.role}</div>
-          <div style="color:#15803d; margin-top:4px;">${result.partners.best.reason}</div>
-        </td>
-        <td style="padding:10px; border:1px solid #e2e8f0; background:#fef2f2; width:50%;">
-          <div style="font-weight:700; color:#991b1b;">⚠️ 주의 파트너: ${result.partners.caution.role}</div>
-          <div style="color:#b91c1c; margin-top:4px;">${result.partners.caution.reason}</div>
-        </td>
-      </tr>
-    </table>
-
-    <h2 style="font-size:18px; color:#1e3a8a; font-weight:700; margin-bottom:8px;">🌱 성장 로드맵</h2>
-    ${['discipline', 'skill', 'leadership', 'relationship'].map(key => {
-      const g = result.growthGuide[key as keyof typeof result.growthGuide] as { title: string; description: string; actionItems: string[] };
-      return `
-        <div style="margin-bottom:14px; padding:12px 14px; border:1px solid #e2e8f0; border-radius:8px;">
-          <div style="font-weight:700; font-size:13px; color:#1e293b; margin-bottom:4px;">${g.title}</div>
-          <div style="font-size:12px; color:#475569; line-height:1.6; margin-bottom:6px;">${g.description}</div>
-          <ul style="margin:0; padding-left:18px; font-size:11px; color:#64748b;">
-            ${g.actionItems.map((item: string) => `<li style="margin-bottom:2px;">${item}</li>`).join('')}
-          </ul>
-        </div>
-      `;
-    }).join('')}
-
-    <h2 style="font-size:18px; color:#1e3a8a; font-weight:700; margin-bottom:8px;">📌 추천 보직</h2>
-    <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:12px;">
-      <tr style="background:#f8fafc;">
-        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:bold; width:50%;">본부 보직</td>
-        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:bold; width:50%;">현장 보직</td>
-      </tr>
-      <tr>
-        <td style="padding:10px; border:1px solid #e2e8f0; line-height:1.7;">${result.recommendations.hq.join(', ')}</td>
-        <td style="padding:10px; border:1px solid #e2e8f0; line-height:1.7;">${result.recommendations.field.join(', ')}</td>
-      </tr>
-    </table>
-
-    <div style="text-align:center; font-size:10px; color:#a8a29e; margin-top:30px; padding-top:16px; border-top:1px solid #e7e5e4;">
-      Cheon Il Guk Public Official Assessment Tool © ${new Date().getFullYear()} | 생성일: ${new Date().toLocaleDateString('ko-KR')}
-    </div>
-  `;
-
-  document.body.appendChild(container);
-
-  try {
-    await doc.html(container, {
-      callback: (doc) => {
-        doc.save(`목회공직자_유형진단_${result.title}.pdf`);
-      },
-      x: 0,
-      y: 0,
-      width: 700,
-      windowWidth: 700,
-      autoPaging: 'text',
-    });
-  } finally {
-    document.body.removeChild(container);
+    const html = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${result.title} — 목회공직자 유형진단 보고서</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: #1e293b;
+    background: #fff;
+    font-size: 11pt;
+    line-height: 1.7;
   }
+  .page { max-width: 800px; margin: 0 auto; padding: 40px; }
+  h1, h2, h3 { font-family: 'Noto Serif KR', Georgia, serif; }
+  .header { text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 3px solid #1e3a8a; }
+  .report-tag { font-size: 9pt; color: #92400e; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  .title { font-size: 28pt; font-weight: 900; color: #1e3a8a; margin-bottom: 6px; }
+  .eng-title { font-size: 13pt; color: #64748b; font-style: italic; margin-bottom: 14px; }
+  .verse { font-size: 10.5pt; color: #78716c; border-left: 3px solid #d97706; padding: 8px 14px; text-align: left; max-width: 560px; margin: 0 auto; line-height: 1.8; background: #fffbeb; border-radius: 0 6px 6px 0; }
+  h2 { font-size: 14pt; color: #1e3a8a; font-weight: 700; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1.5px solid #e2e8f0; }
+  h3 { font-size: 11.5pt; color: #1e293b; font-weight: 700; margin: 18px 0 8px; }
+  p { margin-bottom: 10px; line-height: 1.8; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 10pt; }
+  th, td { padding: 8px 12px; border: 1px solid #e2e8f0; text-align: left; line-height: 1.6; }
+  th { background: #f8fafc; font-weight: 700; color: #334155; }
+  .top1 { background: #eff6ff; border: 1px solid #bfdbfe; }
+  .rank-row td:first-child { font-size: 18pt; font-weight: 900; color: #94a3b8; }
+  .rank-row.first td:first-child { color: #1e3a8a; }
+  .guide-box { background: #eff6ff; padding: 14px 16px; border-radius: 8px; border: 1px solid #bfdbfe; margin-bottom: 20px; }
+  .guide-box p { margin: 0; color: #1e40af; }
+  .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .partner-best { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; }
+  .partner-caution { background: #fef2f2; border: 1px solid #fecaca; padding: 12px; border-radius: 8px; }
+  .growth-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .growth-item h3 { margin-top: 0; }
+  ul { padding-left: 18px; margin-bottom: 8px; }
+  li { margin-bottom: 3px; }
+  .dna-table th { text-align: center; }
+  .dna-table td { vertical-align: top; }
+  .footer { text-align: center; font-size: 9pt; color: #a8a29e; margin-top: 40px; padding-top: 16px; border-top: 1px solid #e7e5e4; }
+  @media print {
+    @page { margin: 18mm 15mm; size: A4; }
+    body { font-size: 10pt; }
+    .page { padding: 0; max-width: 100%; }
+    h2 { page-break-after: avoid; }
+    .growth-item, table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="report-tag">CHEON IL GUK PASTORAL ARCHETYPE REPORT</div>
+    <h1 class="title">${result.title}</h1>
+    <div class="eng-title">${result.engTitle}</div>
+    <div class="verse">"${result.verse}"</div>
+  </div>
+
+  <h2>입력 요약</h2>
+  <table>
+    <tr><th>에니어그램</th><td>${inputs.enneagram ? inputs.enneagram + '유형' : '-'}</td>
+        <th>커리어 앵커</th><td>${userAnchorLabel}</td></tr>
+    <tr><th>Big 5</th><td colspan="3">개방성: ${inputs.big5.openness || '-'} | 성실성: ${inputs.big5.conscientiousness || '-'} | 외향성: ${inputs.big5.extraversion || '-'} | 친화성: ${inputs.big5.agreeableness || '-'} | 신경성: ${inputs.big5.neuroticism || '-'}</td></tr>
+    <tr><th>VIA 강점</th><td colspan="3">${inputs.via.join(', ') || '-'}</td></tr>
+    <tr><th>EQ</th><td colspan="3">${Object.entries(inputs.eq).map(([k, v]) => `${eqLabels[k] || k}: ${v || '-'}`).join(' | ')}</td></tr>
+  </table>
+
+  <h2>진단 결과 TOP 3</h2>
+  <table>
+    ${top3.map((r, i) => `
+    <tr class="rank-row ${i === 0 ? 'first' : ''}">
+      <td style="width:40px; text-align:center;">${i + 1}</td>
+      <td class="${i === 0 ? 'top1' : ''}">
+        <strong>${r.title}</strong> <span style="color:#94a3b8; font-size:9pt;">${r.engTitle}</span><br>
+        <span style="font-size:9pt; color:#64748b;">${r.subtitle}</span>
+      </td>
+      <td style="width:60px; text-align:right; font-weight:700; color:${i === 0 ? '#1e3a8a' : '#64748b'};">${(r.score || 0).toFixed(1)}점</td>
+    </tr>`).join('')}
+  </table>
+
+  <h2>정체성 및 섭리적 맥락</h2>
+  <p>${result.summary}</p>
+  <div class="guide-box"><p>${result.details.guide}</p></div>
+
+  <h2>섭리적 DNA</h2>
+  <table class="dna-table">
+    <tr><th>HOW (행동)</th><th>WHAT (역할)</th><th>WHY (소명)</th></tr>
+    <tr><td>${result.dna.how}</td><td>${result.dna.what}</td><td>${result.dna.why}</td></tr>
+  </table>
+
+  <h2>시너지 & 파트너십</h2>
+  <p>${result.synergyDesc}</p>
+  <div class="partner-grid">
+    <div class="partner-best">
+      <strong style="color:#166534;">최적 파트너: ${result.partners.best.role}</strong>
+      <p style="color:#15803d; margin-top:6px;">${result.partners.best.reason}</p>
+    </div>
+    <div class="partner-caution">
+      <strong style="color:#991b1b;">주의 파트너: ${result.partners.caution.role}</strong>
+      <p style="color:#b91c1c; margin-top:6px;">${result.partners.caution.reason}</p>
+    </div>
+  </div>
+
+  <h2>성장 로드맵</h2>
+  ${growthKeys.map(k => {
+      const g = result.growthGuide[k];
+      return `<div class="growth-item">
+        <h3>${g.title}</h3>
+        <p>${g.description}</p>
+        <ul>${g.actionItems.map(item => `<li>${item}</li>`).join('')}</ul>
+      </div>`;
+  }).join('')}
+
+  <h2>추천 보직</h2>
+  <table>
+    <tr><th>본부 보직</th><th>현장 보직</th></tr>
+    <tr><td>${result.recommendations.hq.join(', ')}</td><td>${result.recommendations.field.join(', ')}</td></tr>
+  </table>
+
+  <h2>기도 가이드</h2>
+  <table>
+    <tr><th>새벽기도</th><td>${result.prayerGuide.morningPrayer}</td></tr>
+    <tr><th>낮기도</th><td>${result.prayerGuide.noonPrayer}</td></tr>
+    <tr><th>저녁묵상</th><td>${result.prayerGuide.eveningReflection}</td></tr>
+    <tr><th>특별기도</th><td>${result.prayerGuide.specialPrayer}</td></tr>
+  </table>
+
+  <div class="footer">
+    Cheon Il Guk Public Official Assessment Tool &copy; ${new Date().getFullYear()} | 생성일: ${date}
+  </div>
+</div>
+<script>
+  window.onload = function() {
+    window.print();
+  };
+</script>
+</body>
+</html>`;
+
+    const printWin = window.open('', '_blank', 'width=900,height=700');
+    if (!printWin) {
+        alert('팝업이 차단되었습니다. 팝업을 허용한 후 다시 시도하세요.');
+        return;
+    }
+    printWin.document.write(html);
+    printWin.document.close();
 }
